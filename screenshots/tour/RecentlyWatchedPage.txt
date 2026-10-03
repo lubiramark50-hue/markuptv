@@ -1,0 +1,7 @@
+307,576 : WATCH HISTORY
+162,678 : Select a channel from our histo to resume.
+476,794 : Search history...
+390,1620 : No history yet
+193,1694 : Channels you watch will appear here so you
+337,1760 : can jump straight back in.
+480,1890 : Refresh

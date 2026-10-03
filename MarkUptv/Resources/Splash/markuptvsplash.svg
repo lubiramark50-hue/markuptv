@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- MarkUpTV splash mark: transparent background over the themed splash colour. -->
+  <defs>
+    <radialGradient id="markGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0"   stop-color="#E8B54A" stop-opacity="0.22"/>
+      <stop offset="1"   stop-color="#E8B54A" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="markGold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"    stop-color="#FFE3A8"/>
+      <stop offset="0.45" stop-color="#E8B54A"/>
+      <stop offset="1"    stop-color="#C0882A"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="256" cy="256" r="250" fill="url(#markGlow)"/>
+
+  <g transform="translate(256 256) scale(0.86) translate(-256 -256)">
+    <path d="M425.4,241.2 A170,170 0 1 1 353.5,116.7"
+          fill="none" stroke="url(#markGold)" stroke-width="40" stroke-linecap="round"/>
+    <circle cx="403.2" cy="171" r="27" fill="url(#markGold)"/>
+    <path d="M206 168 L350 256 L206 344 Z"
+          fill="url(#markGold)" stroke="url(#markGold)"
+          stroke-width="34" stroke-linejoin="round"/>
+  </g>
+</svg>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+        MarkUpTV dark theme.
+
+        Android's Shell flyout is not a MAUI view: it is a platform
+        NavigationView whose item labels take their colour from the theme, not
+        from Shell.FlyoutItemLabelStyle. With MAUI's stock attributes the
+        flyout titles were painted in the theme's "primary text" colour, which
+        resolves dark — dark grey words on the navy flyout, effectively
+        unreadable (measured at roughly 1.1:1 when the flyout was captured).
+
+        Inheriting from Maui.SplashTheme keeps every MAUI attribute intact and
+        only overrides the text/control colours, so the app's own surfaces and
+        the drawer rows are legible on the dark background.
+    -->
+
+    <style name="MarkUpTV.Theme" parent="Maui.SplashTheme">
+        <item name="android:textColorPrimary">#DCE3F5</item>
+        <item name="android:textColorSecondary">#C7CDE5</item>
+        <item name="android:textColorTertiary">#A8B2CD</item>
+        <item name="android:textColorPrimaryInverse">#0B0E1A</item>
+        <item name="colorControlNormal">#DCE3F5</item>
+        <item name="colorControlActivated">#E8B54A</item>
+        <item name="colorOnSurface">#DCE3F5</item>
+        <item name="colorOnBackground">#DCE3F5</item>
+        <item name="colorSurface">#0B0E1A</item>
+    </style>
+
+</resources>

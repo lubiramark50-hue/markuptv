@@ -1,0 +1,37 @@
+294,226 : SPORTS
+575,226 : O LIVE-TV
+294,292 : Live action from every sport
+260,454 : STANDBY
+261,498 : Select a sports channel
+484,744 : cop
+212,1167 : Search sports channels...
+875,256 : O
+691,296 : - 24/7
+764,1320 : SPORTS
+125,1320 : ALL
+137,1518 : ACCDN
+145,1761 : ACCN
+76,2242 : o
+66,2300 : Home
+297,1320 : AUTO
+497,1320 : OUTDOOR
+316,1468 : ACC Digital Network (1080
+319,1524 : Live sports - 24/7
+347,1574 : ON AIR 24/7 SD
+316,1717 : ACC Network (720p)
+319,1773 : Live sports - 24/7
+347,1823 : ON AIR 24/7 SD
+316,1966 : ADO (720p)
+319,2022 : Live sports - 24/7
+347,2072 : ON AIR 24/7 SD
+292,2238 : o
+269,2302 : Sports
+508,2242 : o
+501,2300 : News
+724,2242 : o
+705,2300 : Movies
+835,1518 : WATCH
+835,1768 : WATCH
+835,2016 : WATCH
+940,2242 : o
+929,2300 : Music

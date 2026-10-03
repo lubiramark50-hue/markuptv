@@ -1,0 +1,2019 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="MarkUptv.Pages.FootballPage"
+    x:Name="PageRoot"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:models="clr-namespace:MarkUptv.Models"
+    xmlns:helpers="clr-namespace:MarkUptv.Helpers"
+    xmlns:conv="clr-namespace:MarkUptv.Converters"
+    xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+    x:DataType="vm:FootballViewModel"
+    Title="Live Football"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+
+        <helpers:InvertBoolConverter
+            x:Key="InvertBoolConverter" />
+
+        <!-- Player stage height: tall only while a channel is playing, a
+             compact standby tile otherwise, so the match board and channel
+             list stay above the fold. -->
+
+        <helpers:BoolToNumberConverter
+            x:Key="PlayerStageHeight"
+            TrueValue="232"
+            FalseValue="150" />
+
+        <helpers:StringNullOrEmptyConverter
+            x:Key="StringNullOrEmptyConverter" />
+
+        <conv:IsNotNullConverter
+            x:Key="IsNotNullConverter" />
+
+        <conv:ChannelSubtitleConverter
+            x:Key="ChannelSubtitleConverter" />
+
+        <Color x:Key="FootballGold">#FFD34D</Color>
+        <Color x:Key="FootballGreen">#23A55A</Color>
+        <Color x:Key="FootballDeep">#0D2415</Color>
+        <Color x:Key="FootballMuted">#8FA79B</Color>
+        <Color x:Key="LiveRed">#E8254D</Color>
+
+        <LinearGradientBrush
+            x:Key="FootballPageBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#04100B"
+                Offset="0" />
+
+            <GradientStop
+                Color="#0B2417"
+                Offset="0.55" />
+
+            <GradientStop
+                Color="#123B26"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <LinearGradientBrush
+            x:Key="FootballHeroBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#0F7A3E"
+                Offset="0" />
+
+            <GradientStop
+                Color="#1FA55A"
+                Offset="0.55" />
+
+            <GradientStop
+                Color="#0F6E96"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <Style
+            x:Key="FootballCardStyle"
+            TargetType="Border">
+
+            <Setter
+                Property="BackgroundColor"
+                Value="#E00B1D12" />
+
+            <Setter
+                Property="Stroke"
+                Value="#30FFFFFF" />
+
+            <Setter
+                Property="StrokeThickness"
+                Value="1" />
+
+            <Setter
+                Property="StrokeShape"
+                Value="RoundRectangle 22" />
+
+        </Style>
+
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <StaticResource Key="FootballPageBrush" />
+    </ContentPage.Background>
+
+    <Grid
+        RowDefinitions="Auto,*"
+        Padding="{OnIdiom Phone='13,19,13,13',
+                          Tablet='20,23,20,18',
+                          Desktop='26,25,26,22',
+                          TV='42,37,42,32'}"
+        RowSpacing="18">
+
+        <Label
+            Grid.RowSpan="2"
+            Text="⚽"
+            FontSize="120"
+            TextColor="#10FFFFFF"
+            Margin="-30,140,0,0"
+            HorizontalOptions="Start"
+            VerticalOptions="Start"
+            InputTransparent="True" />
+
+        <Label
+            Grid.RowSpan="2"
+            Text="🏆"
+            FontSize="120"
+            TextColor="#10E8B54A"
+            Margin="0,0,-30,90"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            InputTransparent="True" />
+
+        <!-- =========================================================
+             HEADER
+             ========================================================= -->
+
+        <Grid
+            x:Name="HeaderPanel"
+            Grid.Row="0"
+            ColumnDefinitions="Auto,*,Auto"
+            ColumnSpacing="14"
+            MaximumWidthRequest="1600"
+            HorizontalOptions="Center">
+
+            <Button
+                Text="☰"
+                Command="{Binding OpenFlyoutCommand}"
+                Clicked="OnAnimatedButtonClicked"
+                WidthRequest="48"
+                HeightRequest="48"
+                Padding="0"
+                CornerRadius="16"
+                FontSize="22"
+                BackgroundColor="#16FFFFFF"
+                BorderColor="#35FFFFFF"
+                BorderWidth="1"
+                TextColor="White"
+                SemanticProperties.Description="Open navigation" />
+
+            <VerticalStackLayout
+                Grid.Column="1"
+                Spacing="2"
+                VerticalOptions="Center">
+
+                <HorizontalStackLayout
+                    Spacing="10"
+                    VerticalOptions="Center">
+
+                    <Label
+                        Text="FOOTBALL"
+                        FontSize="{OnIdiom Phone=22,
+                                           Tablet=26,
+                                           Desktop=28,
+                                           TV=36}"
+                        FontAttributes="Bold"
+                        CharacterSpacing="1.2"
+                        TextColor="White"
+                        VerticalOptions="Center" />
+
+                    <!-- LIVE pill — shown ONLY when matches are genuinely in play -->
+
+                    <Border
+                        Padding="9,3"
+                        BackgroundColor="#E8FF4D8D"
+                        Stroke="#FFFFD9E0"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 9"
+                        VerticalOptions="Center"
+                        IsVisible="{Binding HasLiveNow}">
+
+                        <HorizontalStackLayout
+                            Spacing="5"
+                            VerticalOptions="Center">
+
+                            <Ellipse
+                                WidthRequest="7"
+                                HeightRequest="7"
+                                Fill="White"
+                                Stroke="#80FFFFFF"
+                                StrokeThickness="0.5"
+                                VerticalOptions="Center">
+
+                                <Ellipse.Triggers>
+
+                                    <EventTrigger Event="Loaded">
+                                        <helpers:PulseAnimation />
+                                    </EventTrigger>
+
+                                </Ellipse.Triggers>
+
+                            </Ellipse>
+
+                            <Label
+                                Text="{Binding LiveNowCount,
+                                               StringFormat='LIVE · {0}',
+                                               TargetNullValue='LIVE'}"
+                                FontSize="8"
+                                FontAttributes="Bold"
+                                CharacterSpacing="1"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+
+                        </HorizontalStackLayout>
+
+                    </Border>
+
+                    <!-- Neutral fixtures pill while no match is in play -->
+
+                    <Border
+                        Padding="9,3"
+                        BackgroundColor="#1A23A55A"
+                        Stroke="#5523A55A"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 9"
+                        VerticalOptions="Center"
+                        IsVisible="{Binding HasLiveNow,
+                                          Converter={StaticResource InvertBoolConverter}}">
+
+                        <HorizontalStackLayout
+                            Spacing="5"
+                            VerticalOptions="Center">
+
+                            <Border
+                                WidthRequest="7"
+                                HeightRequest="7"
+                                BackgroundColor="#23A55A"
+                                StrokeShape="RoundRectangle 4"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                Text="{Binding LiveMatches.Count,
+                                               StringFormat='{0} FIXTURES',
+                                               TargetNullValue='FIXTURES'}"
+                                FontSize="7.5"
+                                FontAttributes="Bold"
+                                CharacterSpacing="1"
+                                TextColor="#9FE8B5"
+                                VerticalOptions="Center" />
+
+                        </HorizontalStackLayout>
+
+                    </Border>
+
+                </HorizontalStackLayout>
+
+                <Label
+                    Text="Live scores and broadcasts from every league"
+                    FontSize="11.5"
+                    TextColor="{StaticResource FootballMuted}" />
+
+            </VerticalStackLayout>
+
+            <Button
+                Grid.Column="2"
+                Text="⟳"
+                Command="{Binding LoadChannelsCommand}"
+                Clicked="OnAnimatedButtonClicked"
+                WidthRequest="48"
+                HeightRequest="48"
+                Padding="0"
+                CornerRadius="16"
+                FontSize="19"
+                BackgroundColor="{StaticResource FootballGreen}"
+                BorderColor="#70FFFFFF"
+                BorderWidth="1"
+                TextColor="White"
+                SemanticProperties.Description="Refresh matches and channels" />
+
+        </Grid>
+
+        <!-- =========================================================
+             WORKSPACE
+             ========================================================= -->
+
+        <Grid
+            x:Name="WorkspaceGrid"
+            Grid.Row="1"
+            RowDefinitions="Auto,*"
+            ColumnDefinitions="*"
+            RowSpacing="16"
+            MaximumWidthRequest="1600"
+            HorizontalOptions="Center">
+
+            <VisualStateManager.VisualStateGroups>
+
+                <VisualStateGroup x:Name="LayoutStates">
+
+                    <VisualState x:Name="Narrow">
+
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="0" />
+                        </VisualState.StateTriggers>
+
+                        <VisualState.Setters>
+
+                            <Setter
+                                Property="RowDefinitions"
+                                Value="Auto,*" />
+
+                            <Setter
+                                Property="ColumnDefinitions"
+                                Value="*" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Row"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Column"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="HeightRequest"
+                                Value="{OnIdiom Phone=300, Tablet=400}" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Row"
+                                Value="1" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Column"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Margin"
+                                Value="0" />
+
+                        </VisualState.Setters>
+
+                    </VisualState>
+
+                    <VisualState x:Name="Wide">
+
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="900" />
+                        </VisualState.StateTriggers>
+
+                        <VisualState.Setters>
+
+                            <Setter
+                                Property="RowDefinitions"
+                                Value="*" />
+
+                            <Setter
+                                Property="ColumnDefinitions"
+                                Value="7*,5*" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Row"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Column"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="HeightRequest"
+                                Value="-1" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Margin"
+                                Value="0,0,18,0" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Row"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Column"
+                                Value="1" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Margin"
+                                Value="0" />
+
+                        </VisualState.Setters>
+
+                    </VisualState>
+
+                </VisualStateGroup>
+
+            </VisualStateManager.VisualStateGroups>
+
+            <!-- ============================
+                 PLAYER PANEL
+                 ============================ -->
+
+            <Border
+                x:Name="PlayerPanel"
+                Style="{StaticResource FootballCardStyle}"
+                Padding="9">
+
+                <Grid
+                    RowDefinitions="Auto,Auto"
+                    RowSpacing="9">
+
+                    <!-- Now streaming hero strip -->
+
+                    <Border
+                        Padding="15,12"
+                        Background="{StaticResource FootballHeroBrush}"
+                        Stroke="#45FFFFFF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 17">
+
+                        <Grid
+                            ColumnDefinitions="Auto,*,Auto"
+                            ColumnSpacing="13">
+
+                            <Border
+                                WidthRequest="46"
+                                HeightRequest="46"
+                                BackgroundColor="#25FFFFFF"
+                                Stroke="#70FFFFFF"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 15">
+
+                                <Label
+                                    Text="⚽"
+                                    FontSize="21"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" />
+
+                            </Border>
+
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="1"
+                                VerticalOptions="Center">
+
+                                <Label
+                                    Text="LIVE NOW"
+                                    IsVisible="{Binding IsPlayerVisible}"
+                                    FontSize="8"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="1.7"
+                                    TextColor="{StaticResource FootballGold}" />
+
+                                <Label
+                                    Text="STANDBY"
+                                    IsVisible="{Binding IsPlayerVisible,
+                                                        Converter={StaticResource InvertBoolConverter}}"
+                                    FontSize="8"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="1.7"
+                                    TextColor="#E0FFFFFF" />
+
+                                <Label
+                                    Text="{Binding NowPlayingText}"
+                                    FontSize="15.5"
+                                    FontAttributes="Bold"
+                                    TextColor="White"
+                                    MaxLines="1"
+                                    LineBreakMode="TailTruncation" />
+
+                            </VerticalStackLayout>
+
+                            <HorizontalStackLayout
+                                Grid.Column="2"
+                                Spacing="8"
+                                VerticalOptions="Center">
+
+                                <Border
+                                    Padding="10,5"
+                                    BackgroundColor="#E8FF4D8D"
+                                    Stroke="#FFFFD9E0"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    IsVisible="{Binding IsStreaming}">
+
+                                    <HorizontalStackLayout
+                                        Spacing="6"
+                                        VerticalOptions="Center">
+
+                                        <Border
+                                            WidthRequest="7"
+                                            HeightRequest="7"
+                                            BackgroundColor="#FF6B81"
+                                            Stroke="White"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 4"
+                                            VerticalOptions="Center" />
+
+                                        <Label
+                                            Text="LIVE"
+                                            FontSize="8.5"
+                                            FontAttributes="Bold"
+                                            CharacterSpacing="1"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+
+                                    </HorizontalStackLayout>
+
+                                </Border>
+
+                                <ActivityIndicator
+                                    WidthRequest="22"
+                                    HeightRequest="22"
+                                    IsRunning="{Binding IsPlayerLoading}"
+                                    IsVisible="{Binding IsPlayerLoading}"
+                                    Color="{StaticResource FootballGold}"
+                                    VerticalOptions="Center" />
+
+                            </HorizontalStackLayout>
+
+                        </Grid>
+
+                    </Border>
+
+                    <!-- Video / idle art stage -->
+
+                    <Border
+                        Grid.Row="1"
+                        HeightRequest="{Binding IsPlayerVisible,
+                                              Converter={StaticResource PlayerStageHeight}}"
+                        BackgroundColor="#02060A"
+                        Stroke="#5523A55A"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 19">
+
+                        <Grid IsClippedToBounds="True">
+
+                            <toolkit:MediaElement x:Name="ChannelPlayer"
+                                Source="{Binding SelectedChannel.StreamUrl,
+                                                 TargetNullValue=''}"
+                                ShouldAutoPlay="True"
+                                ShouldShowPlaybackControls="True"
+                                ShouldKeepScreenOn="True"
+                                Volume="1"
+                                IsVisible="{Binding IsPlayerVisible}"
+                                MediaOpened="OnMediaOpened"
+                                MediaFailed="OnMediaFailed" />
+
+                            <!-- On-air chip over the picture -->
+
+                            <Border
+                                Padding="10,5"
+                                Margin="12"
+                                BackgroundColor="#E8FF4D8D"
+                                Stroke="#FFFFD9E0"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 11"
+                                IsVisible="{Binding IsStreaming}"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Start"
+                                InputTransparent="True">
+
+                                <HorizontalStackLayout
+                                    Spacing="7"
+                                    VerticalOptions="Center">
+
+                                    <Border
+                                        WidthRequest="8"
+                                        HeightRequest="8"
+                                        BackgroundColor="#FF6B81"
+                                        Stroke="White"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 4"
+                                        VerticalOptions="Center" />
+
+                                    <Label
+                                        Text="ON AIR"
+                                        FontSize="9"
+                                        FontAttributes="Bold"
+                                        CharacterSpacing="1.1"
+                                        TextColor="White"
+                                        VerticalOptions="Center" />
+
+                                </HorizontalStackLayout>
+
+                            </Border>
+
+                            <!-- Idle artwork -->
+
+                            <VerticalStackLayout
+                                IsVisible="{Binding IsPlayerVisible,
+                                                    Converter={StaticResource InvertBoolConverter}}"
+                                Spacing="0"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center">
+
+                                <Grid
+                                    WidthRequest="120"
+                                    HeightRequest="120">
+
+                                    <Border
+                                        WidthRequest="120"
+                                        HeightRequest="120"
+                                        BackgroundColor="#1423A55A"
+                                        Stroke="#25FFFFFF"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 95"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center"
+                                        InputTransparent="True" />
+
+                                    <Border
+                                        WidthRequest="76"
+                                        HeightRequest="76"
+                                        Background="{StaticResource FootballHeroBrush}"
+                                        Stroke="#90FFFFFF"
+                                        StrokeThickness="2"
+                                        StrokeShape="RoundRectangle 59"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center">
+
+                                        <Border.Shadow>
+
+                                            <Shadow
+                                                Brush="#B023A55A"
+                                                Offset="0,8"
+                                                Radius="22"
+                                                Opacity="0.65" />
+
+                                        </Border.Shadow>
+
+                                        <Label
+                                            Text="⚽"
+                                            FontSize="40"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+
+                                    </Border>
+
+                                    <Border
+                                        WidthRequest="38"
+                                        HeightRequest="38"
+                                        Margin="-18,0,0,0"
+                                        BackgroundColor="{StaticResource FootballGold}"
+                                        Stroke="White"
+                                        StrokeThickness="1.5"
+                                        StrokeShape="RoundRectangle 19"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="End"
+                                        InputTransparent="True">
+
+                                        <Label
+                                            Text="★"
+                                            FontSize="16"
+                                            TextColor="#123B26"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+
+                                    </Border>
+
+                                </Grid>
+
+                                <Label
+                                    Text="READY FOR KICK-OFF"
+                                    Margin="0,17,0,0"
+                                    FontSize="18"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="1.4"
+                                    TextColor="White"
+                                    HorizontalOptions="Center" />
+
+                                <Label
+                                    Text="Live matches and channels appear here."
+                                    Margin="0,5,0,0"
+                                    FontSize="12"
+                                    TextColor="{StaticResource FootballMuted}"
+                                    HorizontalOptions="Center" />
+
+                                <Border
+                                    Margin="0,16,0,0"
+                                    Padding="14,6"
+                                    BackgroundColor="#1A23A55A"
+                                    Stroke="#4023A55A"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 12"
+                                    HorizontalOptions="Center">
+
+                                    <Label
+                                        Text="LIVE SCORES  •  EVERY LEAGUE  •  60s REFRESH"
+                                        FontSize="8.5"
+                                        FontAttributes="Bold"
+                                        CharacterSpacing="1.2"
+                                        TextColor="{StaticResource FootballGold}" />
+
+                                </Border>
+
+                            </VerticalStackLayout>
+
+                            <ActivityIndicator
+                                WidthRequest="56"
+                                HeightRequest="56"
+                                IsRunning="{Binding IsPlayerLoading}"
+                                IsVisible="{Binding IsPlayerLoading}"
+                                Color="{StaticResource FootballGold}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                ZIndex="20" />
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+            </Border>
+
+            <!-- ============================
+                 MATCH BOARD + CHANNEL PANEL
+                 ============================ -->
+
+            <Border
+                x:Name="ChannelPanel"
+                Style="{StaticResource FootballCardStyle}"
+                Padding="15">
+
+                <Grid
+                    RowDefinitions="Auto,Auto,Auto,*"
+                    RowSpacing="12">
+
+                    <!-- Live match board -->
+
+                    <Grid
+                        Grid.Row="0"
+                        RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                        RowSpacing="10"
+                        IsVisible="{Binding HasLiveMatches}">
+
+                        <!-- Board header -->
+
+                        <Border
+                            Grid.Row="0"
+                            Padding="13,9"
+                            BackgroundColor="#E0122B1B"
+                            Stroke="#40E8B54A"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 16">
+
+                            <Grid
+                                ColumnDefinitions="Auto,*,Auto"
+                                ColumnSpacing="10">
+
+                                <HorizontalStackLayout
+                                    Spacing="9"
+                                    VerticalOptions="Center">
+
+                                    <Ellipse
+                                        WidthRequest="9"
+                                        HeightRequest="9"
+                                        Fill="#FF5F5F"
+                                        VerticalOptions="Center">
+
+                                        <Ellipse.Triggers>
+
+                                            <EventTrigger Event="Loaded">
+                                                <helpers:PulseAnimation />
+                                            </EventTrigger>
+
+                                        </Ellipse.Triggers>
+
+                                    </Ellipse>
+
+                                    <Label
+                                        Text="LIVE MATCHES"
+                                        FontSize="13"
+                                        FontAttributes="Bold"
+                                        CharacterSpacing="1.5"
+                                        TextColor="{StaticResource FootballGold}"
+                                        VerticalOptions="Center" />
+
+                                </HorizontalStackLayout>
+
+                                <Label
+                                    Grid.Column="1"
+                                    Text="Auto-updates every 60 seconds"
+                                    FontSize="9.5"
+                                    TextColor="{StaticResource FootballMuted}"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="Center"
+                                    InputTransparent="True" />
+
+                                <Border
+                                    Grid.Column="2"
+                                    Padding="8,3"
+                                    BackgroundColor="#2223A55A"
+                                    Stroke="#5523A55A"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 9"
+                                    VerticalOptions="Center">
+
+                                    <Label
+                                        Text="{Binding LiveMatches.Count,
+                                                       StringFormat='{0} matches today'}"
+                                        FontSize="9"
+                                        FontAttributes="Bold"
+                                        TextColor="#7DE8A8"
+                                        VerticalOptions="Center" />
+
+                                </Border>
+
+                            </Grid>
+
+                        </Border>
+
+                        <!-- FEATURED LIVE HERO (spotlight match in play) -->
+
+                        <Border
+                            Grid.Row="1"
+                            Padding="13,11"
+                            Background="{StaticResource FootballHeroBrush}"
+                            Stroke="#66E8B54A"
+                            StrokeThickness="1.5"
+                            StrokeShape="RoundRectangle 18"
+                            IsVisible="{Binding HasFeaturedLive}">
+
+                            <Border.Shadow>
+
+                                <Shadow
+                                    Brush="#8023A55A"
+                                    Offset="0,6"
+                                    Radius="18"
+                                    Opacity="0.5" />
+
+                            </Border.Shadow>
+
+                            <Border.Behaviors>
+                                <helpers:TapScaleBehavior />
+                            </Border.Behaviors>
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Tapped="OnFeaturedHeroTapped" />
+                            </Border.GestureRecognizers>
+
+                            <Grid
+                                ColumnDefinitions="Auto,*,Auto,Auto"
+                                ColumnSpacing="12">
+
+                                <!-- Live clock badge -->
+
+                                <Border
+                                    Padding="9,5"
+                                    BackgroundColor="#E8FF4D8D"
+                                    Stroke="#FFFFD9E0"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 11"
+                                    VerticalOptions="Center">
+
+                                    <VerticalStackLayout
+                                        Spacing="2"
+                                        VerticalOptions="Center">
+
+                                        <HorizontalStackLayout
+                                            Spacing="5"
+                                            HorizontalOptions="Center">
+
+                                            <Ellipse
+                                                WidthRequest="6"
+                                                HeightRequest="6"
+                                                Fill="#FF6B81"
+                                                Stroke="White"
+                                                StrokeThickness="1"
+                                                VerticalOptions="Center">
+
+                                                <Ellipse.Triggers>
+
+                                                    <EventTrigger Event="Loaded">
+                                                        <helpers:PulseAnimation />
+                                                    </EventTrigger>
+
+                                                </Ellipse.Triggers>
+
+                                            </Ellipse>
+
+                                            <Label
+                                                Text="LIVE"
+                                                FontSize="8"
+                                                FontAttributes="Bold"
+                                                CharacterSpacing="1.2"
+                                                TextColor="White"
+                                                VerticalOptions="Center" />
+
+                                        </HorizontalStackLayout>
+
+                                        <Label
+                                            Text="{Binding FeaturedMatch.MinuteDisplay}"
+                                            FontSize="9.5"
+                                            FontAttributes="Bold"
+                                            TextColor="{StaticResource FootballGold}"
+                                            HorizontalTextAlignment="Center"
+                                            IsVisible="{Binding FeaturedMatch.HasStream}" />
+
+                                    </VerticalStackLayout>
+
+                                </Border>
+
+                                <!-- Matchup -->
+
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="2.5"
+                                    VerticalOptions="Center"
+                                    InputTransparent="True">
+
+                                    <Label
+                                        Text="{Binding FeaturedMatch.League}"
+                                        FontSize="8"
+                                        FontAttributes="Bold"
+                                        CharacterSpacing="0.8"
+                                        TextColor="#BDE8B54A"
+                                        TextTransform="Uppercase"
+                                        MaxLines="1"
+                                        LineBreakMode="TailTruncation" />
+
+                                    <!-- Wrap rather than clip: the featured card is
+                                         the first thing a viewer reads, so a club
+                                         name must never appear half-eaten. -->
+
+                                    <Label
+                                        Text="{Binding FeaturedMatch.HomeTeam}"
+                                        FontSize="14.5"
+                                        FontAttributes="Bold"
+                                        TextColor="White"
+                                        MaxLines="2"
+                                        LineBreakMode="WordWrap" />
+
+                                    <Label
+                                        Text="{Binding FeaturedMatch.AwayTeam}"
+                                        FontSize="12.5"
+                                        TextColor="#D6E4DA"
+                                        MaxLines="2"
+                                        LineBreakMode="WordWrap" />
+
+                                </VerticalStackLayout>
+
+                                <!-- Scoreboard -->
+
+                                <Label
+                                    Grid.Column="2"
+                                    Text="{Binding FeaturedMatch.ScoreDisplay}"
+                                    FontSize="26"
+                                    FontAttributes="Bold"
+                                    TextColor="White"
+                                    MinimumWidthRequest="44"
+                                    HorizontalTextAlignment="Center"
+                                    VerticalOptions="Center"
+                                    InputTransparent="True">
+
+                                    <Label.Triggers>
+
+                                        <DataTrigger
+                                            TargetType="Label"
+                                            Binding="{Binding FeaturedMatch.IsLive}"
+                                            Value="True">
+
+                                            <Setter
+                                                Property="TextColor"
+                                                Value="{StaticResource FootballGold}" />
+
+                                        </DataTrigger>
+
+                                    </Label.Triggers>
+
+                                </Label>
+
+                                <!-- Watch action -->
+
+                                <Button
+                                    Grid.Column="3"
+                                    Text="▶ WATCH"
+                                    HeightRequest="38"
+                                    Padding="15,0"
+                                    CornerRadius="12"
+                                    FontSize="10.5"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="1"
+                                    BackgroundColor="#0A1F0E"
+                                    BorderColor="#CCFFFFFF"
+                                    BorderWidth="1"
+                                    TextColor="White"
+                                    VerticalOptions="Center"
+                                    IsVisible="{Binding FeaturedMatch.HasStream}"
+                                    Clicked="OnFeaturedWatchClicked" />
+
+                                <Label
+                                    Grid.Column="3"
+                                    Text="SEARCHING FOR A STREAM…"
+                                    FontSize="8.5"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="1"
+                                    TextColor="#E6E8FB"
+                                    VerticalOptions="Center"
+                                    IsVisible="{Binding FeaturedMatch.HasStream,
+                                                      Converter={StaticResource InvertBoolConverter}}" />
+
+                            </Grid>
+
+                        </Border>
+
+                        <!-- UP NEXT scheduling strip -->
+
+                        <CollectionView
+                            Grid.Row="2"
+                            ItemsSource="{Binding UpNextMatches}"
+                            HeightRequest="124"
+                            IsVisible="{Binding HasUpNext}"
+                            HorizontalScrollBarVisibility="Never">
+
+                            <CollectionView.ItemsLayout>
+
+                                <LinearItemsLayout
+                                    Orientation="Horizontal"
+                                    ItemSpacing="10" />
+
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+
+                                <DataTemplate x:DataType="models:LiveMatch">
+
+                                    <Border
+                                        WidthRequest="238"
+                                        Padding="13,10"
+                                        BackgroundColor="#0C1F14"
+                                        Stroke="#33E8B54A"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 16">
+
+                                        <Border.Behaviors>
+                                            <helpers:TapScaleBehavior />
+                                        </Border.Behaviors>
+
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Tapped="OnUpNextCardTapped" />
+                                        </Border.GestureRecognizers>
+
+                                        <Grid
+                                            RowDefinitions="Auto,Auto,Auto,Auto"
+                                            RowSpacing="3">
+
+                                            <!-- League + kick-off time -->
+
+                                            <Grid
+                                                ColumnDefinitions="*,Auto"
+                                                ColumnSpacing="8">
+
+                                                <Label
+                                                    Text="{Binding League}"
+                                                    FontSize="8.5"
+                                                    FontAttributes="Bold"
+                                                    CharacterSpacing="0.6"
+                                                    TextColor="{StaticResource FootballMuted}"
+                                                    TextTransform="Uppercase"
+                                                    MaxLines="1"
+                                                    LineBreakMode="TailTruncation"
+                                                    VerticalOptions="Center" />
+
+                                                <Label
+                                                    Grid.Column="1"
+                                                    Text="{Binding KickoffDisplay}"
+                                                    FontSize="9"
+                                                    FontAttributes="Bold"
+                                                    CharacterSpacing="0.5"
+                                                    TextColor="#C9D8CD"
+                                                    VerticalOptions="Center" />
+
+                                            </Grid>
+
+                                            <!-- Teams -->
+
+                                            <Label
+                                                Grid.Row="1"
+                                                Text="{Binding HomeTeam}"
+                                                FontSize="14"
+                                                FontAttributes="Bold"
+                                                TextColor="White"
+                                                MaxLines="2"
+                                                LineBreakMode="WordWrap" />
+
+                                            <!-- Team names wrap onto a second line
+                                                 instead of being cut off, so a
+                                                 long club name is never shown
+                                                 half-eaten. -->
+
+                                            <Label
+                                                Grid.Row="2"
+                                                Text="{Binding AwayTeam}"
+                                                FontSize="12.5"
+                                                TextColor="#A9C4B2"
+                                                MaxLines="2"
+                                                LineBreakMode="WordWrap" />
+
+                                            <!-- Day chip + ticking countdown -->
+
+                                            <Grid
+                                                Grid.Row="3"
+                                                ColumnDefinitions="Auto,*"
+                                                ColumnSpacing="8"
+                                                Margin="0,3,0,0">
+
+                                                <Border
+                                                    Padding="8,2.5"
+                                                    BackgroundColor="#1AE8B54A"
+                                                    Stroke="#55E8B54A"
+                                                    StrokeThickness="1"
+                                                    StrokeShape="RoundRectangle 8"
+                                                    IsVisible="{Binding HasCountdown}"
+                                                    VerticalOptions="Center">
+
+                                                    <Label
+                                                        Text="{Binding DayLabel}"
+                                                        FontSize="7.5"
+                                                        FontAttributes="Bold"
+                                                        CharacterSpacing="0.8"
+                                                        TextColor="{StaticResource FootballGold}"
+                                                        VerticalOptions="Center" />
+
+                                                </Border>
+
+                                                <Label
+                                                    Grid.Column="1"
+                                                    Text="{Binding CountdownText}"
+                                                    FontSize="11"
+                                                    FontAttributes="Bold"
+                                                    CharacterSpacing="0.4"
+                                                    TextColor="{StaticResource FootballGold}"
+                                                    HorizontalTextAlignment="End"
+                                                    VerticalOptions="Center"
+                                                    IsVisible="{Binding HasCountdown}" />
+
+                                            </Grid>
+
+                                        </Grid>
+
+                                    </Border>
+
+                                </DataTemplate>
+
+                            </CollectionView.ItemTemplate>
+
+                        </CollectionView>
+
+                        <!-- League filter chips -->
+
+                        <CollectionView
+                            Grid.Row="3"
+                            ItemsSource="{Binding LeagueNames}"
+                            SelectedItem="{Binding SelectedLeague,
+                                                   Mode=TwoWay}"
+                            SelectionMode="Single"
+                            HeightRequest="42"
+                            HorizontalScrollBarVisibility="Never">
+
+                            <CollectionView.ItemsLayout>
+
+                                <LinearItemsLayout
+                                    Orientation="Horizontal"
+                                    ItemSpacing="8" />
+
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+
+                                <DataTemplate x:DataType="x:String">
+
+                                    <Border
+                                        Padding="15,0"
+                                        BackgroundColor="#14FFFFFF"
+                                        Stroke="#28FFFFFF"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 21">
+
+                                        <VisualStateManager.VisualStateGroups>
+
+                                            <VisualStateGroupList>
+
+                                                <VisualStateGroup x:Name="CommonStates">
+
+                                                    <VisualState x:Name="Normal" />
+
+                                                    <VisualState x:Name="Selected">
+
+                                                        <VisualState.Setters>
+
+                                                            <Setter
+                                                                Property="BackgroundColor"
+                                                                Value="{StaticResource FootballGreen}" />
+
+                                                            <Setter
+                                                                Property="Stroke"
+                                                                Value="{StaticResource FootballGold}" />
+
+                                                            <Setter
+                                                                Property="StrokeThickness"
+                                                                Value="1.5" />
+
+                                                        </VisualState.Setters>
+
+                                                    </VisualState>
+
+                                                </VisualStateGroup>
+
+                                            </VisualStateGroupList>
+
+                                        </VisualStateManager.VisualStateGroups>
+
+                                        <Label
+                                            Text="{Binding .}"
+                                            FontSize="11"
+                                            FontAttributes="Bold"
+                                            TextColor="White"
+                                            TextTransform="Uppercase"
+                                            VerticalOptions="Center" />
+
+                                    </Border>
+
+                                </DataTemplate>
+
+                            </CollectionView.ItemTemplate>
+
+                        </CollectionView>
+
+                        <!-- League-grouped board -->
+
+                        <CollectionView
+                            Grid.Row="4"
+                            ItemsSource="{Binding LeagueGroups}"
+                            HeightRequest="{OnIdiom Phone=280,
+                                                  Tablet=420,
+                                                  Desktop=470}"
+                            VerticalScrollBarVisibility="Default">
+
+                            <CollectionView.ItemsLayout>
+
+                                <LinearItemsLayout
+                                    Orientation="Vertical"
+                                    ItemSpacing="0" />
+
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+
+                                <DataTemplate x:DataType="models:LeagueGroup">
+
+                                    <VerticalStackLayout
+                                        Margin="0,0,0,14"
+                                        Spacing="9">
+
+                                        <!-- Section header -->
+
+                                        <Grid
+                                            ColumnDefinitions="*,Auto"
+                                            ColumnSpacing="8"
+                                            Margin="2,4,2,0">
+
+                                            <HorizontalStackLayout
+                                                Spacing="8"
+                                                VerticalOptions="Center">
+
+                                                <Ellipse
+                                                    WidthRequest="8"
+                                                    HeightRequest="8"
+                                                    Fill="#FF5F5F"
+                                                    VerticalOptions="Center"
+                                                    IsVisible="{Binding HasLive}">
+
+                                                    <Ellipse.Triggers>
+
+                                                        <EventTrigger Event="Loaded">
+                                                            <helpers:PulseAnimation />
+                                                        </EventTrigger>
+
+                                                    </Ellipse.Triggers>
+
+                                                </Ellipse>
+
+                                                <Label
+                                                    Text="{Binding League}"
+                                                    FontSize="12.5"
+                                                    FontAttributes="Bold"
+                                                    CharacterSpacing="1"
+                                                    TextColor="White"
+                                                    TextTransform="Uppercase"
+                                                    VerticalOptions="Center" />
+
+                                            </HorizontalStackLayout>
+
+                                            <Label
+                                                Grid.Column="1"
+                                                Text="{Binding LiveCount,
+                                                               StringFormat='{0} LIVE',
+                                                               TargetNullValue='0 LIVE'}"
+                                                FontSize="9.5"
+                                                FontAttributes="Bold"
+                                                CharacterSpacing="0.8"
+                                                TextColor="#FF8A97"
+                                                VerticalOptions="Center"
+                                                IsVisible="{Binding HasLive}" />
+
+                                            <Label
+                                                Grid.Column="1"
+                                                Text="{Binding MatchCount,
+                                                               StringFormat='{0} matches'}"
+                                                FontSize="9.5"
+                                                TextColor="{StaticResource FootballMuted}"
+                                                VerticalOptions="Center"
+                                                IsVisible="{Binding HasLive,
+                                                                          Converter={StaticResource InvertBoolConverter}}" />
+
+                                        </Grid>
+
+                                        <!-- Match cards -->
+
+                                        <VerticalStackLayout
+                                            BindableLayout.ItemsSource="{Binding Matches}"
+                                            Spacing="8">
+
+                                            <BindableLayout.ItemTemplate>
+
+                                                <DataTemplate x:DataType="models:LiveMatch">
+
+                                                    <Border
+                                                        Padding="12,10"
+                                                        BackgroundColor="#0C1F14"
+                                                        Stroke="#2EFFFFFF"
+                                                        StrokeThickness="1"
+                                                        StrokeShape="RoundRectangle 14">
+
+                                                        <Border.Triggers>
+
+                                                            <DataTrigger
+                                                                TargetType="Border"
+                                                                Binding="{Binding IsLive}"
+                                                                Value="True">
+
+                                                                <Setter
+                                                                    Property="BackgroundColor"
+                                                                    Value="#14351F" />
+
+                                                                <Setter
+                                                                    Property="Stroke"
+                                                                    Value="#66E8B54A" />
+
+                                                                <Setter
+                                                                    Property="StrokeThickness"
+                                                                    Value="1.5" />
+
+                                                            </DataTrigger>
+
+                                                        </Border.Triggers>
+
+                                                        <Grid
+                                                            RowDefinitions="Auto,Auto"
+                                                            RowSpacing="7">
+
+                                                            <!-- Status strip -->
+
+                                                            <Border
+                                                                Grid.Row="0"
+                                                                Padding="9,3"
+                                                                BackgroundColor="#E8262547"
+                                                                Stroke="#66FF8A97"
+                                                                StrokeThickness="1"
+                                                                StrokeShape="RoundRectangle 9"
+                                                                HorizontalOptions="Start"
+                                                                IsVisible="{Binding IsLive}">
+
+                                                                <HorizontalStackLayout
+                                                                    Spacing="6"
+                                                                    VerticalOptions="Center">
+
+                                                                    <Border
+                                                                        WidthRequest="6"
+                                                                        HeightRequest="6"
+                                                                        BackgroundColor="#FF6B81"
+                                                                        Stroke="White"
+                                                                        StrokeThickness="1"
+                                                                        StrokeShape="RoundRectangle 3"
+                                                                        VerticalOptions="Center" />
+
+                                                                    <Label
+                                                                        Text="{Binding MinuteDisplay,
+                                                                                       StringFormat='LIVE  {0}',
+                                                                                       TargetNullValue='LIVE'}"
+                                                                        FontSize="9"
+                                                                        FontAttributes="Bold"
+                                                                        CharacterSpacing="1"
+                                                                        TextColor="White"
+                                                                        VerticalOptions="Center" />
+
+                                                                </HorizontalStackLayout>
+
+                                                            </Border>
+
+                                                            <HorizontalStackLayout
+                                                                Grid.Row="0"
+                                                                Spacing="7"
+                                                                VerticalOptions="Center"
+                                                                IsVisible="{Binding IsLive,
+                                                                                  Converter={StaticResource InvertBoolConverter}}">
+
+                                                                <Label
+                                                                    Text="{Binding DayLabel}"
+                                                                    FontSize="9"
+                                                                    FontAttributes="Bold"
+                                                                    CharacterSpacing="0.8"
+                                                                    TextColor="{StaticResource FootballGold}"
+                                                                    VerticalOptions="Center" />
+
+                                                                <Label
+                                                                    Text="{Binding KickoffDisplay}"
+                                                                    FontSize="9.5"
+                                                                    FontAttributes="Bold"
+                                                                    CharacterSpacing="0.8"
+                                                                    TextColor="{StaticResource FootballMuted}"
+                                                                    VerticalOptions="Center" />
+
+                                                                <Border
+                                                                    Padding="8,2.5"
+                                                                    BackgroundColor="#1AE8B54A"
+                                                                    Stroke="#55E8B54A"
+                                                                    StrokeThickness="1"
+                                                                    StrokeShape="RoundRectangle 8"
+                                                                    IsVisible="{Binding HasCountdown}"
+                                                                    VerticalOptions="Center">
+
+                                                                    <Label
+                                                                        Text="{Binding CountdownText}"
+                                                                        FontSize="8.5"
+                                                                        FontAttributes="Bold"
+                                                                        CharacterSpacing="0.5"
+                                                                        TextColor="{StaticResource FootballGold}"
+                                                                        VerticalOptions="Center" />
+
+                                                                </Border>
+
+                                                            </HorizontalStackLayout>
+
+                                                            <!-- Teams / score / action -->
+
+                                                            <Grid
+                                                                Grid.Row="1"
+                                                                ColumnDefinitions="*,Auto,Auto"
+                                                                ColumnSpacing="12">
+
+                                                                <VerticalStackLayout
+                                                                    Spacing="3"
+                                                                    VerticalOptions="Center">
+
+                                                                    <Label
+                                                                        Text="{Binding HomeTeam}"
+                                                                        FontSize="14.5"
+                                                                        FontAttributes="Bold"
+                                                                        TextColor="White"
+                                                                        MaxLines="2"
+                                                                        LineBreakMode="WordWrap" />
+
+                                                                    <Label
+                                                                        Text="{Binding AwayTeam}"
+                                                                        FontSize="13.5"
+                                                                        TextColor="#A9C4B2"
+                                                                        MaxLines="2"
+                                                                        LineBreakMode="WordWrap" />
+
+                                                                </VerticalStackLayout>
+
+                                                                <Label
+                                                                    Grid.Column="1"
+                                                                    Text="{Binding ScoreDisplay}"
+                                                                    FontSize="20"
+                                                                    FontAttributes="Bold"
+                                                                    TextColor="#9FB8A6"
+                                                                    MinimumWidthRequest="40"
+                                                                    HorizontalTextAlignment="Center"
+                                                                    VerticalOptions="Center">
+
+                                                                    <Label.Triggers>
+
+                                                                        <DataTrigger
+                                                                            TargetType="Label"
+                                                                            Binding="{Binding IsLive}"
+                                                                            Value="True">
+
+                                                                            <Setter
+                                                                                Property="TextColor"
+                                                                                Value="{StaticResource FootballGold}" />
+
+                                                                        </DataTrigger>
+
+                                                                    </Label.Triggers>
+
+                                                                </Label>
+
+                                                                <Grid
+                                                                    Grid.Column="2"
+                                                                    VerticalOptions="Center">
+
+                                                                    <Button
+                                                                        Text="▶ WATCH"
+                                                                        HeightRequest="34"
+                                                                        Padding="14,0"
+                                                                        CornerRadius="11"
+                                                                        FontSize="10"
+                                                                        FontAttributes="Bold"
+                                                                        CharacterSpacing="1"
+                                                                        BackgroundColor="{StaticResource FootballGreen}"
+                                                                        BorderColor="#80FFFFFF"
+                                                                        BorderWidth="1"
+                                                                        TextColor="White"
+                                                                        IsVisible="{Binding HasStream}"
+                                                                        Clicked="OnWatchMatchClicked" />
+
+                                                                    <Border
+                                                                        Padding="12,6"
+                                                                        BackgroundColor="#18FFFFFF"
+                                                                        Stroke="#35FFFFFF"
+                                                                        StrokeThickness="1"
+                                                                        StrokeShape="RoundRectangle 11"
+                                                                        IsVisible="{Binding HasStream,
+                                                                                          Converter={StaticResource InvertBoolConverter}}">
+
+                                                                        <Label
+                                                                            Text="UPCOMING"
+                                                                            FontSize="9"
+                                                                            FontAttributes="Bold"
+                                                                            CharacterSpacing="1"
+                                                                            TextColor="#C9D8CD"
+                                                                            VerticalOptions="Center" />
+
+                                                                    </Border>
+
+                                                                </Grid>
+
+                                                            </Grid>
+
+                                                        </Grid>
+
+                                                    </Border>
+
+                                                </DataTemplate>
+
+                                            </BindableLayout.ItemTemplate>
+
+                                        </VerticalStackLayout>
+
+                                    </VerticalStackLayout>
+
+                                </DataTemplate>
+
+                            </CollectionView.ItemTemplate>
+
+                        </CollectionView>
+
+                    </Grid>
+
+                    <!-- Search -->
+
+                    <Border
+                        x:Name="SearchBorder"
+                        Grid.Row="1"
+                        HeightRequest="47"
+                        Padding="8,0"
+                        BackgroundColor="#D00A1420"
+                        Stroke="#35FFFFFF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 16">
+
+                        <Grid ColumnDefinitions="Auto,*">
+
+                            <Label
+                                Text="⌕"
+                                WidthRequest="38"
+                                FontSize="26"
+                                TextColor="{StaticResource FootballGold}"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center" />
+
+                            <Entry
+                                Grid.Column="1"
+                                Text="{Binding SearchText}"
+                                Placeholder="Search matches or channels..."
+                                PlaceholderColor="#5F7A6C"
+                                TextColor="White"
+                                BackgroundColor="Transparent"
+                                FontSize="13"
+                                ClearButtonVisibility="WhileEditing"
+                                VerticalOptions="Center" />
+
+                        </Grid>
+
+                    </Border>
+
+                    <!-- Channel group chips -->
+
+                    <CollectionView
+                        Grid.Row="2"
+                        ItemsSource="{Binding Groups}"
+                        SelectedItem="{Binding SelectedGroup,
+                                               Mode=TwoWay}"
+                        SelectionMode="Single"
+                        HeightRequest="44"
+                        HorizontalScrollBarVisibility="Never">
+
+                        <CollectionView.ItemsLayout>
+
+                            <LinearItemsLayout
+                                Orientation="Horizontal"
+                                ItemSpacing="8" />
+
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+
+                            <DataTemplate x:DataType="x:String">
+
+                                <Border
+                                    Padding="17,0"
+                                    BackgroundColor="#14FFFFFF"
+                                    Stroke="#28FFFFFF"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 22">
+
+                                    <VisualStateManager.VisualStateGroups>
+
+                                        <VisualStateGroupList>
+
+                                            <VisualStateGroup x:Name="CommonStates">
+
+                                                <VisualState x:Name="Normal" />
+
+                                                <VisualState x:Name="Selected">
+
+                                                    <VisualState.Setters>
+
+                                                        <Setter
+                                                            Property="BackgroundColor"
+                                                            Value="{StaticResource FootballGreen}" />
+
+                                                        <Setter
+                                                            Property="Stroke"
+                                                            Value="{StaticResource FootballGold}" />
+
+                                                        <Setter
+                                                            Property="StrokeThickness"
+                                                            Value="1.5" />
+
+                                                    </VisualState.Setters>
+
+                                                </VisualState>
+
+                                            </VisualStateGroup>
+
+                                        </VisualStateGroupList>
+
+                                    </VisualStateManager.VisualStateGroups>
+
+                                    <Label
+                                        Text="{Binding .}"
+                                        FontSize="11.5"
+                                        FontAttributes="Bold"
+                                        TextColor="White"
+                                        TextTransform="Uppercase"
+                                        VerticalOptions="Center" />
+
+                                </Border>
+
+                            </DataTemplate>
+
+                        </CollectionView.ItemTemplate>
+
+                    </CollectionView>
+
+                    <!-- Football channels -->
+
+                    <RefreshView
+                        Grid.Row="3"
+                        Command="{Binding LoadChannelsCommand}"
+                        IsRefreshing="{Binding IsLoading}"
+                        RefreshColor="{StaticResource FootballGold}">
+
+                        <CollectionView
+                            ItemsSource="{Binding Channels}"
+                            SelectionMode="None">
+
+                            <CollectionView.ItemsLayout>
+
+                                <LinearItemsLayout
+                                    Orientation="Vertical"
+                                    ItemSpacing="10" />
+
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+
+                                <DataTemplate x:DataType="models:TvChannel">
+
+                                    <Border
+                                        Padding="11"
+                                        BackgroundColor="#C80A1C11"
+                                        Stroke="#28FFFFFF"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 18">
+
+                                        <Border.Triggers>
+
+                                            <DataTrigger
+                                                TargetType="Border"
+                                                Binding="{Binding IsPlaying}"
+                                                Value="True">
+
+                                                <Setter
+                                                    Property="BackgroundColor"
+                                                    Value="#12351F" />
+
+                                                <Setter
+                                                    Property="Stroke"
+                                                    Value="#D0E8B54A" />
+
+                                                <Setter
+                                                    Property="StrokeThickness"
+                                                    Value="1.5" />
+
+                                            </DataTrigger>
+
+                                        </Border.Triggers>
+
+                                        <Border.Behaviors>
+                                            <helpers:TapScaleBehavior/>
+                                        </Border.Behaviors>
+
+                                        <Border.GestureRecognizers>
+
+                                            <TapGestureRecognizer
+                                                Tapped="OnChannelCardTapped" />
+
+                                        </Border.GestureRecognizers>
+
+                                        <Grid
+                                            ColumnDefinitions="66,*,Auto"
+                                            ColumnSpacing="13">
+
+                                            <!-- Artwork tile -->
+
+                                            <Border
+                                                WidthRequest="66"
+                                                HeightRequest="60"
+                                                Background="{StaticResource FootballHeroBrush}"
+                                                Stroke="#40FFFFFF"
+                                                StrokeThickness="1"
+                                                StrokeShape="RoundRectangle 18">
+
+                                                <Border.Triggers>
+
+                                                    <DataTrigger
+                                                        TargetType="Border"
+                                                        Binding="{Binding IsPlaying}"
+                                                        Value="True">
+
+                                                        <Setter
+                                                            Property="Stroke"
+                                                            Value="{StaticResource FootballGold}" />
+
+                                                        <Setter
+                                                            Property="StrokeThickness"
+                                                            Value="2" />
+
+                                                    </DataTrigger>
+
+                                                </Border.Triggers>
+
+                                                <Grid InputTransparent="True">
+
+                                                    <Label
+                                                        Text="⚽"
+                                                        FontSize="22"
+                                                        Opacity="0.85"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center"
+                                                        IsVisible="{Binding LogoUrl,
+                                                                            Converter={StaticResource StringNullOrEmptyConverter}}" />
+
+                                                    <Image
+                                                        Source="{Binding LogoUrl}"
+                                                        Aspect="AspectFit"
+                                                        Margin="7" />
+
+                                                </Grid>
+
+                                            </Border>
+
+                                            <!-- Text -->
+
+                                            <VerticalStackLayout
+                                                Grid.Column="1"
+                                                Spacing="2.5"
+                                                VerticalOptions="Center"
+                                                InputTransparent="True">
+
+                                                <HorizontalStackLayout
+                                                    Spacing="8">
+
+                                                    <Label
+                                                        Text="{Binding Name}"
+                                                        FontSize="15"
+                                                        FontAttributes="Bold"
+                                                        TextColor="White"
+                                                        MaxLines="1"
+                                                        LineBreakMode="TailTruncation"
+                                                        VerticalOptions="Center" />
+
+                                                    <Border
+                                                        Padding="6,2"
+                                                        BackgroundColor="#E8FF4D8D"
+                                                        Stroke="#80FF8FA5"
+                                                        StrokeThickness="1"
+                                                        StrokeShape="RoundRectangle 8"
+                                                        IsVisible="{Binding IsPlaying}"
+                                                        VerticalOptions="Center">
+
+                                                        <Label
+                                                            Text="LIVE"
+                                                            FontSize="7.5"
+                                                            FontAttributes="Bold"
+                                                            CharacterSpacing="1"
+                                                            TextColor="White" />
+
+                                                    </Border>
+
+                                                </HorizontalStackLayout>
+
+                                                <Label
+                                                    Text="{Binding CurrentProgrammeTitle,
+                                                                   Converter={StaticResource ChannelSubtitleConverter},
+                                                                   ConverterParameter='Matchday coverage — 24/7'}"
+                                                    FontSize="11.5"
+                                                    TextColor="{StaticResource FootballMuted}"
+                                                    MaxLines="1"
+                                                    LineBreakMode="TailTruncation" />
+
+                                                <HorizontalStackLayout
+                                                    Spacing="8">
+
+                                                    <HorizontalStackLayout
+                                                        Spacing="5">
+
+                                                        <Border
+                                                            WidthRequest="6"
+                                                            HeightRequest="6"
+                                                            BackgroundColor="#66FF99"
+                                                            Stroke="#40FFFFFF"
+                                                            StrokeThickness="0.5"
+                                                            StrokeShape="RoundRectangle 3"
+                                                            VerticalOptions="Center" />
+
+                                                        <Label
+                                                            Text="ON AIR 24/7"
+                                                            FontSize="9"
+                                                            FontAttributes="Bold"
+                                                            CharacterSpacing="0.6"
+                                                            TextColor="#9FE8B5"
+                                                            VerticalOptions="Center" />
+
+                                                    </HorizontalStackLayout>
+
+                                                    <Border
+                                                        Padding="6,2"
+                                                        BackgroundColor="#22E8B54A"
+                                                        Stroke="#45E8B54A"
+                                                        StrokeThickness="1"
+                                                        StrokeShape="RoundRectangle 7"
+                                                        IsVisible="{Binding QualityLabel,
+                                                                          Converter={StaticResource IsNotNullConverter}}"
+                                                        VerticalOptions="Center">
+
+                                                        <Label
+                                                            Text="{Binding QualityLabel}"
+                                                            FontSize="8"
+                                                            FontAttributes="Bold"
+                                                            CharacterSpacing="0.6"
+                                                            TextTransform="Uppercase"
+                                                            TextColor="{StaticResource FootballGold}"
+                                                            VerticalOptions="Center" />
+
+                                                    </Border>
+
+                                                </HorizontalStackLayout>
+
+                                            </VerticalStackLayout>
+
+                                            <!-- WATCH button -->
+
+                                            <Button
+                                                Grid.Column="2"
+                                                Text="WATCH"
+                                                HeightRequest="36"
+                                                Padding="14,0"
+                                                CornerRadius="12"
+                                                FontSize="10.5"
+                                                FontAttributes="Bold"
+                                                CharacterSpacing="1"
+                                                BackgroundColor="#2623A55A"
+                                                BorderColor="#9023A55A"
+                                                BorderWidth="1"
+                                                TextColor="White"
+                                                VerticalOptions="Center"
+                                                Clicked="OnWatchChannelClicked" />
+
+                                        </Grid>
+
+                                    </Border>
+
+                                </DataTemplate>
+
+                            </CollectionView.ItemTemplate>
+
+                            <CollectionView.EmptyView>
+
+                                <VerticalStackLayout
+                                    Spacing="9"
+                                    Margin="0,50"
+                                    HorizontalOptions="Center">
+
+                                    <Label
+                                        Text="⚽"
+                                        FontSize="64"
+                                        Opacity="0.7"
+                                        HorizontalOptions="Center" />
+
+                                    <Label
+                                        Text="No matches or channels found"
+                                        FontSize="16"
+                                        FontAttributes="Bold"
+                                        TextColor="White"
+                                        HorizontalOptions="Center" />
+
+                                    <Label
+                                        Text="Try another search, or pull to refresh the board."
+                                        FontSize="11.5"
+                                        TextColor="{StaticResource FootballMuted}"
+                                        HorizontalOptions="Center" />
+
+                                </VerticalStackLayout>
+
+                            </CollectionView.EmptyView>
+
+                        </CollectionView>
+
+                    </RefreshView>
+
+                    <!-- Error toast -->
+
+                    <Border
+                        Grid.Row="3"
+                        Padding="13,9"
+                        Margin="8"
+                        BackgroundColor="#D0B3123F"
+                        Stroke="#FFFFAEC2"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 14"
+                        HorizontalOptions="Center"
+                        VerticalOptions="End"
+                        IsVisible="{Binding HasError}"
+                        ZIndex="25">
+
+                        <Label
+                            Text="{Binding ErrorMessage}"
+                            FontSize="11"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            HorizontalTextAlignment="Center" />
+
+                    </Border>
+
+                </Grid>
+
+            </Border>
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>
+
+

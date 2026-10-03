@@ -1,0 +1,9 @@
+241,230 : CARTOONS
+43,396 : CARTOON STANDBY
+45,452 : Choose a cartoon and start the ...
+845,432 : O STANDBY
+227,1006 : Pick your next adventure
+222,1091 : Tap any cartoon card to begin watching.
+133,1410 : Choose your cartoon
+133,1471 : Live channels and shows for every mood
+383,1579 : Search channels or programmes...

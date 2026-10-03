@@ -1,0 +1,27 @@
+262,226 : LIVE NEWS
+633,226 :  LIVE
+909,256 : O
+260,295 : Breaking stories and global live channels
+260,454 : STANDBY
+261,498 : Select a live news channel
+212,1167 : Search news channels...
+125,1320 : ALL
+157,1816 : NEWS
+66,2300 : Home
+299,1320 : BUSINESS
+554,1320 : NEWS
+318,1468 : .24 (1080p)
+319,1524 : Live coverage - 24/7
+318,1574 :  ON AIR 24/7 SD
+319,1717 : 100% NEWS (576p)
+319,1773 : Live coverage - 24/7
+318,1823 :  ON AIR 24/7 SD
+319,1966 : 13 Siam Thai (1080p)
+319,2022 : Live coverage - 24/7
+318,2072 :  ON AIR 24/7 SD
+278,2303 : Sports
+496,2298 : News
+753,1320 : CLASSIC
+705,2300 : Movies
+984,1320 : c
+929,2300 : Music

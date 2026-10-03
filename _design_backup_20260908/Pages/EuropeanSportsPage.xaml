@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:Toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+             xmlns:converters="clr-namespace:MarkUptv.Converters"
+             xmlns:models="clr-namespace:MarkUptv.Models"
+             xmlns:helpers="clr-namespace:MarkUptv.Helpers"
+             x:Class="MarkUptv.Pages.EuropeanSportsPage"
+             x:DataType="vm:EuropeanSportsViewModel"
+             Title="European Sports"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#0A1F44" Offset="0.0"/>
+            <GradientStop Color="#143D73" Offset="0.6"/>
+            <GradientStop Color="#002B5C" Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ContentPage.Resources>
+        <!-- Converters -->
+        <helpers:InvertBoolConverter x:Key="InvertBoolConverter" />
+        <helpers:StringNullOrEmptyConverter x:Key="StringNullOrEmptyConverter" />
+        <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
+    </ContentPage.Resources>
+
+    <Grid x:Name="RootGrid" Padding="16">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveStates">
+                <VisualState x:Name="Narrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Property="RowDefinitions" Value="Auto,Auto,*" />
+                        <Setter Property="ColumnDefinitions" Value="*" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="ChannelPanel" Property="Grid.Row" Value="1" />
+                        <Setter TargetName="ChannelPanel" Property="Grid.Column" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Wide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="768" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Property="RowDefinitions" Value="*" />
+                        <Setter Property="ColumnDefinitions" Value="2.5*,1.5*" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="PlayerPanel" Property="Margin" Value="0,0,16,0" />
+                        <Setter TargetName="ChannelPanel" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="ChannelPanel" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="ChannelPanel" Property="Margin" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!-- ==================== PLAYER PANEL ==================== -->
+        <Grid x:Name="PlayerPanel" RowDefinitions="Auto,*" Margin="0,0,0,12">
+            <!-- Now Playing bar -->
+            <Border Grid.Row="0" BackgroundColor="#1AFFFFFF" StrokeShape="RoundRectangle 8"
+                    Padding="16,10" Stroke="Transparent" Margin="0,0,0,12">
+                <Grid ColumnDefinitions="Auto,*">
+                    <Ellipse Grid.Column="0" Fill="#D4AF37" WidthRequest="8" HeightRequest="8" 
+                             VerticalOptions="Center" Margin="0,0,10,0"
+                             IsVisible="{Binding IsPlayerVisible}" />
+                    <Label Grid.Column="1" Text="{Binding NowPlayingText, TargetNullValue='No match selected'}" 
+                           FontSize="16" FontAttributes="Bold" TextTransform="Uppercase"
+                           TextColor="White" VerticalOptions="Center" CharacterSpacing="1" />
+                </Grid>
+            </Border>
+
+            <!-- Media Player -->
+            <Border Grid.Row="1" BackgroundColor="#030E1A" StrokeShape="RoundRectangle 12"
+                    Padding="0" Stroke="#D4AF37" StrokeThickness="1">
+                <Grid>
+                    <Toolkit:MediaElement x:Name="ChannelPlayer"
+                                      Source="{Binding SelectedChannel.Url ,FallbackValue=''}"
+                                          ShouldAutoPlay="True"
+                                          ShouldShowPlaybackControls="True"
+                                          ShouldKeepScreenOn="True"
+                                          IsVisible="{Binding IsPlayerVisible}"
+                                          MediaOpened="OnMediaOpened"
+                                          MediaFailed="OnMediaFailed" />
+
+                    <ActivityIndicator IsRunning="{Binding IsPlayerLoading}"
+                                       IsVisible="{Binding IsPlayerLoading}"
+                                       Color="#D4AF37" 
+                                       HeightRequest="50" WidthRequest="50"
+                                       HorizontalOptions="Center" VerticalOptions="Center">
+                    </ActivityIndicator>
+
+                    <VerticalStackLayout IsVisible="{Binding IsPlayerVisible, Converter={StaticResource InvertBoolConverter}}"
+                                         VerticalOptions="Center" HorizontalOptions="Center" Spacing="16">
+                        <Border WidthRequest="64" HeightRequest="64" StrokeShape="RoundRectangle 32"
+                                BackgroundColor="#143D73" Stroke="#D4AF37" StrokeThickness="2"
+                                HorizontalOptions="Center">
+                            <Label Text="▶" TextColor="#D4AF37" FontSize="24" 
+                                   HorizontalOptions="Center" VerticalOptions="Center" Margin="4,0,0,0"/>
+                        </Border>
+                        <Label Text="EUROPEAN SPORTS" FontSize="20" TextColor="White"
+                               HorizontalOptions="Center" FontAttributes="Bold" CharacterSpacing="1.5" />
+                        <Label Text="Select a channel from the list below to start streaming."
+                               FontSize="14" TextColor="#A0B5A6"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ==================== CHANNEL PANEL ==================== -->
+        <Grid x:Name="ChannelPanel" RowDefinitions="Auto,Auto,Auto,*" Margin="0">
+            <!-- Sync + Search -->
+            <Grid Grid.Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="12" Margin="0,0,0,12">
+                <Button Grid.Column="0" Text="⟳ SYNC" 
+                        Command="{Binding LoadChannelsCommand}"
+                        BackgroundColor="#D4AF37" TextColor="#0A1F44"
+                        CornerRadius="8" HeightRequest="44" WidthRequest="90"
+                        FontSize="14" FontAttributes="Bold" CharacterSpacing="1" />
+
+                <Border Grid.Column="1" BackgroundColor="#1AFFFFFF" StrokeShape="RoundRectangle 8" Stroke="Transparent" HeightRequest="44">
+                    <SearchBar Placeholder="Search sports or channels..." 
+                               Text="{Binding SearchText}"
+                               BackgroundColor="Transparent" TextColor="White"
+                               PlaceholderColor="#A0B5A6" CancelButtonColor="#D4AF37"
+                               VerticalOptions="Center" />
+                </Border>
+            </Grid>
+
+            <!-- Groups -->
+            <CollectionView Grid.Row="1" ItemsSource="{Binding Groups}" 
+                            SelectionMode="Single"
+                            SelectionChanged="OnGroupSelected" 
+                            HeightRequest="40" Margin="0,0,0,12">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="8" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <Border StrokeShape="RoundRectangle 20" 
+                                BackgroundColor="#143D73" Padding="16,0"
+                                Stroke="#D4AF37" StrokeThickness="1">
+                            <Label Text="{Binding .}" TextColor="#D4AF37" FontSize="13" 
+                                   FontAttributes="Bold" TextTransform="Uppercase"
+                                   VerticalOptions="Center" HorizontalOptions="Center" />
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Loading -->
+            <ActivityIndicator Grid.Row="2" IsRunning="{Binding IsLoading}" 
+                               IsVisible="{Binding IsLoading}" Color="#D4AF37" 
+                               HeightRequest="30" Margin="0,8" />
+
+            <!-- Channels List -->
+            <RefreshView Grid.Row="3" IsRefreshing="{Binding IsLoading}" 
+                         Command="{Binding LoadChannelsCommand}" RefreshColor="#D4AF37">
+                <CollectionView ItemsSource="{Binding Channels}" 
+                                SelectionMode="Single"
+                                SelectionChanged="OnChannelSelected">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:TvChannel">
+                            <Border BackgroundColor="#0A1C2E" StrokeShape="RoundRectangle 10"
+                                    Padding="10" Stroke="#143D73" StrokeThickness="1">
+                                <Grid ColumnDefinitions="70,*,Auto" ColumnSpacing="12">
+                                    <!-- Logo -->
+                                    <Border Grid.Column="0" StrokeShape="RoundRectangle 8" 
+                                            WidthRequest="70" HeightRequest="50"
+                                            BackgroundColor="#030E1A" Stroke="#1AFFFFFF" StrokeThickness="1">
+                                        <Border.Behaviors>
+                                            <helpers:TapScaleBehavior/>
+                                        </Border.Behaviors>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnLogoClicked" />
+                                        </Border.GestureRecognizers>
+                                        <Grid>
+                                            <Image Source="{Binding Logo}" Aspect="AspectFit" Margin="4" />
+                                            <Label Text="{Binding Initials}" 
+                                                   HorizontalOptions="Center" VerticalOptions="Center"
+                                                   TextColor="#A0B5A6" FontSize="16" FontAttributes="Bold"
+                                                   IsVisible="{Binding Logo, Converter={StaticResource StringNullOrEmptyConverter}}" />
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Info -->
+                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                        <Label Text="{Binding Name}" FontSize="15" 
+                                               TextColor="White" FontAttributes="Bold"
+                                               LineBreakMode="TailTruncation" MaxLines="1" />
+                                        <Label Text="{Binding CurrentProgrammeTitle}" FontSize="13" 
+                                               TextColor="#A0B5A6" LineBreakMode="TailTruncation"
+                                               IsVisible="{Binding CurrentProgrammeTitle, Converter={StaticResource IsNotNullConverter}}" />
+                                        <Label Text="{Binding QualityLabel}" FontSize="11" 
+                                               TextColor="#D4AF37" FontAttributes="Bold" CharacterSpacing="0.5" />
+                                    </VerticalStackLayout>
+
+                                    <!-- Watch button -->
+                                    <Button Grid.Column="2" Text="WATCH" 
+                                            BackgroundColor="Transparent" TextColor="#D4AF37"
+                                            BorderColor="#D4AF37" BorderWidth="1"
+                                            CornerRadius="6" HeightRequest="36" Padding="12,0"
+                                            FontSize="12" FontAttributes="Bold" CharacterSpacing="1"
+                                            VerticalOptions="Center"
+                                            Clicked="OnWatchClicked">
+                                        <Button.Triggers>
+                                            <EventTrigger Event="Clicked">
+                                                <helpers:BounceAnimation />
+                                            </EventTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="0,40">
+                            <Label Text="🏆" FontSize="48" HorizontalOptions="Center" Margin="0,0,0,12" Opacity="0.5" />
+                            <Label Text="NO CHANNELS FOUND" 
+                                   TextColor="#A0B5A6" FontSize="18" FontAttributes="Bold" CharacterSpacing="1"
+                                   HorizontalOptions="Center" />
+                            <Label Text="Pull to refresh the channel list." 
+                                   TextColor="#A0B5A6" FontSize="14" Opacity="0.8"
+                                   HorizontalOptions="Center" Margin="0,4,0,0" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </RefreshView>
+
+            <!-- Error message -->
+            <Border Grid.Row="3" BackgroundColor="#E63946" StrokeShape="RoundRectangle 8"
+                    Padding="12,8" Margin="0,0,0,16" VerticalOptions="End" HorizontalOptions="Center"
+                    IsVisible="{Binding HasError}">
+                <Label Text="{Binding ErrorMessage}" TextColor="White" 
+                       FontAttributes="Bold" FontSize="13" />
+            </Border>
+        </Grid>
+    </Grid>
+</ContentPage>

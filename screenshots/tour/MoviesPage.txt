@@ -1,0 +1,32 @@
+260,226 : MOVIES
+540,226 : O LIVE-TV
+257,294 : Cinema, films and entertainment
+260,454 : STANDBY
+261,498 : Select a movie channel
+212,1167 : Search movie channels...
+726,296 : - 24/7
+755,1320 : COMEDY
+125,1320 : ALL
+200,1532 : TV
+76,2242 : o
+66,2300 : Home
+298,1320 : CLASSIC
+531,1320 : MOVIES
+318,1468 : gav HD (1080p)
+317,1524 : 24/7 cinema - always on air
+318,1574 :  ON AIR 24/7 SD
+317,1717 : 30A Classic Movies (720p)
+317,1774 : 24/7 cinema - always on air
+318,1823 :  ON AIR 24/7 SD
+316,1966 : 4ever Cinema (1080p)
+317,2022 : 24/7 cinema - always on air
+318,2072 :  ON AIR 24/7 SD
+292,2242 : o
+278,2303 : Sports
+508,2242 : o
+501,2300 : News
+724,2238 : o
+697,2298 : Movies
+910,256 : O
+940,2242 : o
+929,2300 : Music

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:Toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+             xmlns:models="clr-namespace:MarkUptv.Models"
+             xmlns:helpers="clr-namespace:MarkUptv.Helpers"
+             xmlns:helper="clr-namespace:MarkUptv.Converters"
+             x:Class="MarkUptv.Pages.ReligiousTvPage"
+             xmlns:views="clr-namespace:MarkUptv.Views"
+             x:DataType="vm:ReligiousTvViewModel"
+             Title="Religious TV"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#0B0E1A" Offset="0.0"/>
+            <GradientStop Color="#141B33" Offset="0.5"/>
+            <GradientStop Color="#070A12" Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ContentPage.Resources>
+        <helpers:InvertBoolConverter x:Key="InvertBoolConverter" />
+        <helpers:StringNullOrEmptyConverter x:Key="StringNullOrEmptyConverter" />
+        <helper:IsNotNullConverter x:Key="IsNotNullConverter" />
+    </ContentPage.Resources>
+
+    <Grid x:Name="RootGrid" Padding="16">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveStates">
+                <VisualState x:Name="Narrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Property="RowDefinitions" Value="Auto,Auto,*" />
+                        <Setter Property="ColumnDefinitions" Value="*" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Column" Value="0" />
+                        <!-- Star row: a '*' inside an Auto parent row collapses,
+                             which hid the whole channel list on phones. -->
+                        <Setter TargetName="ChannelPanel" Property="Grid.Row" Value="2" />
+                        <Setter TargetName="ChannelPanel" Property="Grid.Column" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Wide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="768" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Property="RowDefinitions" Value="*" />
+                        <Setter Property="ColumnDefinitions" Value="2.5*,1.5*" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="PlayerPanel" Property="Margin" Value="0,0,16,0" />
+                        <Setter TargetName="ChannelPanel" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="ChannelPanel" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="ChannelPanel" Property="Margin" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid x:Name="PlayerPanel" RowDefinitions="Auto,*" Margin="0,0,0,12">
+            <Border Grid.Row="0" BackgroundColor="#1AFFFFFF" StrokeShape="RoundRectangle 8"
+                    Padding="16,10" Stroke="Transparent" Margin="0,0,0,12">
+                <Grid ColumnDefinitions="Auto,*">
+                    <Ellipse Grid.Column="0" Fill="#C9973A" WidthRequest="8" HeightRequest="8" 
+                             VerticalOptions="Center" Margin="0,0,10,0"
+                             IsVisible="{Binding IsPlayerVisible}" />
+                    <Label Grid.Column="1" Text="{Binding NowPlayingText, TargetNullValue='No channel selected'}" 
+                           FontSize="16" FontAttributes="Bold" TextTransform="Uppercase"
+                           TextColor="White" VerticalOptions="Center" CharacterSpacing="1" />
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1" BackgroundColor="#050510" StrokeShape="RoundRectangle 12"
+                    Padding="0" Stroke="#C9973A" StrokeThickness="1">
+                <Grid>
+                    <Toolkit:MediaElement x:Name="ChannelPlayer"
+                                      Source="{Binding SelectedChannel.Url ,FallbackValue=''}"
+                                          ShouldAutoPlay="True"
+                                          ShouldShowPlaybackControls="True"
+                                          ShouldKeepScreenOn="True"
+                                          IsVisible="{Binding IsPlayerVisible}"
+                                          MediaOpened="OnMediaOpened"
+                                          MediaFailed="OnMediaFailed" />
+                    <ActivityIndicator IsRunning="{Binding IsPlayerLoading}"
+                                       IsVisible="{Binding IsPlayerLoading}"
+                                       Color="#C9973A" 
+                                       HeightRequest="50" WidthRequest="50"
+                                       HorizontalOptions="Center" VerticalOptions="Center">
+                    </ActivityIndicator>
+                    <VerticalStackLayout IsVisible="{Binding IsPlayerVisible, Converter={StaticResource InvertBoolConverter}}"
+                                         VerticalOptions="Center" HorizontalOptions="Center" Spacing="16">
+                        <Border WidthRequest="64" HeightRequest="64" StrokeShape="RoundRectangle 32"
+                                BackgroundColor="#3B1E6B" Stroke="#C9973A" StrokeThickness="2"
+                                HorizontalOptions="Center">
+                            <Label Text="⛪" TextColor="#C9973A" FontSize="24" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                        <Label Text="RELIGIOUS TV" FontSize="20" TextColor="White"
+                               HorizontalOptions="Center" FontAttributes="Bold" CharacterSpacing="1.5" />
+                        <Label Text="Select a channel for spiritual content."
+                               FontSize="14" TextColor="#A0A0B0"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Grid x:Name="ChannelPanel" RowDefinitions="Auto,Auto,Auto,*" Margin="0">
+            <Grid Grid.Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="12" Margin="0,0,0,12">
+                <Button Grid.Column="0" Text="⟳ SYNC" 
+                        Command="{Binding LoadChannelsCommand}"
+                        BackgroundColor="#C9973A" TextColor="White"
+                        CornerRadius="8" HeightRequest="44" WidthRequest="90"
+                        FontSize="14" FontAttributes="Bold" CharacterSpacing="1" />
+
+                <Border Grid.Column="1" BackgroundColor="#1AFFFFFF" StrokeShape="RoundRectangle 8" Stroke="Transparent" HeightRequest="44">
+                    <SearchBar Placeholder="Search religious channels..." 
+                               Text="{Binding SearchText}"
+                               BackgroundColor="Transparent" TextColor="White"
+                               PlaceholderColor="#A0A0B0" CancelButtonColor="#C9973A"
+                               VerticalOptions="Center" />
+                </Border>
+            </Grid>
+
+            <CollectionView Grid.Row="1" ItemsSource="{Binding Groups}" 
+                            SelectionMode="Single"
+                            SelectionChanged="OnGroupSelected" 
+                            HeightRequest="40" Margin="0,0,0,12">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="8" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <Border StrokeShape="RoundRectangle 20" 
+                                BackgroundColor="#3B1E6B" Padding="16,0"
+                                Stroke="#C9973A" StrokeThickness="1">
+                            <Label Text="{Binding .}" TextColor="#C9973A" FontSize="13" 
+                                   FontAttributes="Bold" TextTransform="Uppercase"
+                                   VerticalOptions="Center" HorizontalOptions="Center" />
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <ActivityIndicator Grid.Row="2" IsRunning="{Binding IsLoading}" 
+                               IsVisible="{Binding IsLoading}" Color="#C9973A" 
+                               HeightRequest="30" Margin="0,8" />
+
+            <RefreshView Grid.Row="3" IsRefreshing="{Binding IsLoading}" 
+                         Command="{Binding LoadChannelsCommand}" RefreshColor="#C9973A">
+                <CollectionView ItemsSource="{Binding Channels}" 
+                                SelectionMode="Single"
+                                SelectionChanged="OnChannelSelected">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="{OnIdiom Phone=2, Tablet=4, Desktop=6, TV=6}"
+                                         HorizontalItemSpacing="10" VerticalItemSpacing="10" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:TvChannel">
+                            <!-- Dense 2-up tile: 8 channels per screen instead of 5. -->
+                            <views:ChannelTileCard WatchClicked="OnWatchClicked"
+                                                   LogoClicked="OnLogoClicked" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="0,40">
+                            <Label Text="⛪" FontSize="48" HorizontalOptions="Center" Margin="0,0,0,12" Opacity="0.5" />
+                            <Label Text="NO RELIGIOUS CHANNELS FOUND" 
+                                   TextColor="#A0A0B0" FontSize="18" FontAttributes="Bold" CharacterSpacing="1"
+                                   HorizontalOptions="Center" />
+                            <Label Text="Pull to refresh the channel lineup." 
+                                   TextColor="#A0A0B0" FontSize="14" Opacity="0.8"
+                                   HorizontalOptions="Center" Margin="0,4,0,0" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </RefreshView>
+
+            <Border Grid.Row="3" BackgroundColor="#E63946" StrokeShape="RoundRectangle 8"
+                    Padding="12,8" Margin="0,0,0,16" VerticalOptions="End" HorizontalOptions="Center"
+                    IsVisible="{Binding HasError}">
+                <Label Text="{Binding ErrorMessage}" TextColor="White" 
+                       FontAttributes="Bold" FontSize="13" />
+            </Border>
+        </Grid>
+    </Grid>
+</ContentPage>

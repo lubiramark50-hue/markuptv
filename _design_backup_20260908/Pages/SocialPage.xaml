@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:MarkUptv.Helpers"
+             xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+             xmlns:models="clr-namespace:MarkUptv.Models"
+             x:Class="MarkUptv.Pages.SocialPage"
+             x:Name="PageRoot"
+             x:DataType="vm:SocialViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#070712"
+             Title="Community">
+
+    <ContentPage.Resources>
+        <Style TargetType="Border" x:Key="PostCard">
+            <Setter Property="StrokeShape" Value="RoundRectangle 16" />
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="Stroke" Value="#1A1A38" />
+            <Setter Property="BackgroundColor" Value="#0D0D22" />
+            <Setter Property="Margin" Value="0,0,0,12" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <!-- ─── HEADER ─── -->
+        <Grid Grid.Row="0" Padding="20,52,20,12"
+              ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12">
+            <VerticalStackLayout VerticalOptions="Center">
+                <Label Text="Community" FontSize="24" FontAttributes="Bold" TextColor="White" />
+                <Label Text="{Binding OnlineCount, StringFormat='{0} viewers online'}"
+                       FontSize="12" TextColor="#6E7A9A" />
+            </VerticalStackLayout>
+            <Border Grid.Column="1" WidthRequest="42" HeightRequest="42"
+                    StrokeShape="RoundRectangle 21" Stroke="#1E1E38"
+                    BackgroundColor="#0D0D22">
+                <Label Text="🔔" FontSize="17" HorizontalOptions="Center" VerticalOptions="Center" />
+            </Border>
+            <Border Grid.Column="2" WidthRequest="42" HeightRequest="42"
+                    StrokeShape="RoundRectangle 21" Stroke="#FF006E"
+                    BackgroundColor="#1AFF006E">
+                <Label Text="✏️" FontSize="17" HorizontalOptions="Center" VerticalOptions="Center" />
+                <Border.Behaviors>
+                    <helpers:TapScaleBehavior/>
+                </Border.Behaviors>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenComposeCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+        </Grid>
+
+        <!-- ─── TAB FILTER ─── -->
+        <ScrollView Grid.Row="1" Orientation="Horizontal"
+                    HorizontalScrollBarVisibility="Never" Margin="0,0,0,8">
+            <HorizontalStackLayout Spacing="10" Padding="20,0">
+                <Border StrokeShape="RoundRectangle 20" StrokeThickness="0"
+                        BackgroundColor="#FF006E" Padding="18,9">
+                    <Border.Behaviors>
+                        <helpers:TapScaleBehavior/>
+                    </Border.Behaviors>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding FilterFeedCommand}"
+                                              CommandParameter="All" />
+                    </Border.GestureRecognizers>
+                    <Label Text="🌐  All" FontSize="13" FontAttributes="Bold" TextColor="White" />
+                </Border>
+                <Border StrokeShape="RoundRectangle 20" StrokeThickness="1"
+                        Stroke="#1E1E38" BackgroundColor="#0D0D22" Padding="18,9">
+                    <Border.Behaviors>
+                        <helpers:TapScaleBehavior/>
+                    </Border.Behaviors>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding FilterFeedCommand}"
+                                              CommandParameter="Trending" />
+                    </Border.GestureRecognizers>
+                    <Label Text="🔥  Trending" FontSize="13" TextColor="#8A8A9E" />
+                </Border>
+                <Border StrokeShape="RoundRectangle 20" StrokeThickness="1"
+                        Stroke="#1E1E38" BackgroundColor="#0D0D22" Padding="18,9">
+                    <Border.Behaviors>
+                        <helpers:TapScaleBehavior/>
+                    </Border.Behaviors>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding FilterFeedCommand}"
+                                              CommandParameter="Sports" />
+                    </Border.GestureRecognizers>
+                    <Label Text="⚽  Sports" FontSize="13" TextColor="#8A8A9E" />
+                </Border>
+                <Border StrokeShape="RoundRectangle 20" StrokeThickness="1"
+                        Stroke="#1E1E38" BackgroundColor="#0D0D22" Padding="18,9">
+                    <Border.Behaviors>
+                        <helpers:TapScaleBehavior/>
+                    </Border.Behaviors>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding FilterFeedCommand}"
+                                              CommandParameter="News" />
+                    </Border.GestureRecognizers>
+                    <Label Text="📰  News" FontSize="13" TextColor="#8A8A9E" />
+                </Border>
+                <Border StrokeShape="RoundRectangle 20" StrokeThickness="1"
+                        Stroke="#1E1E38" BackgroundColor="#0D0D22" Padding="18,9">
+                    <Border.Behaviors>
+                        <helpers:TapScaleBehavior/>
+                    </Border.Behaviors>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding FilterFeedCommand}"
+                                              CommandParameter="Movies" />
+                    </Border.GestureRecognizers>
+                    <Label Text="🎬  Movies" FontSize="13" TextColor="#8A8A9E" />
+                </Border>
+                <Border StrokeShape="RoundRectangle 20" StrokeThickness="1"
+                        Stroke="#1E1E38" BackgroundColor="#0D0D22" Padding="18,9">
+                    <Border.Behaviors>
+                        <helpers:TapScaleBehavior/>
+                    </Border.Behaviors>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding FilterFeedCommand}"
+                                              CommandParameter="Following" />
+                    </Border.GestureRecognizers>
+                    <Label Text="👥  Following" FontSize="13" TextColor="#8A8A9E" />
+                </Border>
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <!-- ─── FEED ─── -->
+        <RefreshView Grid.Row="2"
+                     Command="{Binding RefreshFeedCommand}"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     RefreshColor="#FF006E">
+            <CollectionView ItemsSource="{Binding Posts}"
+                            SelectionMode="None"
+                            RemainingItemsThreshold="3"
+                            RemainingItemsThresholdReachedCommand="{Binding LoadMorePostsCommand}">
+
+                <!-- Loading -->
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout Spacing="12" Padding="0,60" HorizontalOptions="Center">
+                        <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                           IsVisible="{Binding IsLoading}"
+                                           Color="#FF006E" Scale="1.4" />
+                        <Label IsVisible="{Binding IsLoading}"
+                               Text="Loading community posts…"
+                               TextColor="#6E7A9A" FontSize="14"
+                               HorizontalOptions="Center" />
+                        <Label IsVisible="{Binding IsEmpty}"
+                               Text="💬" FontSize="48" HorizontalOptions="Center" />
+                        <Label IsVisible="{Binding IsEmpty}"
+                               Text="No posts yet. Be the first to share!"
+                               TextColor="#6E7A9A" FontSize="14"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.Header>
+                    <BoxView HeightRequest="4" Color="Transparent" />
+                </CollectionView.Header>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:SocialPost">
+                        <VerticalStackLayout Padding="20,0">
+                            <Border Style="{StaticResource PostCard}">
+                                <Border.Behaviors>
+                                    <helpers:TapScaleBehavior/>
+                                </Border.Behaviors>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding Source={x:Reference PageRoot}, Path=BindingContext.OpenPostDetailCommand}"
+                                        CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+
+                                <VerticalStackLayout Padding="16" Spacing="12">
+
+                                    <!-- Author row -->
+                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                        <Border Grid.Column="0" WidthRequest="42" HeightRequest="42"
+                                                StrokeShape="RoundRectangle 21" StrokeThickness="0"
+                                                BackgroundColor="{Binding AvatarColor}">
+                                            <Label Text="{Binding AuthorInitial}" FontSize="17"
+                                                   FontAttributes="Bold" TextColor="White"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center" />
+                                        </Border>
+                                        <VerticalStackLayout Grid.Column="1" Spacing="2"
+                                                             VerticalOptions="Center">
+                                            <HorizontalStackLayout Spacing="6">
+                                                <Label Text="{Binding AuthorName}" FontSize="14"
+                                                       FontAttributes="Bold" TextColor="White" />
+                                                <Border IsVisible="{Binding IsVerified}"
+                                                        BackgroundColor="#1A00D4FF"
+                                                        StrokeShape="RoundRectangle 4"
+                                                        StrokeThickness="0" Padding="4,2">
+                                                    <Label Text="✓" FontSize="9"
+                                                           TextColor="#00D4FF"
+                                                           FontAttributes="Bold" />
+                                                </Border>
+                                            </HorizontalStackLayout>
+                                            <Label Text="{Binding TimeAgo}" FontSize="11"
+                                                   TextColor="#5A6A8E" />
+                                        </VerticalStackLayout>
+                                        <Label Grid.Column="2" Text="⋯" FontSize="20"
+                                               TextColor="#5A6A8E" VerticalOptions="Start" />
+                                    </Grid>
+
+                                    <!-- Post text -->
+                                    <Label Text="{Binding Content}" FontSize="14"
+                                           TextColor="#C8D0E0" LineBreakMode="WordWrap" />
+
+                                    <!-- Channel / show tag -->
+                                    <Border IsVisible="{Binding HasChannelTag}"
+                                            BackgroundColor="#1A8338EC"
+                                            Stroke="#8338EC" StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 8"
+                                            Padding="10,5" HorizontalOptions="Start">
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Label Text="📺" FontSize="12" VerticalOptions="Center" />
+                                            <Label Text="{Binding ChannelTag}" FontSize="12"
+                                                   TextColor="#8338EC" FontAttributes="Bold" />
+                                        </HorizontalStackLayout>
+                                    </Border>
+
+                                    <!-- Action row -->
+                                    <BoxView HeightRequest="1" BackgroundColor="#1A1A38" />
+                                    <Grid ColumnDefinitions="*,*,*,Auto" ColumnSpacing="0">
+
+                                        <!-- Like -->
+                                        <HorizontalStackLayout Grid.Column="0" Spacing="6">
+                                            <Label Text="{Binding LikeIcon}"
+                                                   FontSize="16" VerticalOptions="Center" />
+                                            <Label Text="{Binding LikesCount}" FontSize="13"
+                                                   TextColor="#8A8A9E" VerticalOptions="Center" />
+                                            <HorizontalStackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding Source={x:Reference PageRoot}, Path=BindingContext.LikePostCommand}"
+                                                    CommandParameter="{Binding .}" />
+                                            </HorizontalStackLayout.GestureRecognizers>
+                                        </HorizontalStackLayout>
+
+                                        <!-- Comment -->
+                                        <HorizontalStackLayout Grid.Column="1" Spacing="6">
+                                            <Label Text="💬" FontSize="16" VerticalOptions="Center" />
+                                            <Label Text="{Binding CommentsCount}" FontSize="13"
+                                                   TextColor="#8A8A9E" VerticalOptions="Center" />
+                                            <HorizontalStackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding Source={x:Reference PageRoot}, Path=BindingContext.OpenPostDetailCommand}"
+                                                    CommandParameter="{Binding .}" />
+                                            </HorizontalStackLayout.GestureRecognizers>
+                                        </HorizontalStackLayout>
+
+                                        <!-- Share -->
+                                        <HorizontalStackLayout Grid.Column="2" Spacing="6">
+                                            <Label Text="↗️" FontSize="16" VerticalOptions="Center" />
+                                            <Label Text="Share" FontSize="13"
+                                                   TextColor="#8A8A9E" VerticalOptions="Center" />
+                                            <HorizontalStackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding Source={x:Reference PageRoot}, Path=BindingContext.SharePostCommand}"
+                                                    CommandParameter="{Binding .}" />
+                                            </HorizontalStackLayout.GestureRecognizers>
+                                        </HorizontalStackLayout>
+
+                                        <!-- Bookmark -->
+                                        <Label Grid.Column="3" Text="🔖" FontSize="18"
+                                               TextColor="#5A6A8E" VerticalOptions="Center">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding Source={x:Reference PageRoot}, Path=BindingContext.BookmarkPostCommand}"
+                                                    CommandParameter="{Binding .}" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </Grid>
+
+                                </VerticalStackLayout>
+                            </Border>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.Footer>
+                    <VerticalStackLayout IsVisible="{Binding IsLoadingMore}"
+                                         Spacing="8" Padding="0,14" HorizontalOptions="Center">
+                        <ActivityIndicator IsRunning="True" Color="#FF006E" />
+                        <Label Text="Loading more…" TextColor="#6E7A9A"
+                               FontSize="12" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </CollectionView.Footer>
+
+            </CollectionView>
+        </RefreshView>
+
+    </Grid>
+</ContentPage>

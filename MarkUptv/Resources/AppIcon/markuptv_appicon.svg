@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- MarkUpTV launcher icon: navy field, gold "broadcast ring + play" mark.
+       Full-bleed square — the OS applies its own mask. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0"    stop-color="#050912"/>
+      <stop offset="0.55" stop-color="#0C1428"/>
+      <stop offset="1"    stop-color="#131C36"/>
+    </linearGradient>
+
+    <radialGradient id="warmGlow" cx="0.34" cy="0.28" r="0.75">
+      <stop offset="0"    stop-color="#E8B54A" stop-opacity="0.22"/>
+      <stop offset="0.55" stop-color="#E8B54A" stop-opacity="0.06"/>
+      <stop offset="1"    stop-color="#E8B54A" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="coolGlow" cx="0.78" cy="0.82" r="0.6">
+      <stop offset="0"    stop-color="#3E6BFF" stop-opacity="0.18"/>
+      <stop offset="1"    stop-color="#3E6BFF" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="markGold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"    stop-color="#FFE3A8"/>
+      <stop offset="0.45" stop-color="#E8B54A"/>
+      <stop offset="1"    stop-color="#C0882A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- field -->
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <rect width="1024" height="1024" fill="url(#warmGlow)"/>
+  <rect width="1024" height="1024" fill="url(#coolGlow)"/>
+
+  <!-- mark -->
+  <g transform="translate(512 512) scale(0.62) translate(-256 -256)">
+    <path d="M425.4,241.2 A170,170 0 1 1 353.5,116.7"
+          fill="none" stroke="url(#markGold)" stroke-width="40" stroke-linecap="round"/>
+    <circle cx="403.2" cy="171" r="27" fill="url(#markGold)"/>
+    <path d="M206 168 L350 256 L206 344 Z"
+          fill="url(#markGold)" stroke="url(#markGold)"
+          stroke-width="34" stroke-linejoin="round"/>
+  </g>
+</svg>

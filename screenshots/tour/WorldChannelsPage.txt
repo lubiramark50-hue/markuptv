@@ -1,0 +1,18 @@
+48,228 : World Channels
+743,282 : Playback self-test
+51,307 : Free, official sports broadcasters by
+50,355 : country. Nothing paid, nothing pirated.
+95,464 : Search country, channel, language or league
+49,574 : 28 free sources from 18 countries  official and free to watch
+54,694 : Africa / Global
+57,752 : 1 free source
+90,855 : CAFT,/
+90,915 : Confederation of African
+91,958 : Football (official)
+88,1010 : Africa / Global  English,
+91,1052 : French, Arabic  Free in most
+90,1096 : regions; a few fixtures are
+88,1136 : territory-limited
+549,994 : Opens official free player
+540,1057 : CAF competitions, AFCON qualifiers,
+741,1094 : African club football

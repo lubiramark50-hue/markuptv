@@ -1,0 +1,27 @@
+226,226 : MUSIC
+470,226 : O LIVE-TV
+224,292 : Live radio, music television and global sounds
+260,454 : STATION IDLE
+261,498 : Select a music channel to begin
+212,1167 : Search 500+ music channels...
+125,1320 : ALL
+130,1527 : LlaÅo!
+176,1991 : gugc
+66,2300 : Home
+298,1320 : CLASSIC
+531,1320 : MUSIC
+739,1320 : CULTURE
+318,1479 : iViva Latino! (1080p)
+317,1532 : 24/7 music television - always on...
+318,1574 :  ON AIR 24/7
+319,1725 : 1 HD Music Television (1080p)
+317,1780 : 24/7 music television - always on...
+318,1823 :  ON AIR 24/7
+317,1974 : 30A Music (720p)
+317,2030 : 24/7 music television - always on...
+318,2072 :  ON AIR 24/7
+278,2303 : Sports
+501,2300 : News
+705,2300 : Movies
+944,256 : O
+923,2298 : Music

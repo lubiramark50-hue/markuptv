@@ -1,0 +1,1496 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="MarkUptv.Pages.Cartoonspage"
+    x:Name="PageRoot"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:converters="clr-namespace:MarkUptv.Converters"
+    xmlns:helpers="clr-namespace:MarkUptv.Helpers"
+    xmlns:models="clr-namespace:MarkUptv.Models"
+    xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+    x:DataType="vm:CartoonViewModel"
+    Shell.NavBarIsVisible="False"
+    Title="Cartoons">
+
+    <ContentPage.Resources>
+
+        <helpers:InvertBoolConverter
+            x:Key="InvertBoolConverter" />
+
+        <helpers:StringNullOrEmptyConverter
+            x:Key="StringNullOrEmptyConverter" />
+
+        <converters:IsNotNullConverter
+            x:Key="IsNotNullConverter" />
+
+        <!-- Main colours -->
+
+        <Color x:Key="PageNavy">#08102B</Color>
+        <Color x:Key="PanelNavy">#111A3C</Color>
+        <Color x:Key="PanelPurple">#261756</Color>
+        <Color x:Key="CartoonPink">#FF3E91</Color>
+        <Color x:Key="CartoonPurple">#7848FF</Color>
+        <Color x:Key="CartoonCyan">#2ED7FF</Color>
+        <Color x:Key="CartoonYellow">#FFD84A</Color>
+        <Color x:Key="CartoonOrange">#FF8A38</Color>
+        <Color x:Key="PrimaryText">#FFFFFF</Color>
+        <Color x:Key="SecondaryText">#BFC6E4</Color>
+        <Color x:Key="DarkText">#19112F</Color>
+
+        <LinearGradientBrush
+            x:Key="PageBackground"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#071027"
+                Offset="0" />
+
+            <GradientStop
+                Color="#151445"
+                Offset="0.45" />
+
+            <GradientStop
+                Color="#351653"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <LinearGradientBrush
+            x:Key="BrandGradient"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#2ED7FF"
+                Offset="0" />
+
+            <GradientStop
+                Color="#7848FF"
+                Offset="0.5" />
+
+            <GradientStop
+                Color="#FF3E91"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <LinearGradientBrush
+            x:Key="PlayerFrameGradient"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#FFD84A"
+                Offset="0" />
+
+            <GradientStop
+                Color="#FF8A38"
+                Offset="0.48" />
+
+            <GradientStop
+                Color="#FF3E91"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <LinearGradientBrush
+            x:Key="EmptyPlayerGradient"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#172C69"
+                Offset="0" />
+
+            <GradientStop
+                Color="#502686"
+                Offset="0.55" />
+
+            <GradientStop
+                Color="#B62B87"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <LinearGradientBrush
+            x:Key="CardPlaceholderGradient"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#232F76"
+                Offset="0" />
+
+            <GradientStop
+                Color="#6634A8"
+                Offset="0.55" />
+
+            <GradientStop
+                Color="#D93F93"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <StaticResource Key="PageBackground" />
+    </ContentPage.Background>
+
+    <Grid
+        x:Name="RootGrid"
+        Padding="16"
+        RowDefinitions="Auto,*"
+        RowSpacing="14">
+
+        <!-- Decorative background shapes -->
+
+        <Border
+            Grid.RowSpan="2"
+            WidthRequest="260"
+            HeightRequest="260"
+            Margin="-110,-120,0,0"
+            BackgroundColor="#227848FF"
+            Stroke="Transparent"
+            StrokeShape="RoundRectangle 130"
+            HorizontalOptions="Start"
+            VerticalOptions="Start"
+            InputTransparent="True" />
+
+        <Border
+            Grid.RowSpan="2"
+            WidthRequest="210"
+            HeightRequest="210"
+            Margin="0,0,-100,-85"
+            BackgroundColor="#1FFF3E91"
+            Stroke="Transparent"
+            StrokeShape="RoundRectangle 105"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            InputTransparent="True" />
+
+        <!-- Header -->
+
+        <Grid
+            x:Name="HeaderPanel"
+            Grid.Row="0"
+            ColumnDefinitions="Auto,*,Auto"
+            ColumnSpacing="12">
+
+            <Border
+                x:Name="MascotButton"
+                Grid.Column="0"
+                WidthRequest="62"
+                HeightRequest="62"
+                Padding="4"
+                Background="{StaticResource BrandGradient}"
+                Stroke="#80FFFFFF"
+                StrokeThickness="2"
+                StrokeShape="RoundRectangle 20">
+
+                <Border.Behaviors>
+                    <helpers:TapScaleBehavior/>
+                </Border.Behaviors>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Tapped="OnMascotTapped" />
+                </Border.GestureRecognizers>
+
+                <Border.Shadow>
+                    <Shadow
+                        Brush="#90000000"
+                        Offset="0,6"
+                        Radius="12"
+                        Opacity="0.55" />
+                </Border.Shadow>
+
+                <Grid>
+
+                    <Label
+                        Text="📺"
+                        FontSize="37"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+
+                    <Border
+                        WidthRequest="17"
+                        HeightRequest="17"
+                        Margin="0,-2,-3,0"
+                        BackgroundColor="{StaticResource CartoonYellow}"
+                        Stroke="White"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 9"
+                        HorizontalOptions="End"
+                        VerticalOptions="Start">
+
+                        <Label
+                            Text="★"
+                            FontSize="9"
+                            TextColor="{StaticResource DarkText}"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
+
+                    </Border>
+
+                </Grid>
+
+            </Border>
+
+            <VerticalStackLayout
+                Grid.Column="1"
+                Spacing="1"
+                VerticalOptions="Center">
+
+                <Label
+                    Text="CARTOONS"
+                    FontAttributes="Bold"
+                    CharacterSpacing="1.2"
+                    TextColor="White"
+                    LineBreakMode="TailTruncation"
+                    MaxLines="1">
+
+                    <Label.FontSize>
+                        <OnIdiom
+                            x:TypeArguments="x:Double"
+                            Phone="25"
+                            Tablet="31"
+                            Desktop="31"
+                            TV="38"
+                            Default="28" />
+                    </Label.FontSize>
+
+                </Label>
+
+                <HorizontalStackLayout Spacing="7">
+
+                    <Border
+                        Padding="9,3"
+                        BackgroundColor="#2C2ED7FF"
+                        Stroke="#552ED7FF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 10">
+
+                        <Label
+                            Text="KIDS ZONE"
+                            FontSize="10"
+                            FontAttributes="Bold"
+                            CharacterSpacing="1.2"
+                            TextColor="{StaticResource CartoonCyan}" />
+
+                    </Border>
+
+                    <Border
+                        Padding="9,3"
+                        BackgroundColor="#26E8254D"
+                        Stroke="#66E8254D"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 10"
+                        VerticalOptions="Center">
+
+                        <HorizontalStackLayout
+                            Spacing="5"
+                            VerticalOptions="Center">
+
+                            <Border
+                                WidthRequest="7"
+                                HeightRequest="7"
+                                BackgroundColor="#FF6B81"
+                                Stroke="White"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 4"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                Text="LIVE TV"
+                                FontSize="8"
+                                FontAttributes="Bold"
+                                CharacterSpacing="1"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+
+                        </HorizontalStackLayout>
+
+                    </Border>
+
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+
+            <Border
+                x:Name="CrownButton"
+                Grid.Column="2"
+                Padding="13,9"
+                BackgroundColor="#24FFFFFF"
+                Stroke="#45FFFFFF"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 18"
+                VerticalOptions="Center">
+
+                <Border.Behaviors>
+                    <helpers:TapScaleBehavior/>
+                </Border.Behaviors>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Tapped="OnCrownTapped" />
+                </Border.GestureRecognizers>
+
+                <HorizontalStackLayout Spacing="7">
+
+                    <Label
+                        Text="♛"
+                        FontSize="20"
+                        TextColor="{StaticResource CartoonYellow}"
+                        VerticalOptions="Center" />
+
+                    <Label
+                        Text="Premium"
+                        FontSize="12"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        VerticalOptions="Center">
+
+                        <Label.IsVisible>
+                            <OnIdiom
+                                x:TypeArguments="x:Boolean"
+                                Phone="False"
+                                Tablet="True"
+                                Desktop="True"
+                                TV="True"
+                                Default="True" />
+                        </Label.IsVisible>
+
+                    </Label>
+
+                </HorizontalStackLayout>
+
+            </Border>
+
+        </Grid>
+
+        <!-- Responsive main layout -->
+
+        <Grid
+            x:Name="MainLayout"
+            Grid.Row="1"
+            RowDefinitions="350,*"
+            ColumnDefinitions="*"
+            RowSpacing="14"
+            MaximumWidthRequest="1900"
+            HorizontalOptions="Fill"
+            VerticalOptions="Fill">
+
+            <VisualStateManager.VisualStateGroups>
+
+                <VisualStateGroup x:Name="ResponsiveStates">
+
+                    <VisualState x:Name="Compact">
+
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="0" />
+                        </VisualState.StateTriggers>
+
+                        <VisualState.Setters>
+
+                            <Setter
+                                Property="RowDefinitions"
+                                Value="350,*" />
+
+                            <Setter
+                                Property="ColumnDefinitions"
+                                Value="*" />
+
+                            <Setter
+                                Property="RowSpacing"
+                                Value="14" />
+
+                            <Setter
+                                Property="ColumnSpacing"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Row"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Column"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Row"
+                                Value="1" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Column"
+                                Value="0" />
+
+                        </VisualState.Setters>
+
+                    </VisualState>
+
+                    <VisualState x:Name="Wide">
+
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="980" />
+                        </VisualState.StateTriggers>
+
+                        <VisualState.Setters>
+
+                            <Setter
+                                Property="RowDefinitions"
+                                Value="*" />
+
+                            <Setter
+                                Property="ColumnDefinitions"
+                                Value="1.2*,1*" />
+
+                            <Setter
+                                Property="RowSpacing"
+                                Value="0" />
+
+                            <Setter
+                                Property="ColumnSpacing"
+                                Value="18" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Row"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Column"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Row"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Column"
+                                Value="1" />
+
+                        </VisualState.Setters>
+
+                    </VisualState>
+
+                </VisualStateGroup>
+
+            </VisualStateManager.VisualStateGroups>
+
+            <!-- Player panel -->
+
+            <Grid
+                x:Name="PlayerPanel"
+                Grid.Row="0"
+                Grid.Column="0"
+                RowDefinitions="Auto,*"
+                RowSpacing="10"
+                MinimumHeightRequest="300">
+
+                <Grid
+                    Grid.Row="0"
+                    ColumnDefinitions="*,Auto"
+                    ColumnSpacing="10">
+
+                    <VerticalStackLayout
+                        Grid.Column="0"
+                        Spacing="2">
+
+                        <Label
+                            Text="NOW PLAYING"
+                            IsVisible="{Binding IsStreaming}"
+                            FontSize="10"
+                            FontAttributes="Bold"
+                            CharacterSpacing="1.6"
+                            TextColor="{StaticResource CartoonCyan}" />
+
+                        <Label
+                            Text="CARTOON STANDBY"
+                            IsVisible="{Binding IsStreaming,
+                                        Converter={StaticResource InvertBoolConverter}}"
+                            FontSize="10"
+                            FontAttributes="Bold"
+                            CharacterSpacing="1.6"
+                            TextColor="#E0FFFFFF" />
+
+                        <Label
+                            Text="{Binding NowPlayingText}"
+                            FontSize="18"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            MaxLines="1"
+                            LineBreakMode="TailTruncation" />
+
+                    </VerticalStackLayout>
+
+                    <Border
+                        Grid.Column="1"
+                        Padding="11,5"
+                        BackgroundColor="#E8E8254D"
+                        Stroke="#FFFFD9E0"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 12"
+                        VerticalOptions="Center"
+                        IsVisible="{Binding IsStreaming}">
+
+                        <HorizontalStackLayout Spacing="6">
+
+                            <!-- Live equalizer bars (animated in code-behind) -->
+
+                            <HorizontalStackLayout
+                                x:Name="LiveEqualizer"
+                                Spacing="2"
+                                VerticalOptions="Center">
+
+                                <Border
+                                    x:Name="LiveEqBarOne"
+                                    WidthRequest="3"
+                                    HeightRequest="7"
+                                    BackgroundColor="#FFFF6B81"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 2"
+                                    AnchorY="1"
+                                    VerticalOptions="End" />
+
+                                <Border
+                                    x:Name="LiveEqBarTwo"
+                                    WidthRequest="3"
+                                    HeightRequest="12"
+                                    BackgroundColor="#FFFFD9E0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 2"
+                                    AnchorY="1"
+                                    VerticalOptions="End" />
+
+                                <Border
+                                    x:Name="LiveEqBarThree"
+                                    WidthRequest="3"
+                                    HeightRequest="9"
+                                    BackgroundColor="#FFFF6B81"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 2"
+                                    AnchorY="1"
+                                    VerticalOptions="End" />
+
+                            </HorizontalStackLayout>
+
+                            <Label
+                                Text="LIVE"
+                                FontSize="10"
+                                FontAttributes="Bold"
+                                CharacterSpacing="1"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+
+                        </HorizontalStackLayout>
+
+                    </Border>
+
+                    <Border
+                        Grid.Column="1"
+                        Padding="11,5"
+                        BackgroundColor="#222ED7FF"
+                        Stroke="#552ED7FF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 12"
+                        VerticalOptions="Center"
+                        IsVisible="{Binding IsStreaming,
+                                    Converter={StaticResource InvertBoolConverter}}">
+
+                        <HorizontalStackLayout Spacing="6">
+
+                            <Border
+                                WidthRequest="8"
+                                HeightRequest="8"
+                                BackgroundColor="{StaticResource CartoonCyan}"
+                                Stroke="White"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 4"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                Text="STANDBY"
+                                FontSize="10"
+                                FontAttributes="Bold"
+                                CharacterSpacing="1"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+
+                        </HorizontalStackLayout>
+
+                    </Border>
+
+                </Grid>
+
+                <Border
+                    Grid.Row="1"
+                    Padding="5"
+                    Background="{StaticResource PlayerFrameGradient}"
+                    Stroke="#50FFFFFF"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 28">
+
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="#A0000000"
+                            Offset="0,10"
+                            Radius="20"
+                            Opacity="0.7" />
+                    </Border.Shadow>
+
+                    <Border
+                        BackgroundColor="#070A18"
+                        Stroke="#28FFFFFF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 23">
+
+                        <Grid>
+
+                            <Toolkit:MediaElement
+                                x:Name="CartoonPlayer"
+                                Source="{Binding SelectedChannel.Url}"
+                                Aspect="AspectFit"
+                                ShouldAutoPlay="True"
+                                ShouldKeepScreenOn="True"
+                                ShouldShowPlaybackControls="True"
+                                Volume="1"
+                                IsVisible="{Binding IsPlayerVisible}"
+                                MediaOpened="OnMediaOpened"
+                                MediaFailed="OnMediaFailed" />
+
+                            <!-- Empty state -->
+
+                            <Grid
+                                Padding="22"
+                                Background="{StaticResource EmptyPlayerGradient}"
+                                IsVisible="{Binding IsPlayerVisible,
+                                    Converter={StaticResource InvertBoolConverter}}">
+
+                                <Label
+                                    Text="✦"
+                                    FontSize="48"
+                                    TextColor="#55FFFFFF"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Start" />
+
+                                <Label
+                                    Text="★"
+                                    FontSize="31"
+                                    TextColor="{StaticResource CartoonYellow}"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="Start"
+                                    Margin="0,16,14,0" />
+
+                                <VerticalStackLayout
+                                    Spacing="7"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center">
+
+                                    <Border
+                                        x:Name="EmptyPlayerPlayButton"
+                                        WidthRequest="94"
+                                        HeightRequest="94"
+                                        Background="{StaticResource BrandGradient}"
+                                        Stroke="White"
+                                        StrokeThickness="4"
+                                        StrokeShape="RoundRectangle 47">
+
+                                        <Border.Behaviors>
+                                            <helpers:TapScaleBehavior/>
+                                        </Border.Behaviors>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Tapped="OnEmptyPlayerTapped" />
+                                        </Border.GestureRecognizers>
+
+                                        <Border.Shadow>
+                                            <Shadow
+                                                Brush="#A0000000"
+                                                Offset="0,7"
+                                                Radius="15"
+                                                Opacity="0.7" />
+                                        </Border.Shadow>
+
+                                        <Label
+                                            Text="▶"
+                                            FontSize="39"
+                                            TextColor="White"
+                                            Margin="5,0,0,0"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+
+                                    </Border>
+
+                                    <Label
+                                        Text="Pick your next adventure"
+                                        FontSize="21"
+                                        FontAttributes="Bold"
+                                        TextColor="White"
+                                        HorizontalTextAlignment="Center" />
+
+                                    <Label
+                                        Text="Tap any cartoon card to begin watching."
+                                        FontSize="13"
+                                        TextColor="#DCE2FF"
+                                        HorizontalTextAlignment="Center" />
+
+                                </VerticalStackLayout>
+
+                            </Grid>
+
+                            <!-- Selected channel overlay -->
+
+                            <Border
+                                Margin="13"
+                                Padding="13,9"
+                                BackgroundColor="#C00A1028"
+                                Stroke="#35FFFFFF"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 15"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="Start"
+                                IsVisible="{Binding IsPlayerVisible}">
+
+                                <Grid
+                                    ColumnDefinitions="*,Auto"
+                                    ColumnSpacing="10">
+
+                                    <VerticalStackLayout
+                                        Grid.Column="0"
+                                        Spacing="1">
+
+                                        <Label
+                                            Text="{Binding SelectedChannel.Name}"
+                                            FontSize="19"
+                                            FontAttributes="Bold"
+                                            TextColor="White"
+                                            MaxLines="1"
+                                            LineBreakMode="TailTruncation" />
+
+                                        <Label
+                                            Text="{Binding SelectedChannel.CurrentProgrammeTitle,
+                                                TargetNullValue='Live cartoon channel'}"
+                                            FontSize="12"
+                                            TextColor="{StaticResource CartoonYellow}"
+                                            MaxLines="1"
+                                            LineBreakMode="TailTruncation" />
+
+                                    </VerticalStackLayout>
+
+                                    <Border
+                                        Grid.Column="1"
+                                        Padding="8,4"
+                                        BackgroundColor="#332ED7FF"
+                                        Stroke="#662ED7FF"
+                                        StrokeShape="RoundRectangle 9"
+                                        VerticalOptions="Center">
+
+                                        <Label
+                                            Text="{Binding SelectedChannel.QualityLabel,
+                                                TargetNullValue='LIVE'}"
+                                            FontSize="10"
+                                            FontAttributes="Bold"
+                                            TextColor="{StaticResource CartoonCyan}" />
+
+                                    </Border>
+
+                                </Grid>
+
+                            </Border>
+
+                            <!-- On-air chip over the picture -->
+
+                            <Border
+                                Margin="14"
+                                Padding="10,5"
+                                BackgroundColor="#E8E8254D"
+                                Stroke="#FFFFD9E0"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 11"
+                                HorizontalOptions="Start"
+                                VerticalOptions="End"
+                                IsVisible="{Binding IsStreaming}"
+                                InputTransparent="True">
+
+                                <HorizontalStackLayout
+                                    Spacing="7"
+                                    VerticalOptions="Center">
+
+                                    <Border
+                                        WidthRequest="8"
+                                        HeightRequest="8"
+                                        BackgroundColor="#FF6B81"
+                                        Stroke="White"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 4"
+                                        VerticalOptions="Center" />
+
+                                    <Label
+                                        Text="ON AIR"
+                                        FontSize="9"
+                                        FontAttributes="Bold"
+                                        CharacterSpacing="1.1"
+                                        TextColor="White"
+                                        VerticalOptions="Center" />
+
+                                </HorizontalStackLayout>
+
+                            </Border>
+
+                            <!-- Loading overlay -->
+
+                            <Grid
+                                BackgroundColor="#CC070A18"
+                                IsVisible="{Binding IsPlayerLoading}">
+
+                                <VerticalStackLayout
+                                    Spacing="11"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center">
+
+                                    <ActivityIndicator
+                                        WidthRequest="55"
+                                        HeightRequest="55"
+                                        IsRunning="{Binding IsPlayerLoading}"
+                                        Color="{StaticResource CartoonYellow}" />
+
+                                    <Label
+                                        Text="Opening the cartoon world..."
+                                        FontSize="15"
+                                        FontAttributes="Bold"
+                                        TextColor="White" />
+
+                                </VerticalStackLayout>
+
+                            </Grid>
+
+                        </Grid>
+
+                    </Border>
+
+                </Border>
+
+            </Grid>
+
+            <!-- Channel catalogue -->
+
+            <Border
+                x:Name="ChannelPanel"
+                Grid.Row="1"
+                Grid.Column="0"
+                Padding="14"
+                BackgroundColor="#C8111834"
+                Stroke="#2CFFFFFF"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 26">
+
+                <Border.Shadow>
+                    <Shadow
+                        Brush="#70000000"
+                        Offset="0,8"
+                        Radius="18"
+                        Opacity="0.55" />
+                </Border.Shadow>
+
+                <Grid
+                    RowDefinitions="Auto,Auto,*"
+                    RowSpacing="11">
+
+                    <!-- Search heading -->
+
+                    <Grid
+                        Grid.Row="0"
+                        RowDefinitions="Auto,Auto"
+                        RowSpacing="8">
+
+                        <Grid
+                            Grid.Row="0"
+                            ColumnDefinitions="*,Auto"
+                            ColumnSpacing="10">
+
+                            <VerticalStackLayout Spacing="1">
+
+                                <Label
+                                    Text="Choose your cartoon"
+                                    FontSize="20"
+                                    FontAttributes="Bold"
+                                    TextColor="White" />
+
+                                <Label
+                                    Text="Live channels and shows for every mood"
+                                    FontSize="12"
+                                    TextColor="{StaticResource SecondaryText}" />
+
+                            </VerticalStackLayout>
+
+                            <Button
+                                x:Name="ReloadButton"
+                                Grid.Column="1"
+                                Text="↻"
+                                Command="{Binding RefreshChannelsCommand}"
+                                Clicked="OnAnimatedButtonClicked"
+                                WidthRequest="45"
+                                HeightRequest="45"
+                                Padding="0"
+                                CornerRadius="15"
+                                FontSize="21"
+                                FontAttributes="Bold"
+                                BackgroundColor="{StaticResource CartoonPurple}"
+                                TextColor="White"
+                                BorderColor="#55FFFFFF"
+                                BorderWidth="1"
+                                SemanticProperties.Description="Refresh cartoon channels" />
+
+                        </Grid>
+
+                        <Border
+                            Grid.Row="1"
+                            HeightRequest="50"
+                            Padding="4,0"
+                            BackgroundColor="#F4FFFFFF"
+                            Stroke="#40FFFFFF"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 16">
+
+                            <Grid
+                                ColumnDefinitions="Auto,*"
+                                ColumnSpacing="1">
+
+                                <Label
+                                    Grid.Column="0"
+                                    Text="⌕"
+                                    FontSize="27"
+                                    TextColor="{StaticResource CartoonPurple}"
+                                    WidthRequest="40"
+                                    HorizontalTextAlignment="Center"
+                                    VerticalTextAlignment="Center" />
+
+                                <SearchBar
+                                    Grid.Column="1"
+                                    Text="{Binding SearchText}"
+                                    Placeholder="Search channels or programmes..."
+                                    BackgroundColor="Transparent"
+                                    TextColor="{StaticResource DarkText}"
+                                    PlaceholderColor="#766F91"
+                                    CancelButtonColor="{StaticResource CartoonPink}"
+                                    FontSize="14"
+                                    Margin="-7,0,0,0" />
+
+                            </Grid>
+
+                        </Border>
+
+                    </Grid>
+
+                    <!-- Category chips -->
+
+                    <CollectionView
+                        x:Name="GroupCollection"
+                        Grid.Row="1"
+                        HeightRequest="47"
+                        ItemsSource="{Binding Groups}"
+                        SelectedItem="{Binding SelectedGroup, Mode=TwoWay}"
+                        SelectionMode="Single"
+                        HorizontalScrollBarVisibility="Never">
+
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout
+                                Orientation="Horizontal"
+                                ItemSpacing="8" />
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+
+                            <DataTemplate x:DataType="x:String">
+
+                                <Border
+                                    Padding="13,7"
+                                    BackgroundColor="#272ED7FF"
+                                    Stroke="#452ED7FF"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 14">
+
+                                    <VisualStateManager.VisualStateGroups>
+
+                                        <VisualStateGroup x:Name="CommonStates">
+
+                                            <VisualState x:Name="Normal">
+
+                                                <VisualState.Setters>
+                                                    <Setter
+                                                        Property="BackgroundColor"
+                                                        Value="#272ED7FF" />
+
+                                                    <Setter
+                                                        Property="Stroke"
+                                                        Value="#452ED7FF" />
+
+                                                    <Setter
+                                                        Property="Scale"
+                                                        Value="1" />
+                                                </VisualState.Setters>
+
+                                            </VisualState>
+
+                                            <VisualState x:Name="Selected">
+
+                                                <VisualState.Setters>
+                                                    <Setter
+                                                        Property="BackgroundColor"
+                                                        Value="#FF7848FF" />
+
+                                                    <Setter
+                                                        Property="Stroke"
+                                                        Value="#A0FFFFFF" />
+
+                                                    <Setter
+                                                        Property="Scale"
+                                                        Value="1.03" />
+                                                </VisualState.Setters>
+
+                                            </VisualState>
+
+                                        </VisualStateGroup>
+
+                                    </VisualStateManager.VisualStateGroups>
+
+                                    <HorizontalStackLayout Spacing="5">
+
+                                        <Label
+                                            Text="●"
+                                            FontSize="8"
+                                            TextColor="{StaticResource CartoonYellow}"
+                                            VerticalOptions="Center" />
+
+                                        <Label
+                                            Text="{Binding .}"
+                                            FontSize="13"
+                                            FontAttributes="Bold"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+
+                                    </HorizontalStackLayout>
+
+                                </Border>
+
+                            </DataTemplate>
+
+                        </CollectionView.ItemTemplate>
+
+                    </CollectionView>
+
+                    <!-- Stable catalogue area -->
+
+                    <Grid
+                        Grid.Row="2">
+
+                        <RefreshView
+                            IsRefreshing="{Binding IsLoading, Mode=OneWay}"
+                            Command="{Binding RefreshChannelsCommand}"
+                            RefreshColor="{StaticResource CartoonYellow}">
+
+                            <CollectionView
+                                x:Name="ChannelCollection"
+                                ItemsSource="{Binding Channels}"
+                                SelectionMode="None"
+                                ItemSizingStrategy="MeasureFirstItem"
+                                VerticalScrollBarVisibility="Never">
+
+                                <!--
+                                This layout stays constant in all visual states.
+                                Replacing ItemsLayout during measurement can
+                                trigger WinUI LayoutCycleException.
+                                -->
+
+                                <CollectionView.ItemsLayout>
+                                    <GridItemsLayout
+                                        Orientation="Vertical"
+                                        Span="2"
+                                        HorizontalItemSpacing="10"
+                                        VerticalItemSpacing="10" />
+                                </CollectionView.ItemsLayout>
+
+                                <CollectionView.ItemTemplate>
+
+                                    <DataTemplate x:DataType="models:TvChannel">
+
+                                        <Border
+                                            Padding="5"
+                                            MinimumHeightRequest="190"
+                                            BackgroundColor="#F8FFFFFF"
+                                            Stroke="#25FFFFFF"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 19">
+
+                                            <Border.Behaviors>
+                                                <helpers:TapScaleBehavior/>
+                                            </Border.Behaviors>
+
+                                            <Border.Triggers>
+
+                                                <DataTrigger
+                                                    TargetType="Border"
+                                                    Binding="{Binding IsPlaying}"
+                                                    Value="True">
+
+                                                    <Setter
+                                                        Property="Stroke"
+                                                        Value="#D0FFD84A" />
+
+                                                    <Setter
+                                                        Property="StrokeThickness"
+                                                        Value="2.5" />
+
+                                                </DataTrigger>
+
+                                            </Border.Triggers>
+
+                                            <Border.GestureRecognizers>
+
+                                                <TapGestureRecognizer
+                                                    Tapped="OnCartoonCardTapped" />
+
+                                            </Border.GestureRecognizers>
+
+                                            <Border.Shadow>
+                                                <Shadow
+                                                    Brush="#75000000"
+                                                    Offset="0,6"
+                                                    Radius="11"
+                                                    Opacity="0.48" />
+                                            </Border.Shadow>
+
+                                            <Grid
+                                                RowDefinitions="125,Auto,Auto"
+                                                RowSpacing="4">
+
+                                                <Border
+                                                    Grid.Row="0"
+                                                    Background="{StaticResource CardPlaceholderGradient}"
+                                                    Stroke="Transparent"
+                                                    StrokeThickness="1"
+                                                    StrokeShape="RoundRectangle 15">
+
+                                                    <Border.Triggers>
+
+                                                        <DataTrigger
+                                                            TargetType="Border"
+                                                            Binding="{Binding IsPlaying}"
+                                                            Value="True">
+
+                                                            <Setter
+                                                                Property="Stroke"
+                                                                Value="#B0FFD84A" />
+
+                                                            <Setter
+                                                                Property="StrokeThickness"
+                                                                Value="2" />
+
+                                                        </DataTrigger>
+
+                                                    </Border.Triggers>
+
+                                                    <Grid>
+
+                                                        <Image
+                                                            Source="{Binding Logo}"
+                                                            Aspect="AspectFill" />
+
+                                                        <VerticalStackLayout
+                                                            IsVisible="{Binding Logo,
+                                                                Converter={StaticResource StringNullOrEmptyConverter}}"
+                                                            Spacing="1"
+                                                            HorizontalOptions="Center"
+                                                            VerticalOptions="Center">
+
+                                                            <Label
+                                                                Text="📺"
+                                                                FontSize="34"
+                                                                HorizontalOptions="Center" />
+
+                                                            <Label
+                                                                Text="{Binding Initials}"
+                                                                FontSize="20"
+                                                                FontAttributes="Bold"
+                                                                TextColor="White"
+                                                                HorizontalOptions="Center" />
+
+                                                        </VerticalStackLayout>
+
+                                                        <Border
+                                                            Margin="7"
+                                                            Padding="7,3"
+                                                            BackgroundColor="#E5FF315F"
+                                                            Stroke="#80FFFFFF"
+                                                            StrokeThickness="1"
+                                                            StrokeShape="RoundRectangle 8"
+                                                            HorizontalOptions="Start"
+                                                            VerticalOptions="Start">
+
+                                                            <Label
+                                                                Text="LIVE"
+                                                                FontSize="9"
+                                                                FontAttributes="Bold"
+                                                                TextColor="White" />
+
+                                                        </Border>
+
+                                                        <Border
+                                                            Margin="7"
+                                                            Padding="7,3"
+                                                            BackgroundColor="#D208102B"
+                                                            Stroke="#45FFFFFF"
+                                                            StrokeThickness="1"
+                                                            StrokeShape="RoundRectangle 8"
+                                                            HorizontalOptions="End"
+                                                            VerticalOptions="Start"
+                                                            IsVisible="{Binding QualityLabel,
+                                                                Converter={StaticResource IsNotNullConverter}}">
+
+                                                            <Label
+                                                                Text="{Binding QualityLabel}"
+                                                                FontSize="9"
+                                                                FontAttributes="Bold"
+                                                                TextColor="White" />
+
+                                                        </Border>
+
+                                                        <Border
+                                                            WidthRequest="39"
+                                                            HeightRequest="39"
+                                                            Margin="8"
+                                                            Background="{StaticResource BrandGradient}"
+                                                            Stroke="White"
+                                                            StrokeThickness="2"
+                                                            StrokeShape="RoundRectangle 20"
+                                                            HorizontalOptions="End"
+                                                            VerticalOptions="End"
+                                                            InputTransparent="True">
+
+                                                            <Label
+                                                                Text="▶"
+                                                                FontSize="15"
+                                                                TextColor="White"
+                                                                Margin="3,0,0,0"
+                                                                HorizontalOptions="Center"
+                                                                VerticalOptions="Center" />
+
+                                                        </Border>
+
+                                                    </Grid>
+
+                                                </Border>
+
+                                                <Label
+                                                    Grid.Row="1"
+                                                    Margin="4,2,4,0"
+                                                    Text="{Binding Name}"
+                                                    FontSize="14"
+                                                    FontAttributes="Bold"
+                                                    TextColor="{StaticResource DarkText}"
+                                                    MaxLines="1"
+                                                    LineBreakMode="TailTruncation" />
+
+                                                <Grid
+                                                    Grid.Row="2"
+                                                    Margin="4,0,4,3"
+                                                    ColumnDefinitions="Auto,*"
+                                                    ColumnSpacing="5">
+
+                                                    <Label
+                                                        Grid.Column="0"
+                                                        Text="★"
+                                                        FontSize="11"
+                                                        TextColor="{StaticResource CartoonOrange}"
+                                                        VerticalOptions="Center" />
+
+                                                    <Label
+                                                        Grid.Column="1"
+                                                        Text="{Binding CurrentProgrammeTitle,
+                                                            TargetNullValue='Ready to watch'}"
+                                                        FontSize="10"
+                                                        TextColor="#746B8A"
+                                                        MaxLines="1"
+                                                        LineBreakMode="TailTruncation"
+                                                        VerticalOptions="Center" />
+
+                                                </Grid>
+
+                                            </Grid>
+
+                                        </Border>
+
+                                    </DataTemplate>
+
+                                </CollectionView.ItemTemplate>
+
+                                <CollectionView.EmptyView>
+
+                                    <Border
+                                        Margin="8,20"
+                                        Padding="24"
+                                        BackgroundColor="#18FFFFFF"
+                                        Stroke="#35FFFFFF"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 22">
+
+                                        <VerticalStackLayout
+                                            Spacing="9"
+                                            HorizontalOptions="Center">
+
+                                            <Label
+                                                Text="🛸"
+                                                FontSize="54"
+                                                HorizontalOptions="Center" />
+
+                                            <Label
+                                                Text="No cartoons found"
+                                                FontSize="19"
+                                                FontAttributes="Bold"
+                                                TextColor="White"
+                                                HorizontalOptions="Center" />
+
+                                            <Label
+                                                Text="Try another search or reload the channels."
+                                                FontSize="12"
+                                                TextColor="{StaticResource SecondaryText}"
+                                                HorizontalTextAlignment="Center" />
+
+                                            <Button
+                                                Text="Reload"
+                                                Command="{Binding RefreshChannelsCommand}"
+                                                Clicked="OnAnimatedButtonClicked"
+                                                HeightRequest="42"
+                                                Padding="22,0"
+                                                CornerRadius="14"
+                                                BackgroundColor="{StaticResource CartoonPurple}"
+                                                TextColor="White"
+                                                FontAttributes="Bold"
+                                                HorizontalOptions="Center" />
+
+                                        </VerticalStackLayout>
+
+                                    </Border>
+
+                                </CollectionView.EmptyView>
+
+                            </CollectionView>
+
+                        </RefreshView>
+
+                        <!-- Loading overlay -->
+
+                        <Border
+                            Margin="8"
+                            Padding="16"
+                            BackgroundColor="#D5111834"
+                            Stroke="#40FFFFFF"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 18"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            IsVisible="{Binding IsLoading}"
+                            ZIndex="20">
+
+                            <HorizontalStackLayout Spacing="11">
+
+                                <ActivityIndicator
+                                    WidthRequest="34"
+                                    HeightRequest="34"
+                                    IsRunning="{Binding IsLoading}"
+                                    Color="{StaticResource CartoonYellow}" />
+
+                                <VerticalStackLayout
+                                    Spacing="1"
+                                    VerticalOptions="Center">
+
+                                    <Label
+                                        Text="Loading cartoons"
+                                        FontSize="14"
+                                        FontAttributes="Bold"
+                                        TextColor="White" />
+
+                                    <Label
+                                        Text="Finding something fun for you..."
+                                        FontSize="10"
+                                        TextColor="{StaticResource SecondaryText}" />
+
+                                </VerticalStackLayout>
+
+                            </HorizontalStackLayout>
+
+                        </Border>
+
+                    </Grid>
+
+                    <!-- Error banner -->
+
+                    <Border
+                        Grid.RowSpan="3"
+                        Margin="7"
+                        Padding="13,10"
+                        BackgroundColor="#EEB51F4B"
+                        Stroke="#FFFFAFC4"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 15"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="End"
+                        IsVisible="{Binding HasError}"
+                        ZIndex="30">
+
+                        <Grid
+                            ColumnDefinitions="Auto,*,Auto"
+                            ColumnSpacing="9">
+
+                            <Label
+                                Grid.Column="0"
+                                Text="⚠"
+                                FontSize="21"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding ErrorMessage}"
+                                FontSize="12"
+                                FontAttributes="Bold"
+                                TextColor="White"
+                                MaxLines="3"
+                                LineBreakMode="WordWrap"
+                                VerticalOptions="Center" />
+
+                            <Button
+                                Grid.Column="2"
+                                Text="×"
+                                Command="{Binding ClearErrorCommand}"
+                                WidthRequest="31"
+                                HeightRequest="31"
+                                Padding="0"
+                                CornerRadius="10"
+                                FontSize="17"
+                                BackgroundColor="#22FFFFFF"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+            </Border>
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

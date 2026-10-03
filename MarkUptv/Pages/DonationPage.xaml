@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+             xmlns:helpers="clr-namespace:MarkUptv.Helpers"
+             x:Class="MarkUptv.Pages.DonationPage"
+             x:DataType="vm:DonationViewModel"
+             Title="Donate to MarkUp"
+             Shell.NavBarIsVisible="True"
+             BackgroundColor="#0F0C29">
+
+    <ScrollView Padding="20">
+        <VerticalStackLayout Spacing="16" VerticalOptions="Center" MaximumWidthRequest="500">
+
+            <!-- Title -->
+            <Label Text="❤️ Support MarkUp" FontSize="28" FontAttributes="Bold"
+                   TextColor="#FFD700" HorizontalOptions="Center" />
+            <Label Text="Your donation helps us keep the channels free for everyone."
+                   FontSize="14" TextColor="White" HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" Margin="0,0,0,8" />
+
+            <!-- Input Fields -->
+            <Entry Placeholder="Amount (UGX)" Text="{Binding Amount}"
+                   Keyboard="Numeric" BackgroundColor="#1E1E2F" TextColor="White"
+                   PlaceholderColor="#888" FontSize="16" />
+            <Entry Placeholder="Email" Text="{Binding Email}"
+                   Keyboard="Email" BackgroundColor="#1E1E2F" TextColor="White"
+                   PlaceholderColor="#888" FontSize="16" />
+            <Entry Placeholder="Phone Number" Text="{Binding PhoneNumber}"
+                   Keyboard="Telephone" BackgroundColor="#1E1E2F" TextColor="White"
+                   PlaceholderColor="#888" FontSize="16" />
+            <Entry Placeholder="First Name" Text="{Binding FirstName}"
+                   BackgroundColor="#1E1E2F" TextColor="White"
+                   PlaceholderColor="#888" FontSize="16" />
+            <Entry Placeholder="Last Name" Text="{Binding LastName}"
+                   BackgroundColor="#1E1E2F" TextColor="White"
+                   PlaceholderColor="#888" FontSize="16" />
+
+            <!-- Status / Errors -->
+            <Label Text="{Binding StatusMessage}" FontSize="14" TextColor="#BB86FC"
+                   HorizontalOptions="Center" />
+            <Label Text="{Binding ErrorMessage}" FontSize="14" TextColor="#FF6B6B"
+                   HorizontalOptions="Center" IsVisible="{Binding HasError}" />
+
+            <!-- Loading Indicator -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}"
+                               Color="#FFD700" HeightRequest="40" />
+
+            <!-- Donate Button -->
+            <!-- Donate Button -->
+            <Button Text="Donate Now"
+            Clicked="OnDonateClicked"
+            BackgroundColor="#E63946" TextColor="White"
+            CornerRadius="12" HeightRequest="50"
+            FontSize="18" FontAttributes="Bold">
+                <Button.Triggers>
+                    <EventTrigger Event="Clicked">
+                        <helpers:BounceAnimation />
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+            <ActivityIndicator IsRunning="{Binding Donating}"
+                               IsEnabled="{Binding Donating}"
+                                 IsVisible="{Binding Donating}"
+                               >
+                
+            </ActivityIndicator>
+
+            <!-- Clear Error -->
+            <Button Text="Clear Error"
+                    Command="{Binding ClearErrorCommand}"
+                    BackgroundColor="#2C2C3E" TextColor="White"
+                    CornerRadius="8" HeightRequest="40"
+                    IsVisible="{Binding HasError}"
+                    FontSize="14" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,935 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Shell
+    x:Class="MarkUptv.AppShell"
+    x:Name="ShellRoot"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:MarkUptv.Pages"
+    xmlns:root="clr-namespace:MarkUptv"
+    xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+    x:DataType="vm:AppShellViewModel"
+    Title="MarkUpTV"
+    Shell.NavBarIsVisible="True"
+    Shell.TabBarIsVisible="True"
+    Shell.FlyoutBehavior="Flyout"
+    FlyoutIsPresented="{Binding IsFlyoutOpen, Mode=TwoWay}"
+    FlyoutBackgroundColor="{StaticResource DeepSpace}"
+    Shell.BackgroundColor="{StaticResource DeepSpace}"
+    Shell.ForegroundColor="{StaticResource DiamondWhite}"
+    Shell.TitleColor="{StaticResource DiamondGold}"
+    Shell.DisabledColor="#A8B2CD"
+    Shell.TabBarBackgroundColor="{StaticResource DeepSpace}"
+    Shell.TabBarTitleColor="{StaticResource DiamondGold}"
+    Shell.TabBarUnselectedColor="#B9C2DC">
+
+    <!-- =========================================================
+         RESOURCES
+         ========================================================= -->
+
+    <Shell.Resources>
+
+        <ResourceDictionary>
+
+            <!-- Galaxy palette -->
+
+            <Color x:Key="DeepSpace">#0B0E1A</Color>
+            <Color x:Key="MidnightBlue">#121728</Color>
+            <Color x:Key="RoyalGalaxy">#1A2138</Color>
+            <!-- Accent for the flyout's glyphs and buttons. It used to be a
+                 cyan (#E8B54A) that read as an unrelated "tech blue" beside
+                 the navy/gold dashboard, so it is brand gold now; the key
+                 name is kept because it is referenced throughout the shell. -->
+            <Color x:Key="AuroraBlue">#E8B54A</Color>
+            <Color x:Key="CosmicPink">#FF4D8D</Color>
+            <Color x:Key="DiamondGold">#E8B54A</Color>
+            <Color x:Key="DiamondWhite">#EEF3FB</Color>
+            <Color x:Key="TextMuted">#8992B1</Color>
+            <Color x:Key="GlassBorder">#35FFFFFF</Color>
+            <Color x:Key="GlassSurface">#14FFFFFF</Color>
+
+            <!-- Sky gradients -->
+
+            <LinearGradientBrush
+                x:Key="DiamondSkyBrush"
+                StartPoint="0,0"
+                EndPoint="1,1">
+
+                <GradientStop
+                    Color="#101726"
+                    Offset="0" />
+
+                <GradientStop
+                    Color="#0F1D2E"
+                    Offset="0.46" />
+
+                <GradientStop
+                    Color="#0C2230"
+                    Offset="1" />
+
+            </LinearGradientBrush>
+
+            <LinearGradientBrush
+                x:Key="DiamondBrandBrush"
+                StartPoint="0,0"
+                EndPoint="1,1">
+
+                <GradientStop
+                    Color="#F7D98A"
+                    Offset="0" />
+
+                <GradientStop
+                    Color="#E8B54A"
+                    Offset="0.50" />
+
+                <GradientStop
+                    Color="#B8862B"
+                    Offset="1" />
+
+            </LinearGradientBrush>
+
+            <LinearGradientBrush
+                x:Key="DiamondGoldBrush"
+                StartPoint="0,0"
+                EndPoint="1,1">
+
+                <GradientStop
+                    Color="#F7D98C"
+                    Offset="0" />
+
+                <GradientStop
+                    Color="#E8B54A"
+                    Offset="0.52" />
+
+                <GradientStop
+                    Color="#C99230"
+                    Offset="1" />
+
+            </LinearGradientBrush>
+
+            <!-- Built-in Shell flyout item appearance -->
+
+            <Style
+                TargetType="Label"
+                Class="FlyoutItemLabelStyle">
+
+                <Setter
+                    Property="TextColor"
+                    Value="#DCE3F5" />
+
+                <Setter
+                    Property="FontAttributes"
+                    Value="Bold" />
+
+                <Setter
+                    Property="FontSize"
+                    Value="15" />
+
+                <Setter
+                    Property="VerticalTextAlignment"
+                    Value="Center" />
+
+                <Setter
+                    Property="VisualStateManager.VisualStateGroups">
+
+                    <VisualStateGroupList>
+
+                        <VisualStateGroup
+                            x:Name="CommonStates">
+
+                            <VisualState
+                                x:Name="Normal" />
+
+                            <VisualState
+                                x:Name="Selected">
+
+                                <VisualState.Setters>
+
+                                    <Setter
+                                        Property="TextColor"
+                                        Value="{StaticResource DiamondGold}" />
+
+                                </VisualState.Setters>
+
+                            </VisualState>
+
+                            <VisualState
+                                x:Name="Focused">
+
+                                <VisualState.Setters>
+
+                                    <Setter
+                                        Property="TextColor"
+                                        Value="{StaticResource AuroraBlue}" />
+
+                                </VisualState.Setters>
+
+                            </VisualState>
+
+                        </VisualStateGroup>
+
+                    </VisualStateGroupList>
+
+                </Setter>
+
+            </Style>
+
+            <Style
+                TargetType="Image"
+                Class="FlyoutItemImageStyle">
+
+                <Setter
+                    Property="HeightRequest"
+                    Value="24" />
+
+                <Setter
+                    Property="WidthRequest"
+                    Value="24" />
+
+                <Setter
+                    Property="Aspect"
+                    Value="AspectFit" />
+
+                <Setter
+                    Property="HorizontalOptions"
+                    Value="Center" />
+
+                <Setter
+                    Property="VerticalOptions"
+                    Value="Center" />
+
+            </Style>
+
+            <Style
+                TargetType="Label"
+                Class="MenuItemLabelStyle">
+
+                <Setter
+                    Property="TextColor"
+                    Value="#DCE3F5" />
+
+                <Setter
+                    Property="FontAttributes"
+                    Value="Bold" />
+
+                <Setter
+                    Property="FontSize"
+                    Value="14" />
+
+            </Style>
+
+            <Style
+                TargetType="Image"
+                Class="MenuItemImageStyle">
+
+                <Setter
+                    Property="HeightRequest"
+                    Value="22" />
+
+                <Setter
+                    Property="WidthRequest"
+                    Value="22" />
+
+            </Style>
+
+        </ResourceDictionary>
+
+    </Shell.Resources>
+
+    <!-- =========================================================
+         DIAMONDS-IN-THE-SKY HEADER
+         ========================================================= -->
+
+    <Shell.FlyoutHeader>
+
+        <Border
+            Margin="13,14,13,10"
+            Padding="0"
+            Background="{StaticResource DiamondSkyBrush}"
+            Stroke="{StaticResource GlassBorder}"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 28">
+
+            <Border.Shadow>
+
+                <Shadow
+                    Brush="#A0000000"
+                    Offset="0,10"
+                    Radius="22"
+                    Opacity="0.75" />
+
+            </Border.Shadow>
+
+            <Grid
+                Padding="19,18"
+                RowDefinitions="Auto,Auto,Auto"
+                RowSpacing="16"
+                IsClippedToBounds="True">
+
+                <!-- Galaxy glow -->
+
+                <!-- Soft radial glows. These were Borders with a translucent
+                     background and a fully-rounded corner radius, which the
+                     platform clipped into hard-edged grey slabs — the blocks
+                     that made the header look unfinished. -->
+
+                <Ellipse
+                    x:Name="GalaxyHalo"
+                    Grid.RowSpan="3"
+                    WidthRequest="240"
+                    HeightRequest="240"
+                    Margin="-125,-125,0,0"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Start"
+                    InputTransparent="True">
+
+                    <Ellipse.Fill>
+
+                        <RadialGradientBrush
+                            Center="0.5,0.5">
+
+                            <GradientStop
+                                Color="#5CE8B54A"
+                                Offset="0" />
+
+                            <GradientStop
+                                Color="#26E8B54A"
+                                Offset="0.5" />
+
+                            <GradientStop
+                                Color="#00E8B54A"
+                                Offset="1" />
+
+                        </RadialGradientBrush>
+
+                    </Ellipse.Fill>
+
+                </Ellipse>
+
+                <Ellipse
+                    Grid.RowSpan="3"
+                    WidthRequest="200"
+                    HeightRequest="200"
+                    Margin="0,0,-105,-110"
+                    HorizontalOptions="End"
+                    VerticalOptions="End"
+                    InputTransparent="True">
+
+                    <Ellipse.Fill>
+
+                        <RadialGradientBrush
+                            Center="0.5,0.5">
+
+                            <GradientStop
+                                Color="#4DFF4D8D"
+                                Offset="0" />
+
+                            <GradientStop
+                                Color="#1FFF4D8D"
+                                Offset="0.5" />
+
+                            <GradientStop
+                                Color="#00FF4D8D"
+                                Offset="1" />
+
+                        </RadialGradientBrush>
+
+                    </Ellipse.Fill>
+
+                </Ellipse>
+
+                <!-- Animated sky diamonds -->
+
+                <!-- One sparkle geometry, three sizes: the header stars are now
+                     the same shape instead of three different text glyphs. -->
+                <Path
+                    x:Name="DiamondOne"
+                    Grid.RowSpan="3"
+                    Data="M12 1 L14.4 9.6 L23 12 L14.4 14.4 L12 23 L9.6 14.4 L1 12 L9.6 9.6 Z"
+                    Aspect="Uniform"
+                    WidthRequest="26"
+                    HeightRequest="26"
+                    Fill="#F7E7A6"
+                    Opacity="0.82"
+                    Margin="0,10,16,0"
+                    HorizontalOptions="End"
+                    VerticalOptions="Start"
+                    InputTransparent="True" />
+
+                <Path
+                    x:Name="DiamondTwo"
+                    Grid.RowSpan="3"
+                    Data="M12 1 L14.4 9.6 L23 12 L14.4 14.4 L12 23 L9.6 14.4 L1 12 L9.6 9.6 Z"
+                    Aspect="Uniform"
+                    WidthRequest="19"
+                    HeightRequest="19"
+                    Fill="{StaticResource DiamondGold}"
+                    Opacity="0.84"
+                    Margin="16,106,0,0"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Start"
+                    InputTransparent="True" />
+
+                <Path
+                    x:Name="DiamondThree"
+                    Grid.RowSpan="3"
+                    Data="M12 1 L14.4 9.6 L23 12 L14.4 14.4 L12 23 L9.6 14.4 L1 12 L9.6 9.6 Z"
+                    Aspect="Uniform"
+                    WidthRequest="16"
+                    HeightRequest="16"
+                    Fill="{StaticResource DiamondWhite}"
+                    Opacity="0.66"
+                    Margin="0,0,18,16"
+                    HorizontalOptions="End"
+                    VerticalOptions="End"
+                    InputTransparent="True" />
+
+                <!-- Brand -->
+
+                <Grid
+                    Grid.Row="0"
+                    ColumnDefinitions="Auto,*"
+                    ColumnSpacing="12">
+
+                    <Border
+                        x:Name="BrandDiamond"
+                        Grid.Column="0"
+                        WidthRequest="58"
+                        HeightRequest="58"
+                        Padding="5"
+                        Background="{StaticResource DiamondBrandBrush}"
+                        Stroke="#70FFFFFF"
+                        StrokeThickness="2"
+                        StrokeShape="RoundRectangle 19">
+
+                        <Border.Shadow>
+
+                            <Shadow
+                                Brush="#80E8B54A"
+                                Offset="0,5"
+                                Radius="13"
+                                Opacity="0.70" />
+
+                        </Border.Shadow>
+
+                        <!-- Real brand mark, not a diamond glyph. -->
+                        <Image Source="brandmark.png"
+                               Aspect="AspectFit"
+                               Margin="4"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+
+                    </Border>
+
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        Spacing="1"
+                        VerticalOptions="Center">
+
+                        <HorizontalStackLayout
+                            Spacing="5">
+
+                            <Label
+                                Text="MARKUP"
+                                FontSize="24"
+                                FontAttributes="Bold"
+                                CharacterSpacing="0.8"
+                                TextColor="White" />
+
+                            <Label
+                                Text="TV"
+                                FontSize="24"
+                                FontAttributes="Bold"
+                                CharacterSpacing="0.8"
+                                TextColor="{StaticResource DiamondGold}" />
+
+                        </HorizontalStackLayout>
+
+                        <Label
+                            Text="LIVE TV · FILMS · SPORT · NEWS"
+                            FontSize="9"
+                            FontAttributes="Bold"
+                            CharacterSpacing="1.4"
+                            TextColor="{StaticResource AuroraBlue}" />
+
+                        <Label
+                            Text="Global entertainment universe"
+                            FontSize="11"
+                            TextColor="#C7CDE5" />
+
+                    </VerticalStackLayout>
+
+                </Grid>
+
+                <!-- Search -->
+
+                <Border
+                    x:Name="SearchPanel"
+                    Grid.Row="1"
+                    HeightRequest="48"
+                    Padding="5,0,3,0"
+                    BackgroundColor="#D9151931"
+                    Stroke="#50FFFFFF"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 16">
+
+                    <Grid
+                        ColumnDefinitions="Auto,*,Auto"
+                        ColumnSpacing="2">
+
+                        <!-- Vector magnifier: the ⌕ text glyph rendered at a
+                             different weight on every platform. -->
+                        <Path
+                            Grid.Column="0"
+                            Data="F0 M10.6,3.4 A7.2,7.2 0 1,1 10.59,3.4 Z M10.6,5.9 A4.7,4.7 0 1,0 10.61,5.9 Z M15.7,14.3 L20.4,19 L19.1,20.3 L14.4,15.6 Z"
+                            Aspect="Uniform"
+                            WidthRequest="19"
+                            HeightRequest="19"
+                            Margin="12,0,0,0"
+                            Fill="{StaticResource AuroraBlue}"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            InputTransparent="True" />
+
+                        <Entry
+                            Grid.Column="1"
+                            Text="{Binding FlyoutSearchText}"
+                            Placeholder="Search the streaming universe..."
+                            PlaceholderColor="#76809F"
+                            TextColor="White"
+                            BackgroundColor="Transparent"
+                            FontSize="13"
+                            ReturnType="Search"
+                            ReturnCommand="{Binding ExecuteFlyoutSearchCommand}"
+                            ClearButtonVisibility="WhileEditing"
+                            VerticalOptions="Center" />
+
+                        <!-- Submit. It carries the same vector arrow language as
+                             the rest of the app; the old content was a "◆" text
+                             glyph, which sat off-centre and rendered at a
+                             different weight on every platform. -->
+                        <Border
+                            Grid.Column="2"
+                            WidthRequest="39"
+                            HeightRequest="39"
+                            Padding="0"
+                            BackgroundColor="{StaticResource AuroraBlue}"
+                            Stroke="Transparent"
+                            StrokeShape="RoundRectangle 13"
+                            VerticalOptions="Center"
+                            SemanticProperties.Description="Search MarkUpTV">
+
+                            <Border.GestureRecognizers>
+
+                                <TapGestureRecognizer
+                                    Command="{Binding ExecuteFlyoutSearchCommand}" />
+
+                            </Border.GestureRecognizers>
+
+                            <Path
+                                Data="M4.6,12 H19.4 M13.2,5.6 L19.8,12 L13.2,18.4"
+                                Aspect="Uniform"
+                                WidthRequest="19"
+                                HeightRequest="19"
+                                Stroke="#0B0E1A"
+                                StrokeThickness="2.4"
+                                StrokeLineCap="Round"
+                                StrokeLineJoin="Round"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                InputTransparent="True" />
+
+                        </Border>
+
+                    </Grid>
+
+                </Border>
+
+                <!-- Status strip -->
+
+                <Grid
+                    Grid.Row="2"
+                    ColumnDefinitions="*,Auto"
+                    ColumnSpacing="10">
+
+                    <HorizontalStackLayout
+                        Grid.Column="0"
+                        Spacing="7">
+
+                        <Border
+                            x:Name="LiveStatusDot"
+                            WidthRequest="8"
+                            HeightRequest="8"
+                            BackgroundColor="#5CFF88"
+                            Stroke="White"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 4"
+                            VerticalOptions="Center" />
+
+                        <Label
+                            Text="LIVE NETWORK ONLINE"
+                            FontSize="9"
+                            FontAttributes="Bold"
+                            CharacterSpacing="1"
+                            TextColor="#BFC7E5"
+                            VerticalOptions="Center" />
+
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout
+                        Grid.Column="1"
+                        Spacing="6">
+
+                        <ActivityIndicator
+                            WidthRequest="18"
+                            HeightRequest="18"
+                            IsVisible="{Binding IsLoading}"
+                            IsRunning="{Binding IsLoading}"
+                            Color="{StaticResource DiamondGold}" />
+
+                        <Label
+                            Text="{Binding CurrentSectionTitle}"
+                            FontSize="10"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource DiamondGold}"
+                            VerticalOptions="Center" />
+
+                    </HorizontalStackLayout>
+
+                </Grid>
+
+            </Grid>
+
+        </Border>
+
+    </Shell.FlyoutHeader>
+
+    <!-- Footer -->
+
+    <Shell.FlyoutFooter>
+
+        <Border
+            Margin="13,8,13,16"
+            Padding="14,11"
+            BackgroundColor="#0FFFFFFF"
+            Stroke="#25FFFFFF"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 16">
+
+            <Grid
+                ColumnDefinitions="Auto,*,Auto"
+                ColumnSpacing="9">
+
+                <Path
+                    Grid.Column="0"
+                    Data="M12 1 L14.4 9.6 L23 12 L14.4 14.4 L12 23 L9.6 14.4 L1 12 L9.6 9.6 Z"
+                    Aspect="Uniform"
+                    WidthRequest="17"
+                    HeightRequest="17"
+                    Fill="{StaticResource DiamondGold}"
+                    VerticalOptions="Center" />
+
+                <VerticalStackLayout
+                    Grid.Column="1"
+                    Spacing="0">
+
+                    <Label
+                        Text="MarkUpTV Premium"
+                        FontSize="11"
+                        FontAttributes="Bold"
+                        TextColor="White" />
+
+                    <Label
+                        Text="Watch beyond the horizon"
+                        FontSize="9"
+                        TextColor="{StaticResource TextMuted}" />
+
+                </VerticalStackLayout>
+
+                <Path
+                    Grid.Column="2"
+                    Data="M9.6,4.8 L16.8,12 L9.6,19.2"
+                    Aspect="Uniform"
+                    WidthRequest="9"
+                    HeightRequest="16"
+                    Stroke="{StaticResource AuroraBlue}"
+                    StrokeThickness="2.6"
+                    StrokeLineCap="Round"
+                    StrokeLineJoin="Round"
+                    VerticalOptions="Center" />
+
+            </Grid>
+
+        </Border>
+
+    </Shell.FlyoutFooter>
+
+    <!-- =========================================================
+         FLYOUT MENU
+         ========================================================= -->
+
+    <!-- Shell builds its own flyout rows out of plain MAUI Labels, so they
+         inherited the app's implicit Label style —
+         {AppThemeBinding Light=Black, Dark=White} — and on a device in light
+         mode the drawer painted them black on the navy background: measured at
+         1.07:1, i.e. invisible. Setting FlyoutContent replaces those rows with
+         the tree below, where every colour is explicit and every entry carries
+         the same flat vector mark as the dashboard. The rows themselves are
+         built in AppShell.xaml.cs, a few per dispatch, so filling the menu is
+         never a long main-thread block. -->
+
+    <Shell.FlyoutContent>
+
+        <ScrollView VerticalScrollBarVisibility="Never">
+
+            <VerticalStackLayout
+                x:Name="FlyoutMenu"
+                Padding="13,0,13,14"
+                Spacing="4" />
+
+        </ScrollView>
+
+    </Shell.FlyoutContent>
+
+    <!-- =========================================================
+         HIDDEN ROOT PAGES
+         ========================================================= -->
+
+    <ShellContent
+        Route="LoadingPage"
+        ContentTemplate="{DataTemplate pages:LoadingPage}"
+        FlyoutItemIsVisible="False" />
+
+    <ShellContent
+        Route="PaymentRequiredPage"
+        ContentTemplate="{DataTemplate pages:PaymentRequiredPage}"
+        FlyoutItemIsVisible="False" />
+
+    <ShellContent
+        Route="SearchPage"
+        ContentTemplate="{DataTemplate pages:SearchPage}"
+        FlyoutItemIsVisible="False" />
+    <ShellContent
+        Route="MatchThreadPage"
+        ContentTemplate="{DataTemplate pages:MatchThreadPage}"
+        FlyoutItemIsVisible="False" />
+
+    <!-- =========================================================
+         MAIN TAB UNIVERSE
+         ========================================================= -->
+
+    <FlyoutItem
+        Title="Dashboard"
+        FlyoutDisplayOptions="AsSingleItem">
+
+        <Tab
+            Title="Home">
+
+            <ShellContent
+                Route="MainPage"
+                ContentTemplate="{DataTemplate root:MainPage}" />
+
+        </Tab>
+
+        <Tab
+            Title="Sports">
+
+            <ShellContent
+                Route="SportsPage"
+                ContentTemplate="{DataTemplate pages:Sports}" />
+
+        </Tab>
+
+        <Tab
+            Title="News">
+
+            <ShellContent
+                Route="NewsPage"
+                ContentTemplate="{DataTemplate pages:News}" />
+
+        </Tab>
+
+        <Tab
+            Title="Movies">
+
+            <ShellContent
+                Route="MoviesPage"
+                ContentTemplate="{DataTemplate pages:MoviesPage}" />
+
+        </Tab>
+
+        <Tab
+            Title="Music">
+
+            <ShellContent
+                Route="MusicPage"
+                ContentTemplate="{DataTemplate pages:MusicPage}" />
+
+        </Tab>
+
+    </FlyoutItem>
+
+    <!-- =========================================================
+         FEATURED FLYOUT DESTINATIONS
+         ========================================================= -->
+
+    <FlyoutItem
+        Title="Football">
+
+        <ShellContent
+            Route="FootballPage"
+            ContentTemplate="{DataTemplate pages:FootballPage}" />
+
+    </FlyoutItem>
+    <FlyoutItem
+        Title="World Channels">
+
+        <ShellContent
+            Route="WorldChannelsPage"
+            ContentTemplate="{DataTemplate pages:WorldChannelsPage}" />
+
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Community Hub">
+
+        <ShellContent
+            Route="CommunityHubPage"
+            ContentTemplate="{DataTemplate pages:CommunityHubPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Community">
+
+        <ShellContent
+            Route="SocialPage"
+            ContentTemplate="{DataTemplate pages:SocialPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Recently Watched">
+
+        <ShellContent
+            Route="RecentlyWatchedPage"
+            ContentTemplate="{DataTemplate pages:RecentlyWatchedPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Support">
+
+        <ShellContent
+            Route="DonationPage"
+            ContentTemplate="{DataTemplate pages:DonationPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Cartoons">
+
+        <ShellContent
+            Route="CartoonPage"
+            ContentTemplate="{DataTemplate pages:Cartoonspage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Discovery">
+
+        <ShellContent
+            Route="DiscoveryPage"
+            ContentTemplate="{DataTemplate pages:DiscoveryPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Fashion">
+
+        <ShellContent
+            Route="FashionPage"
+            ContentTemplate="{DataTemplate pages:FashionPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Gospel">
+
+        <ShellContent
+            Route="GospelPage"
+            ContentTemplate="{DataTemplate pages:GospelPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Lifestyle">
+
+        <ShellContent
+            Route="Lifestyle"
+            ContentTemplate="{DataTemplate pages:Lifestyle}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Religious">
+
+        <ShellContent
+            Route="ReligiousTvPage"
+            ContentTemplate="{DataTemplate pages:ReligiousTvPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Local TV">
+
+        <ShellContent
+            Route="LocalPage"
+            ContentTemplate="{DataTemplate pages:LocalPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="European Football">
+
+        <ShellContent
+            Route="EuropeanSportsPage"
+            ContentTemplate="{DataTemplate pages:EuropeanSportsPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Wildlife">
+
+        <ShellContent
+            Route="WildlifePage"
+            ContentTemplate="{DataTemplate pages:WildlifePage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Adults 18+">
+
+        <ShellContent
+            Route="AdultsPage"
+            ContentTemplate="{DataTemplate pages:AdultsPage}" />
+
+    </FlyoutItem>
+
+    <!-- Free film catalogue: stream now or save inside the app for offline
+         playback. Distinct from the movie CHANNELS entry above. -->
+    <FlyoutItem
+        Title="Movies &amp; Films">
+
+        <ShellContent
+            Route="MovieCatalogPage"
+            ContentTemplate="{DataTemplate pages:MovieCatalogPage}" />
+
+    </FlyoutItem>
+
+    <!-- The category shortcuts used to be Shell menu items here. Shell's own
+         flyout item list is replaced by FlyoutContent above, so a MenuItem at
+         this level is no longer drawn anywhere; the same
+         category|title|accent payloads are declared in AppShell.xaml.cs as
+         MenuCategories and rendered by the flyout menu. -->
+
+</Shell>

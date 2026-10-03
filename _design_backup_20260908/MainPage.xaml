@@ -1,0 +1,3373 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="MarkUptv.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:MarkUptv.Helpers"
+    xmlns:conv="clr-namespace:MarkUptv.Converters"
+    xmlns:models="clr-namespace:MarkUptv.Models"
+    xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+    x:Name="PageRoot"
+    x:DataType="vm:MainPageViewModel"
+    Title="Home"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+
+        <!-- Colours -->
+
+        <Color x:Key="DeepSky">#060816</Color>
+        <Color x:Key="MidnightPanel">#10162E</Color>
+        <Color x:Key="RaisedPanel">#171F3E</Color>
+        <Color x:Key="DiamondWhite">#F8FBFF</Color>
+        <Color x:Key="DiamondGold">#FFD95A</Color>
+        <Color x:Key="DiamondBlue">#2BD8FF</Color>
+        <Color x:Key="DiamondPurple">#8057FF</Color>
+        <Color x:Key="DiamondPink">#FF3E91</Color>
+        <Color x:Key="MutedText">#929BBE</Color>
+        <Color x:Key="GlassBorder">#30FFFFFF</Color>
+
+        <LinearGradientBrush
+            x:Key="PageSkyBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#050714"
+                Offset="0" />
+
+            <GradientStop
+                Color="#11163A"
+                Offset="0.46" />
+
+            <GradientStop
+                Color="#28113D"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <LinearGradientBrush
+            x:Key="DiamondBrandBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#2BD8FF"
+                Offset="0" />
+
+            <GradientStop
+                Color="#8057FF"
+                Offset="0.50" />
+
+            <GradientStop
+                Color="#FF3E91"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <!-- Sky gradient for the AI chat surface (shared with AppShell) -->
+
+        <LinearGradientBrush
+            x:Key="DiamondSkyBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#171A42"
+                Offset="0" />
+
+            <GradientStop
+                Color="#35236D"
+                Offset="0.46" />
+
+            <GradientStop
+                Color="#672960"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <!-- AI chat converters -->
+
+        <conv:RoleToVisibleConverter x:Key="RoleToVisibleConverter" />
+        <conv:RoleToBgConverter x:Key="RoleToBgConverter" />
+        <conv:RoleToStrokeConverter x:Key="RoleToStrokeConverter" />
+        <conv:RoleToAlignmentConverter x:Key="RoleToAlignmentConverter" />
+        <conv:CountGreaterThanZeroConverter x:Key="CountGreaterThanZeroConverter" />
+        <helpers:InvertBoolConverter x:Key="NotBoolConverter" />
+
+        <LinearGradientBrush
+            x:Key="HeroBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#182B66"
+                Offset="0" />
+
+            <GradientStop
+                Color="#482E91"
+                Offset="0.52" />
+
+            <GradientStop
+                Color="#922C73"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <LinearGradientBrush
+            x:Key="LiveMatchBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#FF315F"
+                Offset="0" />
+
+            <GradientStop
+                Color="#8D174A"
+                Offset="0.55" />
+
+            <GradientStop
+                Color="#3B163F"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <!-- Section text -->
+
+        <Style
+            x:Key="SectionTitleStyle"
+            TargetType="Label">
+
+            <Setter
+                Property="FontSize"
+                Value="20" />
+
+            <Setter
+                Property="FontAttributes"
+                Value="Bold" />
+
+            <Setter
+                Property="CharacterSpacing"
+                Value="0.4" />
+
+            <Setter
+                Property="TextColor"
+                Value="White" />
+
+        </Style>
+
+        <Style
+            x:Key="SectionCaptionStyle"
+            TargetType="Label">
+
+            <Setter
+                Property="FontSize"
+                Value="12" />
+
+            <Setter
+                Property="TextColor"
+                Value="{StaticResource MutedText}" />
+
+        </Style>
+
+        <!-- Buttons -->
+
+        <Style
+            x:Key="DiamondButtonStyle"
+            TargetType="Button">
+
+            <Setter
+                Property="HeightRequest"
+                Value="43" />
+
+            <Setter
+                Property="Padding"
+                Value="17,0" />
+
+            <Setter
+                Property="CornerRadius"
+                Value="14" />
+
+            <Setter
+                Property="FontAttributes"
+                Value="Bold" />
+
+            <Setter
+                Property="CharacterSpacing"
+                Value="0.5" />
+
+            <Setter
+                Property="FontSize"
+                Value="12" />
+
+            <Setter
+                Property="BackgroundColor"
+                Value="{StaticResource DiamondPurple}" />
+
+            <Setter
+                Property="TextColor"
+                Value="White" />
+
+            <Setter
+                Property="BorderColor"
+                Value="#55FFFFFF" />
+
+            <Setter
+                Property="BorderWidth"
+                Value="1" />
+
+        </Style>
+
+        <Style
+            x:Key="GlassButtonStyle"
+            TargetType="Button">
+
+            <Setter
+                Property="HeightRequest"
+                Value="40" />
+
+            <Setter
+                Property="Padding"
+                Value="15,0" />
+
+            <Setter
+                Property="CornerRadius"
+                Value="14" />
+
+            <Setter
+                Property="FontAttributes"
+                Value="Bold" />
+
+            <Setter
+                Property="CharacterSpacing"
+                Value="0.5" />
+
+            <Setter
+                Property="FontSize"
+                Value="12" />
+
+            <Setter
+                Property="BackgroundColor"
+                Value="#14FFFFFF" />
+
+            <Setter
+                Property="TextColor"
+                Value="White" />
+
+            <Setter
+                Property="BorderColor"
+                Value="#28FFFFFF" />
+
+            <Setter
+                Property="BorderWidth"
+                Value="1" />
+
+        </Style>
+
+        <!-- Cards -->
+
+        <Style
+            x:Key="DiamondCardStyle"
+            TargetType="Border">
+
+            <Setter
+                Property="BackgroundColor"
+                Value="#DD111731" />
+
+            <Setter
+                Property="Stroke"
+                Value="#2AFFFFFF" />
+
+            <Setter
+                Property="StrokeThickness"
+                Value="1" />
+
+            <Setter
+                Property="StrokeShape"
+                Value="RoundRectangle 21" />
+
+            <Setter
+                Property="Scale"
+                Value="1" />
+
+            <Setter
+                Property="VisualStateManager.VisualStateGroups">
+
+                <VisualStateGroupList>
+
+                    <VisualStateGroup
+                        x:Name="CommonStates">
+
+                        <VisualState
+                            x:Name="Normal" />
+
+                        <VisualState
+                            x:Name="PointerOver">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource DiamondBlue}" />
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="1.018" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                        <VisualState
+                            x:Name="Focused">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource DiamondGold}" />
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="1.025" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                    </VisualStateGroup>
+
+                </VisualStateGroupList>
+
+            </Setter>
+
+        </Style>
+
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <StaticResource Key="PageSkyBrush" />
+    </ContentPage.Background>
+
+    <Grid RowDefinitions="*,Auto">
+
+        <RefreshView
+            Grid.Row="0"
+            Command="{Binding PullToRefreshCommand}"
+            IsRefreshing="{Binding IsPageRefreshing}"
+            RefreshColor="{StaticResource DiamondPink}">
+
+            <ScrollView
+                VerticalScrollBarVisibility="Never">
+
+                <VerticalStackLayout
+                    x:Name="ContentStack"
+                    Padding="{OnIdiom Phone='15,25,15,105',
+                                      Tablet='24,30,24,110',
+                                      Desktop='31,30,31,115',
+                                      TV='48,40,48,125'}"
+                    Spacing="24"
+                    MaximumWidthRequest="1550"
+                    HorizontalOptions="Center">
+
+                    <!-- Background sky diamonds -->
+
+                    <Grid
+                        HeightRequest="1"
+                        InputTransparent="True">
+
+                        <Label
+                            x:Name="FloatingDiamondOne"
+                            Text="◆"
+                            FontSize="86"
+                            TextColor="#122BD8FF"
+                            Margin="-35,-45,0,0"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Start" />
+
+                        <Label
+                            x:Name="FloatingDiamondTwo"
+                            Text="◇"
+                            FontSize="72"
+                            TextColor="#12FF3E91"
+                            Margin="0,-30,-22,0"
+                            HorizontalOptions="End"
+                            VerticalOptions="Start" />
+
+                    </Grid>
+
+                    <!-- Header -->
+
+                    <Grid
+                        x:Name="HeaderPanel"
+                        ColumnDefinitions="Auto,*,Auto"
+                        ColumnSpacing="12">
+
+                        <Border
+                            Grid.Column="0"
+                            WidthRequest="58"
+                            HeightRequest="58"
+                            Background="{StaticResource DiamondBrandBrush}"
+                            Stroke="#70FFFFFF"
+                            StrokeThickness="2"
+                            StrokeShape="RoundRectangle 19">
+
+                            <Border.Shadow>
+
+                                <Shadow
+                                    Brush="#702BD8FF"
+                                    Offset="0,6"
+                                    Radius="13"
+                                    Opacity="0.65" />
+
+                            </Border.Shadow>
+
+                            <Grid InputTransparent="True">
+
+                                <Label
+                                    Text="◆"
+                                    FontSize="31"
+                                    TextColor="White"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" />
+
+                                <Label
+                                    Text="TV"
+                                    FontSize="9"
+                                    FontAttributes="Bold"
+                                    TextColor="{StaticResource DeepSky}"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" />
+
+                            </Grid>
+
+                        </Border>
+
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="1"
+                            VerticalOptions="Center">
+
+                            <Label
+                                Text="{Binding GreetingMessage}"
+                                FontSize="10.5"
+                                FontAttributes="Bold"
+                                CharacterSpacing="1.3"
+                                TextTransform="Uppercase"
+                                TextColor="{StaticResource DiamondBlue}" />
+
+                            <Label
+                                Text="Welcome to MarkUpTV"
+                                FontSize="{OnIdiom Phone=23,
+                                                   Tablet=27,
+                                                   Desktop=29,
+                                                   TV=36}"
+                                FontAttributes="Bold"
+                                CharacterSpacing="0.2"
+                                TextColor="White"
+                                MaxLines="1"
+                                LineBreakMode="TailTruncation" />
+
+                            <HorizontalStackLayout Spacing="6">
+
+                                <Label
+                                    Text="◆"
+                                    FontSize="7"
+                                    TextColor="{StaticResource DiamondGold}"
+                                    VerticalOptions="Center" />
+
+                                <Label
+                                    Text="{Binding CurrentDate}"
+                                    FontSize="11"
+                                    CharacterSpacing="0.5"
+                                    TextColor="{StaticResource MutedText}"
+                                    VerticalOptions="Center" />
+
+                            </HorizontalStackLayout>
+
+                        </VerticalStackLayout>
+
+                        <HorizontalStackLayout
+                            Grid.Column="2"
+                            Spacing="8"
+                            VerticalOptions="Center">
+
+                            <VerticalStackLayout
+                                Spacing="0"
+                                VerticalOptions="Center">
+
+                                <Label
+                                    Text="{Binding CurrentTime}"
+                                    FontSize="20"
+                                    FontAttributes="Bold"
+                                    TextColor="{StaticResource DiamondGold}"
+                                    HorizontalTextAlignment="End" />
+
+                                <Label
+                                    Text="LOCAL TIME"
+                                    FontSize="8"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="1"
+                                    TextColor="{StaticResource MutedText}" />
+
+                            </VerticalStackLayout>
+
+                            <Border
+                                WidthRequest="48"
+                                HeightRequest="48"
+                                BackgroundColor="#16FFFFFF"
+                                Stroke="#30FFFFFF"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 16">
+
+                                <Border.Behaviors>
+                                    <helpers:TapScaleBehavior/>
+                                </Border.Behaviors>
+                                <Border.GestureRecognizers>
+
+                                    <TapGestureRecognizer
+                                        Command="{Binding OpenNotificationsCommand}" />
+
+                                </Border.GestureRecognizers>
+
+                                <Grid
+                                    InputTransparent="True"
+                                    CascadeInputTransparent="True">
+
+                                    <Label
+                                        Text="✦"
+                                        FontSize="24"
+                                        TextColor="{StaticResource DiamondGold}"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center" />
+
+                                    <Border
+                                        WidthRequest="10"
+                                        HeightRequest="10"
+                                        Margin="0,7,7,0"
+                                        BackgroundColor="{StaticResource DiamondPink}"
+                                        Stroke="White"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 5"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Start"
+                                        IsVisible="{Binding HasUnreadNotifications}" />
+
+                                </Grid>
+
+                            </Border>
+
+                        </HorizontalStackLayout>
+
+                    </Grid>
+
+                    <!-- Search -->
+
+                    <Border
+                        x:Name="SearchPanel"
+                        HeightRequest="57"
+                        Padding="5,0,3,0"
+                        BackgroundColor="#E70A0E22"
+                        Stroke="#3CFFFFFF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 19">
+
+                        <Grid
+                            ColumnDefinitions="Auto,*,Auto"
+                            ColumnSpacing="2">
+
+                            <Label
+                                Grid.Column="0"
+                                Text="⌕"
+                                WidthRequest="45"
+                                FontSize="30"
+                                TextColor="{StaticResource DiamondBlue}"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center"
+                                InputTransparent="True" />
+
+                            <Entry
+                                Grid.Column="1"
+                                Text="{Binding SearchQueryText}"
+                                Placeholder="Search channels, news, movies and more..."
+                                PlaceholderColor="#7982A3"
+                                TextColor="White"
+                                BackgroundColor="Transparent"
+                                FontSize="14"
+                                ReturnType="Search"
+                                ReturnCommand="{Binding SearchCommand}"
+                                ClearButtonVisibility="WhileEditing"
+                                VerticalOptions="Center" />
+
+                            <Button
+                                Grid.Column="2"
+                                Text="◆"
+                                Command="{Binding SearchCommand}"
+                                Clicked="OnAnimatedButtonClicked"
+                                WidthRequest="43"
+                                HeightRequest="43"
+                                Padding="0"
+                                CornerRadius="14"
+                                FontSize="17"
+                                BackgroundColor="{StaticResource DiamondPurple}"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+
+                        </Grid>
+
+                    </Border>
+
+                    <!-- Quick explore -->
+
+                    <VerticalStackLayout Spacing="11">
+
+                        <Grid ColumnDefinitions="*,Auto">
+
+                            <VerticalStackLayout Spacing="1">
+
+                                <Label
+                                    Text="Explore the universe"
+                                    Style="{StaticResource SectionTitleStyle}" />
+
+                                <Label
+                                    Text="Jump directly into your favourite section."
+                                    Style="{StaticResource SectionCaptionStyle}" />
+
+                            </VerticalStackLayout>
+
+                            <Button
+                                Grid.Column="1"
+                                Text="Search"
+                                Command="{Binding OpenSearchCommand}"
+                                Clicked="OnAnimatedButtonClicked"
+                                Style="{StaticResource GlassButtonStyle}" />
+
+                        </Grid>
+
+                        <ScrollView
+                            Orientation="Horizontal"
+                            HorizontalScrollBarVisibility="Never">
+
+                            <HorizontalStackLayout Spacing="9">
+
+                                <Button
+                                    Text="◆  Live TV"
+                                    Command="{Binding GoToAllCommand}"
+                                    Clicked="OnAnimatedButtonClicked"
+                                    Style="{StaticResource DiamondButtonStyle}"
+                                    HeightRequest="44"
+                                    CornerRadius="22"
+                                    Padding="20,0"
+                                    FontSize="12.5" />
+
+                                <Button
+                                    Text="⚽  Sports"
+                                    Command="{Binding GoToSportsCommand}"
+                                    Clicked="OnAnimatedButtonClicked"
+                                    Style="{StaticResource GlassButtonStyle}"
+                                    HeightRequest="44"
+                                    CornerRadius="22"
+                                    Padding="19,0"
+                                    FontSize="12.5" />
+
+                                <Button
+                                    Text="📰  News"
+                                    Command="{Binding GoToNewsCommand}"
+                                    Clicked="OnAnimatedButtonClicked"
+                                    Style="{StaticResource GlassButtonStyle}"
+                                    HeightRequest="44"
+                                    CornerRadius="22"
+                                    Padding="19,0"
+                                    FontSize="12.5" />
+
+                                <Button
+                                    Text="🎬  Movies"
+                                    Command="{Binding GoToMoviesCommand}"
+                                    Clicked="OnAnimatedButtonClicked"
+                                    Style="{StaticResource GlassButtonStyle}"
+                                    HeightRequest="44"
+                                    CornerRadius="22"
+                                    Padding="19,0"
+                                    FontSize="12.5" />
+
+                                <Button
+                                    Text="♪  Music"
+                                    Command="{Binding GoToMusicCommand}"
+                                    Clicked="OnAnimatedButtonClicked"
+                                    Style="{StaticResource GlassButtonStyle}"
+                                    HeightRequest="44"
+                                    CornerRadius="22"
+                                    Padding="19,0"
+                                    FontSize="12.5" />
+
+                                <Button
+                                    Text="💬  Community"
+                                    Command="{Binding GoToSocialCommand}"
+                                    Clicked="OnAnimatedButtonClicked"
+                                    Style="{StaticResource GlassButtonStyle}"
+                                    HeightRequest="44"
+                                    CornerRadius="22"
+                                    Padding="19,0"
+                                    FontSize="12.5" />
+
+                                <Button
+                                    Text="💎  Support"
+                                    Command="{Binding GoToDonationCommand}"
+                                    Clicked="OnAnimatedButtonClicked"
+                                    Style="{StaticResource GlassButtonStyle}"
+                                    HeightRequest="44"
+                                    CornerRadius="22"
+                                    Padding="19,0"
+                                    FontSize="12.5" />
+
+                            </HorizontalStackLayout>
+
+                        </ScrollView>
+
+                    </VerticalStackLayout>
+
+                    <!-- Feature grid -->
+
+                    <FlexLayout
+                        BindableLayout.ItemsSource="{Binding PrimaryFeatures}"
+                        Wrap="Wrap"
+                        Direction="Row"
+                        AlignItems="Start"
+                        JustifyContent="Start">
+
+                        <BindableLayout.ItemTemplate>
+
+                            <DataTemplate
+                                x:DataType="models:DashboardFeature">
+
+                                <Border
+                                    WidthRequest="{OnIdiom Phone=158,
+                                                           Tablet=184,
+                                                           Desktop=205,
+                                                           TV=245}"
+                                    HeightRequest="{OnIdiom Phone=122,
+                                                            Tablet=127,
+                                                            Desktop=132,
+                                                            TV=151}"
+                                    Margin="0,0,11,11"
+                                    Padding="13"
+                                    Style="{StaticResource DiamondCardStyle}">
+
+                                    <Border.Behaviors>
+                                        <helpers:TapScaleBehavior/>
+                                    </Border.Behaviors>
+                                    <Border.GestureRecognizers>
+
+                                        <TapGestureRecognizer
+                                            Tapped="OnDashboardFeatureCardTapped"
+                                            CommandParameter="{Binding .}" />
+
+                                    </Border.GestureRecognizers>
+
+                                    <Border.Shadow>
+
+                                        <Shadow
+                                            Brush="#57000000"
+                                            Offset="0,6"
+                                            Radius="11"
+                                            Opacity="0.48" />
+
+                                    </Border.Shadow>
+
+                                    <Grid
+                                        InputTransparent="True"
+                                        CascadeInputTransparent="True"
+                                        RowDefinitions="Auto,*,Auto"
+                                        RowSpacing="5">
+
+                                        <Border
+                                            WidthRequest="{OnIdiom Phone=37, Tablet=41, Desktop=47, TV=58}"
+                                            HeightRequest="{OnIdiom Phone=37, Tablet=41, Desktop=47, TV=58}"
+                                            Padding="0"
+                                            BackgroundColor="#16FFFFFF"
+                                            Stroke="#32FFFFFF"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 14"
+                                            HorizontalOptions="Start">
+
+                                            <Label
+                                                Text="{Binding Icon}"
+                                                FontSize="{OnIdiom Phone=18, Tablet=20, Desktop=24, TV=30}"
+                                                TextColor="{StaticResource DiamondGold}"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center" />
+
+                                        </Border>
+
+                                        <VerticalStackLayout
+                                            Grid.Row="1"
+                                            Spacing="3"
+                                            VerticalOptions="Center">
+
+                                            <Label
+                                                Text="{Binding Title}"
+                                                FontSize="{OnIdiom Phone=15,
+                                                                   Tablet=16,
+                                                                   Desktop=16,
+                                                                   TV=19}"
+                                                FontAttributes="Bold"
+                                                TextColor="White"
+                                                MaxLines="1"
+                                                LineBreakMode="TailTruncation" />
+
+                                            <Label
+                                                Text="{Binding Subtitle}"
+                                                FontSize="{OnIdiom Phone=11,
+                                                                   Tablet=12,
+                                                                   Desktop=12,
+                                                                   TV=14}"
+                                                TextColor="{StaticResource MutedText}"
+                                                MaxLines="1"
+                                                LineBreakMode="TailTruncation" />
+
+                                        </VerticalStackLayout>
+
+                                        <HorizontalStackLayout
+                                            Grid.Row="2"
+                                            Spacing="5">
+
+                                            <Label
+                                                Text="Open"
+                                                FontSize="10"
+                                                FontAttributes="Bold"
+                                                TextColor="{StaticResource DiamondGold}" />
+
+                                            <Label
+                                                Text="›"
+                                                FontSize="16"
+                                                TextColor="White"
+                                                VerticalOptions="Center" />
+
+                                        </HorizontalStackLayout>
+
+                                    </Grid>
+
+                                </Border>
+
+                            </DataTemplate>
+
+                        </BindableLayout.ItemTemplate>
+
+                    </FlexLayout>
+
+                    <!-- Featured hero -->
+
+                    <Border
+                        x:Name="HeroPanel"
+                        IsVisible="{Binding HasFeaturedContent}"
+                        HeightRequest="{OnIdiom Phone=280,
+                                                Tablet=320,
+                                                Desktop=355,
+                                                TV=420}"
+                        Background="{StaticResource HeroBrush}"
+                        Stroke="#45FFFFFF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 28">
+
+                        <Border.Behaviors>
+                            <helpers:TapScaleBehavior/>
+                        </Border.Behaviors>
+                        <Border.GestureRecognizers>
+
+                            <TapGestureRecognizer
+                                Command="{Binding GoToFeaturedCommand}" />
+
+                        </Border.GestureRecognizers>
+
+                        <Border.Shadow>
+
+                            <Shadow
+                                Brush="#85000000"
+                                Offset="0,11"
+                                Radius="21"
+                                Opacity="0.72" />
+
+                        </Border.Shadow>
+
+                        <Grid IsClippedToBounds="True">
+
+                            <Image
+                                Source="{Binding FeaturedImageUrl}"
+                                Aspect="AspectFill"
+                                Opacity="0.37"
+                                InputTransparent="True" />
+
+                            <BoxView
+                                Color="#080A19"
+                                Opacity="0.44"
+                                InputTransparent="True" />
+
+                            <Label
+                                Text="◆"
+                                FontSize="110"
+                                TextColor="#18FFFFFF"
+                                Margin="0,-20,-20,0"
+                                HorizontalOptions="End"
+                                VerticalOptions="Start"
+                                InputTransparent="True" />
+
+                            <Grid
+                                InputTransparent="True"
+                                CascadeInputTransparent="True"
+                                Padding="{OnIdiom Phone=21,
+                                                  Tablet=27,
+                                                  Desktop=32,
+                                                  TV=43}"
+                                RowDefinitions="Auto,*,Auto">
+
+                                <Border
+                                    Padding="11,5"
+                                    BackgroundColor="#2A2BD8FF"
+                                    Stroke="#562BD8FF"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    HorizontalOptions="Start">
+
+                                    <HorizontalStackLayout Spacing="6">
+
+                                        <Label
+                                            Text="◆"
+                                            FontSize="9"
+                                            TextColor="{StaticResource DiamondGold}" />
+
+                                        <Label
+                                            Text="{Binding FeaturedCategory}"
+                                            FontSize="10"
+                                            FontAttributes="Bold"
+                                            CharacterSpacing="1"
+                                            TextColor="{StaticResource DiamondBlue}" />
+
+                                    </HorizontalStackLayout>
+
+                                </Border>
+
+                                <VerticalStackLayout
+                                    Grid.Row="1"
+                                    Spacing="7"
+                                    VerticalOptions="End">
+
+                                    <Label
+                                        Text="{Binding FeaturedTitle}"
+                                        FontSize="{OnIdiom Phone=28,
+                                                           Tablet=35,
+                                                           Desktop=41,
+                                                           TV=53}"
+                                        FontAttributes="Bold"
+                                        TextColor="White"
+                                        MaxLines="2"
+                                        LineBreakMode="TailTruncation" />
+
+                                    <Label
+                                        Text="{Binding FeaturedSubtitle}"
+                                        FontSize="{OnIdiom Phone=13,
+                                                           Tablet=15,
+                                                           Desktop=16,
+                                                           TV=21}"
+                                        TextColor="#D8DDF4"
+                                        MaxLines="2"
+                                        LineBreakMode="TailTruncation" />
+
+                                </VerticalStackLayout>
+
+                                <Border
+                                    Grid.Row="2"
+                                    Margin="0,15,0,0"
+                                    Padding="17,12"
+                                    BackgroundColor="{StaticResource DiamondPurple}"
+                                    Stroke="#55FFFFFF"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 14"
+                                    HorizontalOptions="Start">
+
+                                    <Label
+                                        Text="▶  Watch now"
+                                        FontSize="12"
+                                        FontAttributes="Bold"
+                                        TextColor="White" />
+
+                                </Border>
+
+                            </Grid>
+
+                        </Grid>
+
+                    </Border>
+
+                    <!-- ================= AI TV ASSISTANT HUB ================= -->
+
+                    <VerticalStackLayout
+                        x:Name="AiHubPanel"
+                        Spacing="14"
+                        IsVisible="{Binding IsAiPanelVisible}">
+
+                        <Grid ColumnDefinitions="*,Auto">
+
+                            <VerticalStackLayout Spacing="2">
+
+                                <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+
+                                    <Border
+                                        WidthRequest="34"
+                                        HeightRequest="34"
+                                        Background="{StaticResource DiamondBrandBrush}"
+                                        Stroke="#60FFFFFF"
+                                        StrokeThickness="1.5"
+                                        StrokeShape="RoundRectangle 11">
+
+                                        <Grid InputTransparent="True">
+
+                                            <Label
+                                                Text="✦"
+                                                FontSize="20"
+                                                TextColor="White"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center" />
+
+                                        </Grid>
+
+                                    </Border>
+
+                                    <VerticalStackLayout Spacing="0">
+
+                                        <Label
+                                            Text="MarkUp AI Assistant"
+                                            Style="{StaticResource SectionTitleStyle}" />
+
+                                        <Label
+                                            Text="Your personal TV curator. Smarter every time you watch."
+                                            Style="{StaticResource SectionCaptionStyle}" />
+
+                                    </VerticalStackLayout>
+
+                                </HorizontalStackLayout>
+
+                            </VerticalStackLayout>
+
+                            <HorizontalStackLayout Grid.Column="1" Spacing="8" VerticalOptions="Start">
+
+                                <Button
+                                    Text="↻"
+                                    FontSize="17"
+                                    Command="{Binding RefreshAiRecommendationCommand}"
+                                    Clicked="OnAnimatedButtonClicked"
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    Padding="0"
+                                    CornerRadius="13"
+                                    BackgroundColor="#1AFFFFFF"
+                                    TextColor="White"
+                                    BorderColor="#30FFFFFF"
+                                    BorderWidth="1"
+                                    VerticalOptions="Start" />
+
+                                <Button
+                                    Text="Chat ✦"
+                                    Command="{Binding ToggleChatCommand}"
+                                    Clicked="OnAnimatedButtonClicked"
+                                    Style="{StaticResource DiamondButtonStyle}" />
+
+                            </HorizontalStackLayout>
+
+                        </Grid>
+
+                        <Grid
+                            ColumnDefinitions="{OnIdiom Phone='*',
+                                                        Tablet='*,*,*',
+                                                        Desktop='*,*,*',
+                                                        TV='*,*,*'}"
+                            ColumnSpacing="11"
+                            RowDefinitions="{OnIdiom Phone='Auto,Auto,Auto',
+                                                        Tablet='Auto',
+                                                        Desktop='Auto',
+                                                        TV='Auto'}"
+                            RowSpacing="11">
+
+                            <!-- Zone 1: AI Recommendation -->
+
+                            <Border
+                                x:Name="AiRecommendationZone"
+                                Grid.Column="0"
+                                Grid.Row="0"
+                                Padding="0"
+                                BackgroundColor="#19FFFFFF"
+                                Stroke="{StaticResource DiamondBlue}"
+                                StrokeThickness="1.5"
+                                StrokeShape="RoundRectangle 22">
+
+                                <Border.Behaviors>
+                                    <helpers:TapScaleBehavior/>
+                                </Border.Behaviors>
+                                <Border.GestureRecognizers>
+
+                                    <TapGestureRecognizer
+                                        Command="{Binding PlayAiRecommendationCommand}" />
+
+                                </Border.GestureRecognizers>
+
+                                <Border.Shadow>
+
+                                    <Shadow
+                                        Brush="#602BD8FF"
+                                        Offset="0,8"
+                                        Radius="18"
+                                        Opacity="0.5" />
+
+                                </Border.Shadow>
+
+                                <Grid
+                                    RowDefinitions="Auto,Auto"
+                                    IsClippedToBounds="True">
+
+                                    <Grid
+                                        x:Name="AiRecGradientLayer"
+                                        Grid.RowSpan="2"
+                                        IsClippedToBounds="True"
+                                        InputTransparent="True">
+
+                                        <Grid.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#0E2750" Offset="0" />
+                                                <GradientStop Color="#2E1A66" Offset="0.55" />
+                                                <GradientStop Color="#501759" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Grid.Background>
+
+                                        <Label
+                                            Text="◆"
+                                            FontSize="120"
+                                            TextColor="#18FFFFFF"
+                                            Margin="0,-30,-18,0"
+                                            HorizontalOptions="End"
+                                            VerticalOptions="Start" />
+
+                                    </Grid>
+
+                                    <Grid
+                                        Grid.Row="0"
+                                        Padding="15,13,15,7"
+                                        ColumnDefinitions="*,Auto"
+                                        ColumnSpacing="8"
+                                        InputTransparent="True"
+                                        CascadeInputTransparent="True">
+
+                                        <Border
+                                            Padding="9,4"
+                                            BackgroundColor="#352BD8FF"
+                                            Stroke="#55FFFFFF"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 9"
+                                            HorizontalOptions="Start">
+
+                                            <HorizontalStackLayout Spacing="5">
+
+                                                <Label
+                                                    Text="🎯"
+                                                    FontSize="10"
+                                                    VerticalTextAlignment="Center" />
+
+                                                <Label
+                                                    Text="AI PICK FOR YOU"
+                                                    FontSize="9"
+                                                    FontAttributes="Bold"
+                                                    CharacterSpacing="1"
+                                                    TextColor="{StaticResource DiamondGold}" />
+
+                                            </HorizontalStackLayout>
+
+                                        </Border>
+
+                                        <ActivityIndicator
+                                            Grid.Column="1"
+                                            IsRunning="{Binding IsAiRecommendationLoading}"
+                                            IsVisible="{Binding IsAiRecommendationLoading}"
+                                            WidthRequest="22"
+                                            HeightRequest="22"
+                                            Color="{StaticResource DiamondGold}" />
+
+                                    </Grid>
+
+                                    <Grid
+                                        Grid.Row="1"
+                                        Padding="15,0,15,15"
+                                        ColumnDefinitions="{OnIdiom Phone='*,Auto',
+                                                                   Tablet='*,Auto',
+                                                                   Desktop='*,Auto',
+                                                                   TV='*,*'}"
+                                        ColumnSpacing="12"
+                                        InputTransparent="True"
+                                        CascadeInputTransparent="True">
+
+                                        <VerticalStackLayout Spacing="4" VerticalOptions="Center">
+
+                                            <Label
+                                                Text="{Binding AiRecommendation.Name}"
+                                                FontSize="{OnIdiom Phone=18,
+                                                                   Tablet=18,
+                                                                   Desktop=19,
+                                                                   TV=23}"
+                                                FontAttributes="Bold"
+                                                TextColor="White"
+                                                MaxLines="1"
+                                                LineBreakMode="TailTruncation" />
+
+                                            <Label
+                                                Text="{Binding AiRecommendation.CurrentProgramme}"
+                                                FontSize="12"
+                                                TextColor="#D8DDF4"
+                                                MaxLines="1"
+                                                LineBreakMode="TailTruncation" />
+
+                                            <Label
+                                                Text="{Binding AiRecommendation.Reason}"
+                                                FontSize="11"
+                                                TextColor="{StaticResource DiamondGold}"
+                                                MaxLines="2"
+                                                LineBreakMode="TailTruncation"
+                                                Margin="0,3,0,0" />
+
+                                        </VerticalStackLayout>
+
+                                        <Border
+                                            Grid.Column="1"
+                                            WidthRequest="{OnIdiom Phone=62,
+                                                                   Tablet=72,
+                                                                   Desktop=78,
+                                                                   TV=92}"
+                                            HeightRequest="{OnIdiom Phone=62,
+                                                                    Tablet=72,
+                                                                    Desktop=78,
+                                                                    TV=92}"
+                                            BackgroundColor="#0D0F1D"
+                                            Stroke="#30FFFFFF"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 16"
+                                            VerticalOptions="Center">
+
+                                            <Grid>
+
+                                                <Label
+                                                    Text="◆"
+                                                    FontSize="36"
+                                                    TextColor="#30FFFFFF"
+                                                    HorizontalOptions="Center"
+                                                    VerticalOptions="Center" />
+
+                                                <Image
+                                                    Source="{Binding AiRecommendation.LogoUrl}"
+                                                    Aspect="AspectFit"
+                                                    Margin="7" />
+
+                                            </Grid>
+
+                                        </Border>
+
+                                    </Grid>
+
+                                </Grid>
+
+                            </Border>
+
+                            <!-- Zone 2: Ask AI -->
+
+                            <Border
+                                x:Name="AiChatZone"
+                                Grid.Column="{OnIdiom Phone=0, Tablet=1, Desktop=1, TV=1}"
+                                Grid.Row="{OnIdiom Phone=1, Tablet=0, Desktop=0, TV=0}"
+                                Padding="17"
+                                BackgroundColor="#17FFFFFF"
+                                Stroke="{StaticResource DiamondPurple}"
+                                StrokeThickness="1.5"
+                                StrokeShape="RoundRectangle 22">
+
+                                <Border.Behaviors>
+                                    <helpers:TapScaleBehavior/>
+                                </Border.Behaviors>
+                                <Border.GestureRecognizers>
+
+                                    <TapGestureRecognizer
+                                        Command="{Binding ToggleChatCommand}" />
+
+                                </Border.GestureRecognizers>
+
+                                <Border.Shadow>
+
+                                    <Shadow
+                                        Brush="#558057FF"
+                                        Offset="0,8"
+                                        Radius="18"
+                                        Opacity="0.48" />
+
+                                </Border.Shadow>
+
+                                <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="10" InputTransparent="True" CascadeInputTransparent="True">
+
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+
+                                        <HorizontalStackLayout Spacing="6">
+
+                                            <Label Text="💬" FontSize="18" VerticalTextAlignment="Center" />
+
+                                            <VerticalStackLayout Spacing="1">
+
+                                                <Label Text="Ask AI anything" FontSize="15" FontAttributes="Bold" TextColor="White" />
+                                                <Label Text="Get instant channel picks" FontSize="11" TextColor="{StaticResource MutedText}" />
+
+                                            </VerticalStackLayout>
+
+                                        </HorizontalStackLayout>
+
+                                        <Label
+                                            Text="›"
+                                            Grid.Column="1"
+                                            FontSize="24"
+                                            TextColor="{StaticResource DiamondPurple}"
+                                            VerticalOptions="Center" />
+
+                                    </Grid>
+
+                                    <Border
+                                        HeightRequest="44"
+                                        Padding="11,0"
+                                        BackgroundColor="#140A0E22"
+                                        Stroke="#2CFFFFFF"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 14">
+
+                                        <Label
+                                            Text="What should I watch tonight?"
+                                            FontSize="12"
+                                            TextColor="#7982A3"
+                                            VerticalTextAlignment="Center"
+                                            LineBreakMode="TailTruncation" />
+
+                                    </Border>
+
+                                    <FlexLayout Direction="Row" Wrap="Wrap" AlignItems="Start" JustifyContent="Start">
+
+                                        <Border Margin="0,0,6,6" Padding="9,4" BackgroundColor="#222BD8FF" Stroke="Transparent" StrokeShape="RoundRectangle 10">
+                                            <Label Text="On now?" FontSize="10" FontAttributes="Bold" TextColor="White" />
+                                        </Border>
+
+                                        <Border Margin="0,0,6,6" Padding="9,4" BackgroundColor="#22FF3E91" Stroke="Transparent" StrokeShape="RoundRectangle 10">
+                                            <Label Text="Movie" FontSize="10" FontAttributes="Bold" TextColor="White" />
+                                        </Border>
+
+                                        <Border Margin="0,0,6,6" Padding="9,4" BackgroundColor="#22FFD95A" Stroke="Transparent" StrokeShape="RoundRectangle 10">
+                                            <Label Text="Sports" FontSize="10" FontAttributes="Bold" TextColor="#1F1A3D" />
+                                        </Border>
+
+                                    </FlexLayout>
+
+                                </Grid>
+
+                            </Border>
+
+                            <!-- Zone 3: Smart Highlights -->
+
+                            <Border
+                                x:Name="AiHighlightsZone"
+                                Grid.Column="{OnIdiom Phone=0, Tablet=2, Desktop=2, TV=2}"
+                                Grid.Row="{OnIdiom Phone=2, Tablet=0, Desktop=0, TV=0}"
+                                Padding="15"
+                                BackgroundColor="#17FFFFFF"
+                                Stroke="{StaticResource DiamondPink}"
+                                StrokeThickness="1.5"
+                                StrokeShape="RoundRectangle 22">
+
+                                <Border.Shadow>
+
+                                    <Shadow
+                                        Brush="#50FF3E91"
+                                        Offset="0,8"
+                                        Radius="18"
+                                        Opacity="0.46" />
+
+                                </Border.Shadow>
+
+                                <Grid RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="9" InputTransparent="True" CascadeInputTransparent="True">
+
+                                    <Grid ColumnDefinitions="*,Auto">
+
+                                        <HorizontalStackLayout Spacing="6">
+
+                                            <Label Text="✨" FontSize="17" VerticalTextAlignment="Center" />
+
+                                            <VerticalStackLayout Spacing="1">
+
+                                                <Label Text="Smart highlights" FontSize="15" FontAttributes="Bold" TextColor="White" />
+                                                <Label Text="Trending right now" FontSize="11" TextColor="{StaticResource MutedText}" />
+
+                                            </VerticalStackLayout>
+
+                                        </HorizontalStackLayout>
+
+                                    </Grid>
+
+                                    <VerticalStackLayout
+                                        x:Name="AiHighlightsContainer"
+                                        BindableLayout.ItemsSource="{Binding AiHighlights}"
+                                        Spacing="7">
+
+                                        <BindableLayout.ItemTemplate>
+
+                                            <DataTemplate x:DataType="models:AiHighlightItem">
+
+                                                <Border
+                                                    Padding="10,7"
+                                                    BackgroundColor="#10FFFFFF"
+                                                    Stroke="Transparent"
+                                                    StrokeShape="RoundRectangle 13">
+
+                                                    <Border.Behaviors>
+                                                        <helpers:TapScaleBehavior/>
+                                                    </Border.Behaviors>
+                                                    <Border.GestureRecognizers>
+
+                                                        <TapGestureRecognizer
+                                                            Tapped="OnAiHighlightCardTapped"
+                                                            CommandParameter="{Binding .}" />
+
+                                                    </Border.GestureRecognizers>
+
+                                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="9" InputTransparent="True" CascadeInputTransparent="True">
+
+                                                        <Label
+                                                            Text="{Binding Icon}"
+                                                            FontSize="18"
+                                                            VerticalTextAlignment="Center" />
+
+                                                        <VerticalStackLayout Spacing="0" Grid.Column="1" VerticalOptions="Center">
+
+                                                            <Label
+                                                                Text="{Binding Title}"
+                                                                FontSize="12"
+                                                                FontAttributes="Bold"
+                                                                TextColor="White"
+                                                                MaxLines="1"
+                                                                LineBreakMode="TailTruncation" />
+
+                                                            <Label
+                                                                Text="{Binding Subtitle}"
+                                                                FontSize="10"
+                                                                TextColor="{StaticResource MutedText}"
+                                                                MaxLines="1"
+                                                                LineBreakMode="TailTruncation" />
+
+                                                        </VerticalStackLayout>
+
+                                                        <Label
+                                                            Grid.Column="2"
+                                                            Text="›"
+                                                            FontSize="18"
+                                                            TextColor="{StaticResource DiamondPink}"
+                                                            VerticalOptions="Center" />
+
+                                                    </Grid>
+
+                                                </Border>
+
+                                            </DataTemplate>
+
+                                        </BindableLayout.ItemTemplate>
+
+                                    </VerticalStackLayout>
+
+                                </Grid>
+
+                            </Border>
+
+                        </Grid>
+
+                    </VerticalStackLayout>
+
+                    <!-- Live match -->
+
+                    <Border
+                        IsVisible="{Binding HasLiveMatch}"
+                        HeightRequest="130"
+                        Background="{StaticResource LiveMatchBrush}"
+                        Stroke="#55FFFFFF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 24">
+
+                        <Border.Behaviors>
+                            <helpers:TapScaleBehavior/>
+                        </Border.Behaviors>
+                        <Border.GestureRecognizers>
+
+                            <TapGestureRecognizer
+                                Command="{Binding GoToLiveMatchCommand}" />
+
+                        </Border.GestureRecognizers>
+
+                        <Border.Shadow>
+
+                            <Shadow
+                                Brush="#65FF315F"
+                                Offset="0,9"
+                                Radius="18"
+                                Opacity="0.5" />
+
+                        </Border.Shadow>
+
+                        <Grid
+                            InputTransparent="True"
+                            CascadeInputTransparent="True"
+                            Padding="22"
+                            ColumnDefinitions="*,Auto"
+                            ColumnSpacing="14">
+
+                            <VerticalStackLayout
+                                Grid.Column="0"
+                                Spacing="7"
+                                VerticalOptions="Center">
+
+                                <HorizontalStackLayout
+                                    Spacing="9"
+                                    HorizontalOptions="Start">
+
+                                    <Border
+                                        Padding="10,4"
+                                        BackgroundColor="#E82647"
+                                        Stroke="#70FFFFFF"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 10">
+
+                                        <HorizontalStackLayout Spacing="6">
+
+                                            <Ellipse
+                                                WidthRequest="7"
+                                                HeightRequest="7"
+                                                Fill="White"
+                                                VerticalOptions="Center" />
+
+                                            <Label
+                                                Text="{Binding LiveMatchSubtitle}"
+                                                FontSize="9"
+                                                FontAttributes="Bold"
+                                                CharacterSpacing="1"
+                                                TextColor="White"
+                                                VerticalOptions="Center" />
+
+                                        </HorizontalStackLayout>
+
+                                    </Border>
+
+                                    <Border
+                                        Padding="10,4"
+                                        BackgroundColor="#2AFFFFFF"
+                                        Stroke="#30FFFFFF"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 10"
+                                        VerticalOptions="Center">
+
+                                        <Label
+                                            Text="LIVE FOOTBALL"
+                                            FontSize="8"
+                                            FontAttributes="Bold"
+                                            CharacterSpacing="1.2"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+
+                                    </Border>
+
+                                </HorizontalStackLayout>
+
+                                <Label
+                                    Text="{Binding LiveMatchTitle}"
+                                    FontSize="19"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="0.3"
+                                    TextColor="White"
+                                    MaxLines="2"
+                                    LineBreakMode="TailTruncation" />
+
+                            </VerticalStackLayout>
+
+                            <Border
+                                Grid.Column="1"
+                                WidthRequest="62"
+                                HeightRequest="62"
+                                BackgroundColor="#2AFFFFFF"
+                                Stroke="#70FFFFFF"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 31"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center">
+
+                                <Grid InputTransparent="True">
+
+                                    <Label
+                                        Text="⚽"
+                                        FontSize="29"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center" />
+
+                                    <Label
+                                        Text="WATCH"
+                                        Margin="0,0,0,-42"
+                                        FontSize="8"
+                                        FontAttributes="Bold"
+                                        CharacterSpacing="1"
+                                        TextColor="White"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="End" />
+
+                                </Grid>
+
+                            </Border>
+
+                        </Grid>
+
+                    </Border>
+
+                    <!-- Trending channels -->
+
+                    <VerticalStackLayout
+                        Spacing="13"
+                        IsVisible="{Binding IsChannelsVisible}">
+
+                        <Grid ColumnDefinitions="*,Auto">
+
+                            <VerticalStackLayout Spacing="1">
+
+                                <Label
+                                    Text="Trending channels"
+                                    Style="{StaticResource SectionTitleStyle}" />
+
+                                <Label
+                                    Text="Live channels people are watching now."
+                                    Style="{StaticResource SectionCaptionStyle}" />
+
+                            </VerticalStackLayout>
+
+                            <Button
+                                Grid.Column="1"
+                                Text="View all"
+                                Command="{Binding GoToAllChannelsCommand}"
+                                Clicked="OnAnimatedButtonClicked"
+                                Style="{StaticResource GlassButtonStyle}" />
+
+                        </Grid>
+
+                        <CollectionView
+                            ItemsSource="{Binding TrendingChannels}"
+                            HeightRequest="202"
+                            SelectionMode="None"
+                            HorizontalScrollBarVisibility="Never">
+
+                            <CollectionView.ItemsLayout>
+
+                                <LinearItemsLayout
+                                    Orientation="Horizontal"
+                                    ItemSpacing="12" />
+
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+
+                                <DataTemplate
+                                    x:DataType="models:TvChannel">
+
+                                    <Border
+                                        WidthRequest="{OnIdiom Phone=166,
+                                                               Tablet=181,
+                                                               Desktop=193,
+                                                               TV=230}"
+                                        Padding="8"
+                                        Style="{StaticResource DiamondCardStyle}">
+
+                                        <Border.Behaviors>
+                                            <helpers:TapScaleBehavior/>
+                                        </Border.Behaviors>
+                                        <Border.GestureRecognizers>                                        <TapGestureRecognizer
+                                            Tapped="OnTrendingChannelTapped"
+                                            CommandParameter="{Binding .}" />
+
+                                        </Border.GestureRecognizers>
+
+                                        <Grid
+                                            InputTransparent="True"
+                                            CascadeInputTransparent="True"
+                                            RowDefinitions="105,Auto,Auto"
+                                            RowSpacing="6">
+
+                                            <Border
+                                                Grid.Row="0"
+                                                BackgroundColor="#080A19"
+                                                Stroke="#23FFFFFF"
+                                                StrokeThickness="1"
+                                                StrokeShape="RoundRectangle 15">
+
+                                                <Grid>
+
+                                                    <Label
+                                                        Text="◆"
+                                                        FontSize="39"
+                                                        TextColor="#40FFFFFF"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center" />
+
+                                                    <Image
+                                                        Source="{Binding LogoUrl}"
+                                                        Aspect="AspectFit"
+                                                        Margin="10" />
+
+                                                    <Border
+                                                        Margin="7"
+                                                        Padding="6,3"
+                                                        BackgroundColor="#DAFF315F"
+                                                        Stroke="#70FFFFFF"
+                                                        StrokeThickness="1"
+                                                        StrokeShape="RoundRectangle 7"
+                                                        HorizontalOptions="Start"
+                                                        VerticalOptions="Start">
+
+                                                        <Label
+                                                            Text="LIVE"
+                                                            FontSize="8"
+                                                            FontAttributes="Bold"
+                                                            TextColor="White" />
+
+                                                    </Border>
+
+                                                </Grid>
+
+                                            </Border>
+
+                                            <Label
+                                                Grid.Row="1"
+                                                Text="{Binding Name}"
+                                                FontSize="13"
+                                                FontAttributes="Bold"
+                                                TextColor="White"
+                                                MaxLines="1"
+                                                LineBreakMode="TailTruncation" />
+
+                                            <Grid
+                                                Grid.Row="2"
+                                                ColumnDefinitions="*,Auto">
+
+                                                <Label
+                                                    Text="{Binding Category}"
+                                                    FontSize="10"
+                                                    TextColor="{StaticResource MutedText}"
+                                                    MaxLines="1"
+                                                    LineBreakMode="TailTruncation"
+                                                    VerticalOptions="Center" />
+
+                                                <Label
+                                                    Grid.Column="1"
+                                                    Text="▶"
+                                                    FontSize="13"
+                                                    TextColor="{StaticResource DiamondGold}"
+                                                    VerticalOptions="Center" />
+
+                                            </Grid>
+
+                                        </Grid>
+
+                                    </Border>
+
+                                </DataTemplate>
+
+                            </CollectionView.ItemTemplate>
+
+                        </CollectionView>
+
+                    </VerticalStackLayout>
+
+                    <!-- Backend categories -->
+
+                    <VerticalStackLayout Spacing="13">
+
+                        <VerticalStackLayout Spacing="1">
+
+                            <Label
+                                Text="Streaming constellations"
+                                Style="{StaticResource SectionTitleStyle}" />
+
+                            <Label
+                                Text="Every category available from your backend."
+                                Style="{StaticResource SectionCaptionStyle}" />
+
+                        </VerticalStackLayout>
+
+                        <FlexLayout
+                            BindableLayout.ItemsSource="{Binding CategoryFeatures}"
+                            Wrap="Wrap"
+                            Direction="Row"
+                            AlignItems="Start"
+                            JustifyContent="Start">
+
+                            <BindableLayout.ItemTemplate>
+
+                                <DataTemplate
+                                    x:DataType="models:DashboardFeature">
+
+                                    <Border
+                                        WidthRequest="{OnIdiom Phone=158,
+                                                               Tablet=176,
+                                                               Desktop=194,
+                                                               TV=226}"
+                                        HeightRequest="{OnIdiom Phone=118,
+                                                                Tablet=122,
+                                                                Desktop=130,
+                                                                TV=148}"
+                                        Margin="0,0,10,10"
+                                        Padding="13"
+                                        Style="{StaticResource DiamondCardStyle}">
+
+                                        <Border.Behaviors>
+                                            <helpers:TapScaleBehavior/>
+                                        </Border.Behaviors>
+                                        <Border.GestureRecognizers>
+
+                                            <TapGestureRecognizer
+                                                Tapped="OnCategoryFeatureTapped"
+                                                CommandParameter="{Binding .}" />
+
+                                        </Border.GestureRecognizers>
+
+                                        <Grid
+                                            InputTransparent="True"
+                                            CascadeInputTransparent="True"
+                                            RowDefinitions="Auto,*,Auto"
+                                            RowSpacing="3">
+
+                                            <Border
+                                                WidthRequest="{OnIdiom Phone=34, Tablet=38, Desktop=44, TV=54}"
+                                                HeightRequest="{OnIdiom Phone=34, Tablet=38, Desktop=44, TV=54}"
+                                                Padding="0"
+                                                BackgroundColor="#16FFFFFF"
+                                                Stroke="#32FFFFFF"
+                                                StrokeThickness="1"
+                                                StrokeShape="RoundRectangle 13"
+                                                HorizontalOptions="Start">
+
+                                                <Label
+                                                    Text="{Binding Icon}"
+                                                    FontSize="{OnIdiom Phone=17, Tablet=19, Desktop=23, TV=29}"
+                                                    TextColor="{StaticResource DiamondGold}"
+                                                    HorizontalOptions="Center"
+                                                    VerticalOptions="Center" />
+
+                                            </Border>
+
+                                            <VerticalStackLayout
+                                                Grid.Row="1"
+                                                Spacing="1"
+                                                VerticalOptions="Center">
+
+                                                <Label
+                                                    Text="{Binding Title}"
+                                                    FontSize="14"
+                                                    FontAttributes="Bold"
+                                                    TextColor="White"
+                                                    MaxLines="1"
+                                                    LineBreakMode="TailTruncation" />
+
+                                                <Label
+                                                    Text="{Binding Subtitle}"
+                                                    FontSize="10"
+                                                    TextColor="{StaticResource MutedText}"
+                                                    MaxLines="1"
+                                                    LineBreakMode="TailTruncation" />
+
+                                            </VerticalStackLayout>
+
+                                            <Label
+                                                Grid.Row="2"
+                                                Text="Open section ›"
+                                                FontSize="9"
+                                                FontAttributes="Bold"
+                                                TextColor="{StaticResource DiamondGold}" />
+
+                                        </Grid>
+
+                                    </Border>
+
+                                </DataTemplate>
+
+                            </BindableLayout.ItemTemplate>
+
+                        </FlexLayout>
+
+                    </VerticalStackLayout>
+
+                    <!-- Continue watching -->
+
+                    <VerticalStackLayout
+                        Spacing="13"
+                        IsVisible="{Binding HasRecentlyWatched}">
+
+                        <Grid ColumnDefinitions="*,Auto">
+
+                            <VerticalStackLayout Spacing="1">
+
+                                <Label
+                                    Text="Continue watching"
+                                    Style="{StaticResource SectionTitleStyle}" />
+
+                                <Label
+                                    Text="Resume your recent channels."
+                                    Style="{StaticResource SectionCaptionStyle}" />
+
+                            </VerticalStackLayout>
+
+                            <Button
+                                Grid.Column="1"
+                                Text="History"
+                                Command="{Binding GoToRecentlyWatchedCommand}"
+                                Clicked="OnAnimatedButtonClicked"
+                                Style="{StaticResource GlassButtonStyle}" />
+
+                        </Grid>
+
+                        <CollectionView
+                            ItemsSource="{Binding RecentlyWatchedChannels}"
+                            HeightRequest="160"
+                            SelectionMode="None"
+                            HorizontalScrollBarVisibility="Never">
+
+                            <CollectionView.ItemsLayout>
+
+                                <LinearItemsLayout
+                                    Orientation="Horizontal"
+                                    ItemSpacing="12" />
+
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+
+                                <DataTemplate
+                                    x:DataType="models:TvChannel">
+
+                                    <Border
+                                        WidthRequest="185"
+                                        Style="{StaticResource DiamondCardStyle}">
+
+                                        <Border.Behaviors>
+                                            <helpers:TapScaleBehavior/>
+                                        </Border.Behaviors>
+                                        <Border.GestureRecognizers>                                        <TapGestureRecognizer
+                                            Tapped="OnRecentChannelTapped"
+                                            CommandParameter="{Binding .}" />
+
+                                        </Border.GestureRecognizers>
+
+                                        <Grid
+                                            IsClippedToBounds="True"
+                                            InputTransparent="True"
+                                            CascadeInputTransparent="True">
+
+                                            <Image
+                                                Source="{Binding LogoUrl}"
+                                                Aspect="AspectFill"
+                                                Opacity="0.50" />
+
+                                            <BoxView
+                                                Color="#070914"
+                                                Opacity="0.52" />
+
+                                            <VerticalStackLayout
+                                                Padding="13"
+                                                Spacing="5"
+                                                VerticalOptions="End">
+
+                                                <Label
+                                                    Text="{Binding Name}"
+                                                    FontSize="14"
+                                                    FontAttributes="Bold"
+                                                    TextColor="White"
+                                                    MaxLines="1"
+                                                    LineBreakMode="TailTruncation" />
+
+                                                <HorizontalStackLayout Spacing="5">
+
+                                                    <Label
+                                                        Text="▶"
+                                                        FontSize="11"
+                                                        TextColor="{StaticResource DiamondGold}" />
+
+                                                    <Label
+                                                        Text="Resume"
+                                                        FontSize="10"
+                                                        FontAttributes="Bold"
+                                                        TextColor="White" />
+
+                                                </HorizontalStackLayout>
+
+                                            </VerticalStackLayout>
+
+                                        </Grid>
+
+                                    </Border>
+
+                                </DataTemplate>
+
+                            </CollectionView.ItemTemplate>
+
+                        </CollectionView>
+
+                    </VerticalStackLayout>
+
+                    <!-- Community preview -->
+
+                    <VerticalStackLayout
+                        Spacing="13"
+                        IsVisible="{Binding HasSocialPreview}">
+
+                        <Grid
+                            ColumnDefinitions="*,Auto,Auto"
+                            ColumnSpacing="8">
+
+                            <VerticalStackLayout Spacing="1">
+
+                                <Label
+                                    Text="Community pulse"
+                                    Style="{StaticResource SectionTitleStyle}" />
+
+                                <Label
+                                    Text="Live reactions from MarkUpTV viewers."
+                                    Style="{StaticResource SectionCaptionStyle}" />
+
+                            </VerticalStackLayout>
+
+                            <Button
+                                Grid.Column="1"
+                                Text="New post"
+                                Command="{Binding OpenComposePostCommand}"
+                                Clicked="OnAnimatedButtonClicked"
+                                Style="{StaticResource GlassButtonStyle}" />
+
+                            <Button
+                                Grid.Column="2"
+                                Text="Open"
+                                Command="{Binding GoToSocialCommand}"
+                                Clicked="OnAnimatedButtonClicked"
+                                Style="{StaticResource DiamondButtonStyle}" />
+
+                        </Grid>
+
+                        <CollectionView
+                            ItemsSource="{Binding SocialPostsPreview}"
+                            HeightRequest="{OnIdiom Phone=195,
+                                                    Tablet=205,
+                                                    Desktop=215,
+                                                    TV=250}"
+                            SelectionMode="None"
+                            HorizontalScrollBarVisibility="Never">
+
+                            <CollectionView.ItemsLayout>
+
+                                <LinearItemsLayout
+                                    Orientation="Horizontal"
+                                    ItemSpacing="12" />
+
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+
+                                <DataTemplate
+                                    x:DataType="models:SocialPost">
+
+                                    <Border
+                                        WidthRequest="{OnIdiom Phone=275,
+                                                               Tablet=310,
+                                                               Desktop=350,
+                                                               TV=430}"
+                                        Padding="15"
+                                        Style="{StaticResource DiamondCardStyle}">
+
+                                        <Border.Behaviors>
+                                            <helpers:TapScaleBehavior/>
+                                        </Border.Behaviors>
+                                        <Border.GestureRecognizers>                                        <TapGestureRecognizer
+                                            Tapped="OnSocialPostTapped"
+                                            CommandParameter="{Binding .}" />
+
+                                        </Border.GestureRecognizers>
+
+                                        <Grid
+                                            InputTransparent="True"
+                                            CascadeInputTransparent="True"
+                                            RowDefinitions="Auto,*,Auto"
+                                            RowSpacing="10">
+
+                                            <Grid
+                                                ColumnDefinitions="43,*,Auto"
+                                                ColumnSpacing="9">
+
+                                                <Border
+                                                    WidthRequest="43"
+                                                    HeightRequest="43"
+                                                    Background="{StaticResource DiamondBrandBrush}"
+                                                    Stroke="#50FFFFFF"
+                                                    StrokeThickness="1"
+                                                    StrokeShape="RoundRectangle 14">
+
+                                                    <Label
+                                                        Text="{Binding AuthorInitial}"
+                                                        FontSize="14"
+                                                        FontAttributes="Bold"
+                                                        TextColor="White"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center" />
+
+                                                </Border>
+
+                                                <VerticalStackLayout
+                                                    Grid.Column="1"
+                                                    Spacing="1"
+                                                    VerticalOptions="Center">
+
+                                                    <Label
+                                                        Text="{Binding AuthorName}"
+                                                        FontSize="13"
+                                                        FontAttributes="Bold"
+                                                        TextColor="White"
+                                                        MaxLines="1"
+                                                        LineBreakMode="TailTruncation" />
+
+                                                    <Label
+                                                        Text="{Binding TimeAgo}"
+                                                        FontSize="10"
+                                                        TextColor="{StaticResource MutedText}" />
+
+                                                </VerticalStackLayout>
+
+                                                <Label
+                                                    Grid.Column="2"
+                                                    Text="{Binding LikeIcon}"
+                                                    FontSize="16"
+                                                    VerticalOptions="Center" />
+
+                                            </Grid>
+
+                                            <Label
+                                                Grid.Row="1"
+                                                Text="{Binding Content}"
+                                                FontSize="13"
+                                                TextColor="#D8DDF4"
+                                                MaxLines="3"
+                                                LineBreakMode="TailTruncation" />
+
+                                            <HorizontalStackLayout
+                                                Grid.Row="2"
+                                                Spacing="5">
+
+                                                <Label
+                                                    Text="Open post"
+                                                    FontSize="10"
+                                                    FontAttributes="Bold"
+                                                    TextColor="{StaticResource DiamondGold}" />
+
+                                                <Label
+                                                    Text="›"
+                                                    FontSize="16"
+                                                    TextColor="White" />
+
+                                            </HorizontalStackLayout>
+
+                                        </Grid>
+
+                                    </Border>
+
+                                </DataTemplate>
+
+                            </CollectionView.ItemTemplate>
+
+                        </CollectionView>
+
+                    </VerticalStackLayout>
+
+                    <!-- News -->
+
+                    <VerticalStackLayout Spacing="13">
+
+                        <Grid ColumnDefinitions="*,Auto">
+
+                            <VerticalStackLayout Spacing="1">
+
+                                <Label
+                                    Text="Latest stories"
+                                    Style="{StaticResource SectionTitleStyle}" />
+
+                                <Label
+                                    Text="Fresh headlines from around the world."
+                                    Style="{StaticResource SectionCaptionStyle}" />
+
+                            </VerticalStackLayout>
+
+                            <HorizontalStackLayout
+                                Grid.Column="1"
+                                Spacing="9"
+                                VerticalOptions="Center">
+
+                                <Border
+                                    Padding="13,0"
+                                    HeightRequest="40"
+                                    BackgroundColor="#16FFFFFF"
+                                    Stroke="#55FFC94D"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 14"
+                                    IsVisible="{Binding IsNewsVisible}">
+
+                                    <HorizontalStackLayout
+                                        Spacing="7"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center">
+
+                                        <Label
+                                            Text="◆"
+                                            FontSize="9"
+                                            TextColor="{StaticResource DiamondGold}"
+                                            VerticalOptions="Center" />
+
+                                        <Label
+                                            Text="{Binding NewsItems.Count}"
+                                            FontSize="12"
+                                            FontAttributes="Bold"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+
+                                        <Label
+                                            Text="stories"
+                                            FontSize="11"
+                                            TextColor="{StaticResource MutedText}"
+                                            VerticalOptions="Center" />
+
+                                    </HorizontalStackLayout>
+
+                                </Border>
+
+                                <Button
+                                    Text="Refresh"
+                                    Command="{Binding RefreshNewsCommand}"
+                                    Clicked="OnAnimatedButtonClicked"
+                                    Style="{StaticResource GlassButtonStyle}" />
+
+                            </HorizontalStackLayout>
+
+                        </Grid>
+
+                        <!-- News loading -->
+
+                        <Border
+                            Padding="17"
+                            BackgroundColor="#12FFFFFF"
+                            Stroke="#28FFFFFF"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 17"
+                            IsVisible="{Binding IsNewsLoading}">
+
+                            <HorizontalStackLayout
+                                Spacing="11"
+                                HorizontalOptions="Center">
+
+                                <ActivityIndicator
+                                    WidthRequest="34"
+                                    HeightRequest="34"
+                                    IsRunning="{Binding IsNewsLoading}"
+                                    Color="{StaticResource DiamondGold}" />
+
+                                <VerticalStackLayout
+                                    Spacing="1"
+                                    VerticalOptions="Center">
+
+                                    <Label
+                                        Text="Collecting headlines"
+                                        FontSize="13"
+                                        FontAttributes="Bold"
+                                        TextColor="White" />
+
+                                    <Label
+                                        Text="Searching the news universe..."
+                                        FontSize="10"
+                                        TextColor="{StaticResource MutedText}" />
+
+                                </VerticalStackLayout>
+
+                            </HorizontalStackLayout>
+
+                        </Border>
+
+                        <!-- News error -->
+
+                        <Border
+                            Padding="18"
+                            BackgroundColor="#D09A1D47"
+                            Stroke="#FFFFAFC4"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 18"
+                            IsVisible="{Binding HasNewsError}">
+
+                            <VerticalStackLayout
+                                Spacing="8"
+                                HorizontalOptions="Center">
+
+                                <Label
+                                    Text="◇"
+                                    FontSize="45"
+                                    TextColor="White"
+                                    HorizontalOptions="Center" />
+
+                                <Label
+                                    Text="{Binding NewsErrorMessage}"
+                                    FontSize="12"
+                                    TextColor="White"
+                                    HorizontalTextAlignment="Center" />
+
+                                <Button
+                                    Text="Try again"
+                                    Command="{Binding RefreshNewsCommand}"
+                                    Clicked="OnAnimatedButtonClicked"
+                                    Style="{StaticResource DiamondButtonStyle}" />
+
+                            </VerticalStackLayout>
+
+                        </Border>
+
+                        <!-- News empty -->
+
+                        <Border
+                            Padding="20"
+                            BackgroundColor="#12FFFFFF"
+                            Stroke="#28FFFFFF"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 18"
+                            IsVisible="{Binding IsNewsEmpty}">
+
+                            <VerticalStackLayout Spacing="7">
+
+                                <Label
+                                    Text="◇"
+                                    FontSize="48"
+                                    TextColor="{StaticResource DiamondPurple}"
+                                    HorizontalOptions="Center" />
+
+                                <Label
+                                    Text="No stories are available right now."
+                                    FontSize="13"
+                                    TextColor="{StaticResource MutedText}"
+                                    HorizontalTextAlignment="Center" />
+
+                            </VerticalStackLayout>
+
+                        </Border>
+
+                        <VerticalStackLayout
+                            BindableLayout.ItemsSource="{Binding NewsItems}"
+                            Spacing="12"
+                            IsVisible="{Binding IsNewsVisible}">
+
+                            <BindableLayout.ItemTemplate>
+
+                                <DataTemplate
+                                    x:DataType="models:NewsArticle">
+
+                                    <Border
+                                        Padding="8"
+                                        Style="{StaticResource DiamondCardStyle}">
+
+                                        <Border.Behaviors>
+                                            <helpers:TapScaleBehavior/>
+                                        </Border.Behaviors>
+                                        <Border.GestureRecognizers>                                        <TapGestureRecognizer
+                                            Tapped="OnNewsItemTapped"
+                                            CommandParameter="{Binding .}" />
+
+                                        </Border.GestureRecognizers>
+
+                                        <Grid
+                                            InputTransparent="True"
+                                            CascadeInputTransparent="True"
+                                            ColumnDefinitions="{OnIdiom Phone='118,*',
+                                                                       Tablet='160,*',
+                                                                       Desktop='200,*',
+                                                                       TV='252,*'}"
+                                            ColumnSpacing="14">
+
+                                            <Border
+                                                Grid.Column="0"
+                                                HeightRequest="{OnIdiom Phone=132,
+                                                                       Tablet=156,
+                                                                       Desktop=176,
+                                                                       TV=218}"
+                                                BackgroundColor="#080A19"
+                                                Stroke="#26FFFFFF"
+                                                StrokeThickness="1"
+                                                StrokeShape="RoundRectangle 17">
+
+                                                <Grid>
+
+                                                    <Label
+                                                        Text="◆"
+                                                        FontSize="48"
+                                                        TextColor="#2AFFFFFF"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center" />
+
+                                                    <Image
+                                                        Source="{Binding ImageUrl}"
+                                                        Aspect="AspectFill" />
+
+                                                    <BoxView
+                                                        Color="#03050E"
+                                                        Opacity="0.08" />
+
+                                                    <Border
+                                                        Margin="8"
+                                                        Padding="9,4"
+                                                        BackgroundColor="#E63A86FF"
+                                                        Stroke="#A0FFFFFF"
+                                                        StrokeThickness="1"
+                                                        StrokeShape="RoundRectangle 9"
+                                                        HorizontalOptions="Start"
+                                                        VerticalOptions="Start">
+
+                                                        <Label
+                                                            Text="NEWS"
+                                                            FontSize="8.5"
+                                                            FontAttributes="Bold"
+                                                            CharacterSpacing="1.4"
+                                                            TextColor="White" />
+
+                                                    </Border>
+
+                                                    <Border
+                                                        WidthRequest="44"
+                                                        HeightRequest="44"
+                                                        Padding="0"
+                                                        BackgroundColor="#B304060F"
+                                                        Stroke="#C8FFFFFF"
+                                                        StrokeThickness="1.5"
+                                                        StrokeShape="RoundRectangle 22"
+                                                        IsVisible="False"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center">
+
+                                                        <Border.Triggers>
+
+                                                            <DataTrigger
+                                                                TargetType="Border"
+                                                                Binding="{Binding MediaType}"
+                                                                Value="Video">
+                                                                <Setter Property="IsVisible" Value="True" />
+                                                            </DataTrigger>
+
+                                                        </Border.Triggers>
+
+                                                        <Label
+                                                            Text="▶"
+                                                            FontSize="17"
+                                                            Margin="2,0,0,0"
+                                                            TextColor="White"
+                                                            HorizontalOptions="Center"
+                                                            VerticalOptions="Center" />
+
+                                                    </Border>
+
+                                                </Grid>
+
+                                            </Border>
+
+                                            <Grid
+                                                Grid.Column="1"
+                                                Padding="1,9,10,8"
+                                                RowDefinitions="Auto,Auto,*,Auto"
+                                                RowSpacing="6">
+
+                                                <HorizontalStackLayout
+                                                    Grid.Row="0"
+                                                    Spacing="7">
+
+                                                    <Label
+                                                        Text="●"
+                                                        FontSize="7"
+                                                        TextColor="{StaticResource DiamondBlue}"
+                                                        VerticalOptions="Center" />
+
+                                                    <Label
+                                                        Text="{Binding Source}"
+                                                        FontSize="10.5"
+                                                        FontAttributes="Bold"
+                                                        CharacterSpacing="0.3"
+                                                        TextColor="{StaticResource DiamondPink}"
+                                                        MaxLines="1"
+                                                        LineBreakMode="TailTruncation" />
+
+                                                    <Label
+                                                        Text="◆"
+                                                        FontSize="6"
+                                                        TextColor="{StaticResource DiamondGold}"
+                                                        VerticalOptions="Center" />
+
+                                                    <Label
+                                                        Text="{Binding TimeAgo}"
+                                                        FontSize="10"
+                                                        TextColor="{StaticResource MutedText}"
+                                                        VerticalOptions="Center" />
+
+                                                </HorizontalStackLayout>
+
+                                                <Label
+                                                    Grid.Row="1"
+                                                    Text="{Binding Title}"
+                                                    FontSize="{OnIdiom Phone=15,
+                                                                       Tablet=17,
+                                                                       Desktop=18.5,
+                                                                       TV=23}"
+                                                    FontAttributes="Bold"
+                                                    TextColor="White"
+                                                    MaxLines="2"
+                                                    LineBreakMode="TailTruncation" />
+
+                                                <Label
+                                                    Grid.Row="2"
+                                                    Text="{Binding Description}"
+                                                    FontSize="{OnIdiom Phone=11,
+                                                                       Tablet=12,
+                                                                       Desktop=13,
+                                                                       TV=16}"
+                                                    TextColor="#BCC4DF"
+                                                    MaxLines="2"
+                                                    LineBreakMode="TailTruncation"
+                                                    VerticalOptions="Start" />
+
+                                                <HorizontalStackLayout
+                                                    Grid.Row="3"
+                                                    Spacing="9">
+
+                                                    <Border
+                                                        Padding="12,5"
+                                                        BackgroundColor="#223A86FF"
+                                                        Stroke="#553A86FF"
+                                                        StrokeThickness="1"
+                                                        StrokeShape="RoundRectangle 10">
+
+                                                        <Border.Triggers>
+
+                                                            <DataTrigger
+                                                                TargetType="Border"
+                                                                Binding="{Binding MediaType}"
+                                                                Value="Video">
+                                                                <Setter Property="BackgroundColor" Value="#22FFBE0B" />
+                                                                <Setter Property="Stroke" Value="#66FFC94D" />
+                                                            </DataTrigger>
+
+                                                        </Border.Triggers>
+
+                                                        <HorizontalStackLayout
+                                                            Spacing="6"
+                                                            HorizontalOptions="Center"
+                                                            VerticalOptions="Center">
+
+                                                            <Label
+                                                                Text="▶"
+                                                                FontSize="9"
+                                                                FontAttributes="Bold"
+                                                                TextColor="#9CC3FF"
+                                                                IsVisible="False"
+                                                                VerticalOptions="Center">
+
+                                                                <Label.Triggers>
+
+                                                                    <DataTrigger
+                                                                        TargetType="Label"
+                                                                        Binding="{Binding MediaType}"
+                                                                        Value="Video">
+                                                                        <Setter Property="IsVisible" Value="True" />
+                                                                    </DataTrigger>
+
+                                                                </Label.Triggers>
+
+                                                            </Label>
+
+                                                            <Label
+                                                                Text="READ STORY"
+                                                                FontSize="9.5"
+                                                                FontAttributes="Bold"
+                                                                CharacterSpacing="0.9"
+                                                                TextColor="#9CC3FF">
+
+                                                                <Label.Triggers>
+
+                                                                    <DataTrigger
+                                                                        TargetType="Label"
+                                                                        Binding="{Binding MediaType}"
+                                                                        Value="Video">
+                                                                        <Setter Property="Text" Value="WATCH" />
+                                                                        <Setter Property="TextColor" Value="#FFD9A0" />
+                                                                    </DataTrigger>
+
+                                                                </Label.Triggers>
+
+                                                            </Label>
+
+                                                        </HorizontalStackLayout>
+
+                                                    </Border>
+
+                                                    <Label
+                                                        Text="›"
+                                                        FontSize="15"
+                                                        TextColor="{StaticResource DiamondGold}"
+                                                        VerticalOptions="Center" />
+
+                                                </HorizontalStackLayout>
+
+                                            </Grid>
+
+                                        </Grid>
+
+                                    </Border>
+
+                                </DataTemplate>
+
+                            </BindableLayout.ItemTemplate>
+
+                        </VerticalStackLayout>
+
+                        <!-- Load more -->
+
+                        <Button
+                            Text="Load more stories"
+                            Command="{Binding LoadMoreNewsCommand}"
+                            Clicked="OnAnimatedButtonClicked"
+                            IsVisible="{Binding CanLoadMoreNews}"
+                            Style="{StaticResource GlassButtonStyle}"
+                            HorizontalOptions="Center" />
+
+                        <HorizontalStackLayout
+                            IsVisible="{Binding IsLoadingMore}"
+                            Spacing="9"
+                            HorizontalOptions="Center">
+
+                            <ActivityIndicator
+                                WidthRequest="26"
+                                HeightRequest="26"
+                                IsRunning="{Binding IsLoadingMore}"
+                                Color="{StaticResource DiamondGold}" />
+
+                            <Label
+                                Text="Loading more stories..."
+                                FontSize="11"
+                                TextColor="{StaticResource MutedText}"
+                                VerticalOptions="Center" />
+
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+
+                    <!-- General error -->
+
+                    <Border
+                        Padding="13,10"
+                        BackgroundColor="#D0B11E49"
+                        Stroke="#FFFFAFC2"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 15"
+                        IsVisible="{Binding HasError}">
+
+                        <Grid
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="8">
+
+                            <Label
+                                Text="⚠"
+                                FontSize="20"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding ErrorMessage}"
+                                FontSize="12"
+                                FontAttributes="Bold"
+                                TextColor="White"
+                                MaxLines="3"
+                                LineBreakMode="WordWrap"
+                                VerticalOptions="Center" />
+
+                        </Grid>
+
+                    </Border>
+
+                </VerticalStackLayout>
+
+            </ScrollView>
+
+        </RefreshView>
+
+        <!-- Advertisement -->
+
+        <ContentView
+            x:Name="BannerContainer"
+            Grid.Row="1"
+            HeightRequest="50"
+            WidthRequest="320"
+            Margin="0,0,0,12"
+            HorizontalOptions="Center" />
+
+        <!-- Floating AI Chat Button -->
+
+        <Border
+            x:Name="FloatingAiButton"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            WidthRequest="68"
+            HeightRequest="68"
+            Padding="0"
+            Margin="0,0,18,88"
+            Background="{StaticResource DiamondBrandBrush}"
+            Stroke="#A0FFFFFF"
+            StrokeThickness="2"
+            StrokeShape="RoundRectangle 34"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            IsVisible="True"
+            ZIndex="500">
+
+            <Border.Behaviors>
+                <helpers:TapScaleBehavior PressedScale="0.85"/>
+            </Border.Behaviors>
+            <Border.GestureRecognizers>
+
+                <TapGestureRecognizer
+                    Command="{Binding ToggleChatCommand}" />
+
+            </Border.GestureRecognizers>
+
+            <Border.Shadow>
+
+                <Shadow
+                    Brush="#9A793DFF"
+                    Offset="0,9"
+                    Radius="22"
+                    Opacity="0.85" />
+
+            </Border.Shadow>
+
+            <Grid InputTransparent="True" CascadeInputTransparent="True">
+
+                <VerticalStackLayout
+                    Spacing="0"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+
+                    <Label
+                        Text="✦"
+                        FontSize="17"
+                        TextColor="White"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+
+                    <Label
+                        Text="AI"
+                        FontSize="10"
+                        FontAttributes="Bold"
+                        CharacterSpacing="1.8"
+                        TextColor="White"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+
+                </VerticalStackLayout>
+
+                <Border
+                    WidthRequest="16"
+                    HeightRequest="16"
+                    Margin="0,-2,-2,0"
+                    BackgroundColor="#FF315F"
+                    Stroke="White"
+                    StrokeThickness="1.5"
+                    StrokeShape="RoundRectangle 8"
+                    HorizontalOptions="End"
+                    VerticalOptions="Start">
+
+                    <Label
+                        Text="●"
+                        FontSize="7"
+                        TextColor="White"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+
+                </Border>
+
+            </Grid>
+
+        </Border>
+
+        <!-- AI Chat Modal Overlay -->
+
+        <Border
+            x:Name="AiChatModal"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            IsVisible="{Binding IsChatOpen}"
+            Padding="0"
+            Margin="0"
+            Background="#D504060F"
+            Stroke="Transparent"
+            StrokeShape="RoundRectangle 0"
+            ZIndex="999">
+
+            <Grid
+                RowDefinitions="*,Auto"
+                Margin="{OnIdiom Phone='0',
+                                       Tablet='30,25,30,25',
+                                       Desktop='80,40,80,40',
+                                       TV='150,80,150,80'}">
+
+                <Grid.GestureRecognizers>
+
+                    <TapGestureRecognizer
+                        Command="{Binding CloseChatCommand}" />
+
+                </Grid.GestureRecognizers>
+
+                <!-- Chat Card -->
+
+                <Border
+                    Grid.RowSpan="2"
+                    Margin="0"
+                    Padding="0"
+                    Background="{StaticResource DiamondSkyBrush}"
+                    Stroke="{StaticResource GlassBorder}"
+                    StrokeThickness="1.5"
+                    StrokeShape="RoundRectangle 26"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand">
+
+                    <Border.GestureRecognizers>
+
+                        <TapGestureRecognizer
+                            Command="{Binding ToggleChatCommand}" />
+
+                    </Border.GestureRecognizers>
+
+                    <Border.Shadow>
+
+                        <Shadow
+                            Brush="#A0793DFF"
+                            Offset="0,18"
+                            Radius="40"
+                            Opacity="0.65" />
+
+                    </Border.Shadow>
+
+                    <Grid
+                        RowDefinitions="Auto,*,Auto,Auto"
+                        IsClippedToBounds="True"
+                        InputTransparent="False">
+
+                        <!-- Modal Header -->
+
+                        <Grid
+                            Grid.Row="0"
+                            ColumnDefinitions="Auto,*,Auto"
+                            ColumnSpacing="12"
+                            Padding="18,13,16,13"
+                            Background="#1AFFFFFF">
+
+                            <Border
+                                WidthRequest="44"
+                                HeightRequest="44"
+                                Padding="5"
+                                Background="{StaticResource DiamondBrandBrush}"
+                                Stroke="#70FFFFFF"
+                                StrokeThickness="2"
+                                StrokeShape="RoundRectangle 15">
+
+                                <Border.Shadow>
+
+                                    <Shadow
+                                        Brush="#55793DFF"
+                                        Offset="0,5"
+                                        Radius="10"
+                                        Opacity="0.6" />
+
+                                </Border.Shadow>
+
+                                <Grid InputTransparent="True">
+
+                                    <Label
+                                        Text="✦"
+                                        FontSize="24"
+                                        TextColor="White"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center" />
+
+                                </Grid>
+
+                            </Border>
+
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="2"
+                                VerticalOptions="Center">
+
+                                <Label
+                                    Text="MarkUp AI Assistant"
+                                    FontSize="16"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="0.3"
+                                    TextColor="White" />
+
+                                <HorizontalStackLayout
+                                    Spacing="6"
+                                    VerticalOptions="Center">
+
+                                    <Border
+                                        Padding="8,3"
+                                        BackgroundColor="#1A5CFF88"
+                                        Stroke="#3A5CFF88"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 9"
+                                        VerticalOptions="Center">
+
+                                        <HorizontalStackLayout Spacing="5">
+
+                                            <Border
+                                                WidthRequest="6"
+                                                HeightRequest="6"
+                                                BackgroundColor="#5CFF88"
+                                                Stroke="White"
+                                                StrokeThickness="1"
+                                                StrokeShape="RoundRectangle 3"
+                                                VerticalOptions="Center" />
+
+                                            <Label
+                                                Text="ONLINE"
+                                                FontSize="7.5"
+                                                FontAttributes="Bold"
+                                                CharacterSpacing="1.2"
+                                                TextColor="#7DE8A8"
+                                                VerticalOptions="Center" />
+
+                                        </HorizontalStackLayout>
+
+                                    </Border>
+
+                                    <Label
+                                        Text="Ready to help"
+                                        FontSize="10"
+                                        TextColor="{StaticResource MutedText}"
+                                        VerticalOptions="Center" />
+
+                                </HorizontalStackLayout>
+
+                            </VerticalStackLayout>
+
+                            <Button
+                                Grid.Column="2"
+                                Text="✕"
+                                FontSize="15"
+                                WidthRequest="42"
+                                HeightRequest="42"
+                                Padding="0"
+                                CornerRadius="15"
+                                BackgroundColor="#1BFFFFFF"
+                                TextColor="White"
+                                BorderColor="#3AFFFFFF"
+                                BorderWidth="1"
+                                VerticalOptions="Center"
+                                Clicked="OnAnimatedButtonClicked"
+                                Command="{Binding CloseChatCommand}" />
+
+                        </Grid>
+
+                        <!-- Chat Messages -->
+
+                        <ScrollView
+                            Grid.Row="1"
+                            x:Name="AiChatScroll"
+                            Padding="17,14"
+                            Background="#08FFFFFF">
+
+                            <VerticalStackLayout
+                                BindableLayout.ItemsSource="{Binding AiChatMessages}"
+                                Spacing="11">
+
+                                <BindableLayout.ItemTemplate>
+
+                                    <DataTemplate x:DataType="models:AiChatMessage">
+
+                                        <Grid
+                                            ColumnDefinitions="{OnIdiom Phone='Auto,*',
+                                                                           Tablet='Auto,*',
+                                                                           Desktop='Auto,*,*',
+                                                                           TV='Auto,*,*'}"
+                                            ColumnSpacing="10">
+
+                                            <Border
+                                                IsVisible="{Binding Converter={StaticResource RoleToVisibleConverter},
+                                                                    ConverterParameter=Assistant}"
+                                                Grid.Column="0"
+                                                WidthRequest="34"
+                                                HeightRequest="34"
+                                                Background="{StaticResource DiamondBrandBrush}"
+                                                Stroke="#60FFFFFF"
+                                                StrokeThickness="1"
+                                                StrokeShape="RoundRectangle 11"
+                                                VerticalOptions="Start">
+
+                                                <Label
+                                                    Text="✦"
+                                                    FontSize="17"
+                                                    TextColor="White"
+                                                    HorizontalOptions="Center"
+                                                    VerticalOptions="Center" />
+
+                                            </Border>
+
+                                            <Border
+                                                Grid.Column="1"
+                                                Padding="13,11"
+                                                BackgroundColor="{Binding Converter={StaticResource RoleToBgConverter}}"
+                                                Stroke="{Binding Converter={StaticResource RoleToStrokeConverter}}"
+                                                StrokeThickness="1"
+                                                StrokeShape="RoundRectangle 17"
+                                                HorizontalOptions="{Binding Converter={StaticResource RoleToAlignmentConverter}}"
+                                                MaximumWidthRequest="{OnIdiom Phone='310',
+                                                                              Tablet='470',
+                                                                              Desktop='600',
+                                                                              TV='760'}">
+
+                                                <VerticalStackLayout Spacing="9">
+
+                                                    <Grid IsVisible="{Binding IsTyping}">
+
+                                                        <HorizontalStackLayout
+                                                            Spacing="5"
+                                                            HorizontalOptions="Start">
+
+                                                            <Label
+                                                                Text="●"
+                                                                FontSize="10"
+                                                                TextColor="{StaticResource DiamondGold}">
+                                                                <Label.Triggers>
+                                                                    <DataTrigger
+                                                                        TargetType="Label"
+                                                                        Binding="{Binding IsTyping}"
+                                                                        Value="True">
+                                                                        <DataTrigger.EnterActions>
+                                                                            <helpers:AnimateTypingAction />
+                                                                        </DataTrigger.EnterActions>
+                                                                    </DataTrigger>
+                                                                </Label.Triggers>
+                                                            </Label>
+
+                                                            <Label
+                                                                Text="●"
+                                                                FontSize="10"
+                                                                TextColor="{StaticResource DiamondPurple}">
+                                                                <Label.Triggers>
+                                                                    <DataTrigger
+                                                                        TargetType="Label"
+                                                                        Binding="{Binding IsTyping}"
+                                                                        Value="True">
+                                                                        <DataTrigger.EnterActions>
+                                                                            <helpers:AnimateTypingAction Delay="150"/>
+                                                                        </DataTrigger.EnterActions>
+                                                                    </DataTrigger>
+                                                                </Label.Triggers>
+                                                            </Label>
+
+                                                            <Label
+                                                                Text="●"
+                                                                FontSize="10"
+                                                                TextColor="{StaticResource DiamondPink}">
+                                                                <Label.Triggers>
+                                                                    <DataTrigger
+                                                                        TargetType="Label"
+                                                                        Binding="{Binding IsTyping}"
+                                                                        Value="True">
+                                                                        <DataTrigger.EnterActions>
+                                                                            <helpers:AnimateTypingAction Delay="300"/>
+                                                                        </DataTrigger.EnterActions>
+                                                                    </DataTrigger>
+                                                                </Label.Triggers>
+                                                            </Label>
+
+                                                        </HorizontalStackLayout>
+
+                                                    </Grid>
+
+                                                    <Label
+                                                        Text="{Binding Text}"
+                                                        FontSize="13"
+                                                        TextColor="White"
+                                                        TextType="Text"
+                                                        IsVisible="{Binding IsTyping, Converter={StaticResource NotBoolConverter}}" />
+
+                                                    <VerticalStackLayout
+                                                        Spacing="8"
+                                                        BindableLayout.ItemsSource="{Binding Recommendations}"
+                                                        IsVisible="{Binding Path=Recommendations.Count,
+                                                                            Converter={StaticResource CountGreaterThanZeroConverter}}">
+
+                                                        <BindableLayout.ItemTemplate>
+
+                                                            <DataTemplate x:DataType="models:AiRecommendedChannel">
+
+                                                                <Border
+                                                                    Padding="10"
+                                                                    BackgroundColor="#18FFFFFF"
+                                                                    Stroke="#33FFFFFF"
+                                                                    StrokeThickness="1"
+                                                                    StrokeShape="RoundRectangle 14">
+
+                                                                    <Border.Behaviors>
+                                                                        <helpers:TapScaleBehavior/>
+                                                                    </Border.Behaviors>
+                                                                    <Border.GestureRecognizers>
+
+                                                                        <TapGestureRecognizer
+                                                                            Tapped="OnAiRecommendedChannelTapped"
+                                                                            CommandParameter="{Binding .}" />
+
+                                                                    </Border.GestureRecognizers>
+
+                                                                    <Grid
+                                                                        ColumnDefinitions="Auto,*,Auto"
+                                                                        ColumnSpacing="10"
+                                                                        InputTransparent="True"
+                                                                        CascadeInputTransparent="True">
+
+                                                                        <Border
+                                                                            WidthRequest="46"
+                                                                            HeightRequest="46"
+                                                                            BackgroundColor="#0B0D1B"
+                                                                            Stroke="#30FFFFFF"
+                                                                            StrokeThickness="1"
+                                                                            StrokeShape="RoundRectangle 12">
+
+                                                                            <Grid>
+
+                                                                                <Label
+                                                                                    Text="◆"
+                                                                                    FontSize="24"
+                                                                                    TextColor="#25FFFFFF"
+                                                                                    HorizontalOptions="Center"
+                                                                                    VerticalOptions="Center" />
+
+                                                                                <Image
+                                                                                    Source="{Binding LogoUrl}"
+                                                                                    Aspect="AspectFit"
+                                                                                    Margin="5" />
+
+                                                                            </Grid>
+
+                                                                        </Border>
+
+                                                                        <VerticalStackLayout
+                                                                            Grid.Column="1"
+                                                                            Spacing="1"
+                                                                            VerticalOptions="Center">
+
+                                                                            <Label
+                                                                                Text="{Binding Name}"
+                                                                                FontSize="13"
+                                                                                FontAttributes="Bold"
+                                                                                TextColor="White"
+                                                                                MaxLines="1"
+                                                                                LineBreakMode="TailTruncation" />
+
+                                                                            <Label
+                                                                                Text="{Binding CurrentProgramme}"
+                                                                                FontSize="10"
+                                                                                TextColor="{StaticResource MutedText}"
+                                                                                MaxLines="1"
+                                                                                LineBreakMode="TailTruncation" />
+
+                                                                            <Label
+                                                                                Text="{Binding Reason}"
+                                                                                FontSize="10"
+                                                                                TextColor="{StaticResource DiamondGold}"
+                                                                                MaxLines="1"
+                                                                                LineBreakMode="TailTruncation" />
+
+                                                                        </VerticalStackLayout>
+
+                                                                        <Label
+                                                                            Grid.Column="2"
+                                                                            Text="▶"
+                                                                            FontSize="16"
+                                                                            TextColor="{StaticResource DiamondPink}"
+                                                                            VerticalOptions="Center" />
+
+                                                                    </Grid>
+
+                                                                </Border>
+
+                                                            </DataTemplate>
+
+                                                        </BindableLayout.ItemTemplate>
+
+                                                    </VerticalStackLayout>
+
+                                                </VerticalStackLayout>
+
+                                            </Border>
+
+                                        </Grid>
+
+                                    </DataTemplate>
+
+                                </BindableLayout.ItemTemplate>
+
+                            </VerticalStackLayout>
+
+                        </ScrollView>
+
+                        <!-- Chip row -->
+
+                        <ScrollView
+                            Grid.Row="2"
+                            Orientation="Horizontal"
+                            HorizontalScrollBarVisibility="Never"
+                            Padding="17,10,17,4"
+                            Background="#14FFFFFF"
+                            IsVisible="{Binding AiQuickChips.Count,
+                                                Converter={StaticResource CountGreaterThanZeroConverter}}">
+
+                            <HorizontalStackLayout
+                                BindableLayout.ItemsSource="{Binding AiQuickChips}"
+                                Spacing="7">
+
+                                <BindableLayout.ItemTemplate>
+
+                                    <DataTemplate x:DataType="x:String">
+
+                                        <Border
+                                            Padding="15,8"
+                                            BackgroundColor="#22FFFFFF"
+                                            Stroke="#3DFFFFFF"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 21">
+
+                                            <Border.Behaviors>
+                                                <helpers:TapScaleBehavior/>
+                                            </Border.Behaviors>
+                                            <Border.GestureRecognizers>
+
+                                                <TapGestureRecognizer
+                                                    Tapped="OnQuickChipTapped"
+                                                    CommandParameter="{Binding .}" />
+
+                                            </Border.GestureRecognizers>
+
+                                            <HorizontalStackLayout Spacing="6">
+
+                                                <Label
+                                                    Text="✦"
+                                                    FontSize="9"
+                                                    TextColor="{StaticResource DiamondGold}"
+                                                    VerticalOptions="Center"
+                                                    InputTransparent="True" />
+
+                                                <Label
+                                                    Text="{Binding .}"
+                                                    FontSize="11.5"
+                                                    FontAttributes="Bold"
+                                                    CharacterSpacing="0.3"
+                                                    TextColor="White"
+                                                    LineBreakMode="NoWrap"
+                                                    VerticalOptions="Center"
+                                                    InputTransparent="True" />
+
+                                            </HorizontalStackLayout>
+
+                                        </Border>
+
+                                    </DataTemplate>
+
+                                </BindableLayout.ItemTemplate>
+
+                            </HorizontalStackLayout>
+
+                        </ScrollView>
+
+                        <!-- Input Row -->
+
+                        <Grid
+                            Grid.Row="3"
+                            ColumnDefinitions="*,Auto"
+                            ColumnSpacing="9"
+                            Padding="17,9"
+                            Background="#2A0A0E22">
+
+                            <Border
+                                HeightRequest="50"
+                                Padding="14,0"
+                                BackgroundColor="#22FFFFFF"
+                                Stroke="#45FFFFFF"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 18">
+
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
+
+                                    <Entry
+                                        x:Name="AiChatEntry"
+                                        Text="{Binding ChatInputText, Mode=TwoWay}"
+                                        Placeholder="Ask me about TV…"
+                                        PlaceholderColor="#76809F"
+                                        TextColor="White"
+                                        BackgroundColor="Transparent"
+                                        FontSize="13"
+                                        ReturnType="Send"
+                                        ReturnCommand="{Binding SendChatMessageCommand}"
+                                        VerticalOptions="Center"
+                                        ClearButtonVisibility="WhileEditing" />
+
+                                    <ActivityIndicator
+                                        Grid.Column="1"
+                                        IsRunning="{Binding IsAiProcessingResponse}"
+                                        IsVisible="{Binding IsAiProcessingResponse}"
+                                        WidthRequest="22"
+                                        HeightRequest="22"
+                                        Color="{StaticResource DiamondGold}"
+                                        VerticalOptions="Center" />
+
+                                </Grid>
+
+                            </Border>
+
+                            <Button
+                                Grid.Column="1"
+                                Text="➤"
+                                FontSize="18"
+                                WidthRequest="54"
+                                HeightRequest="50"
+                                Padding="0"
+                                CornerRadius="18"
+                                Background="{StaticResource DiamondBrandBrush}"
+                                TextColor="White"
+                                BorderColor="#70FFFFFF"
+                                BorderWidth="1"
+                                Clicked="OnAnimatedButtonClicked"
+                                Command="{Binding SendChatMessageCommand}"
+                                VerticalOptions="Center" />
+
+                        </Grid>
+
+                    </Grid>
+
+                </Border>
+
+            </Grid>
+
+        </Border>
+
+    </Grid>
+
+</ContentPage>

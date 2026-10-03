@@ -1,0 +1,32 @@
+83,889 : o SYNC
+273,220 : Select a wildlife channel
+276,722 : Explore the wild on TV
+435,884 : Find wildlife...
+56,1002 : All Auto Outdoor
+504,1006 : Sports
+207,1126 : INWILD (1080p)
+204,1175 : Wildlife and nature - live
+206,1218 : SD
+673,1006 : Documentary
+956,1002 : Educa
+72,1318 : .IIONAL
+121,1366 : G
+72,1514 : .IIONAL
+137,1534 : HIC
+121,1760 : G
+72,1908 : .IIONAL
+72,2106 : .IIONAL
+137,2127 : HIC
+207,1322 : National Geographic Wild (Czech Re...
+204,1372 : Wildlife and nature - live
+206,1414 : SD
+207,1519 : National Geographic Wild (Hungary)
+204,1569 : Wildlife and nature - live
+206,1612 : SD
+207,1716 : National Geographic Wild (Romania)
+204,1766 : Wildlife and nature - live
+206,1808 : SD
+207,1913 : National Geographic Wild (Russia) H...
+204,1963 : Wildlife and nature - live
+206,2006 : SD
+207,2110 : National Geographic Wild (United St...

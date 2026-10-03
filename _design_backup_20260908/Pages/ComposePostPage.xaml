@@ -1,0 +1,824 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="MarkUptv.Pages.ComposePostPage"
+    x:Name="PageRoot"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+    x:DataType="vm:ComposePostViewModel"
+    Title="New Post"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+
+        <!-- Colours -->
+
+        <Color x:Key="DeepSky">#060816</Color>
+        <Color x:Key="MidnightPanel">#11162E</Color>
+        <Color x:Key="DiamondWhite">#F8FBFF</Color>
+        <Color x:Key="DiamondGold">#FFD95A</Color>
+        <Color x:Key="DiamondBlue">#2BD8FF</Color>
+        <Color x:Key="DiamondPurple">#8057FF</Color>
+        <Color x:Key="DiamondPink">#FF3E91</Color>
+        <Color x:Key="MutedText">#929BBE</Color>
+
+        <!-- Background -->
+
+        <LinearGradientBrush
+            x:Key="ComposePageBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#050714"
+                Offset="0" />
+
+            <GradientStop
+                Color="#11163A"
+                Offset="0.48" />
+
+            <GradientStop
+                Color="#28113D"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <!-- Header and brand -->
+
+        <LinearGradientBrush
+            x:Key="ComposeHeroBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#182B66"
+                Offset="0" />
+
+            <GradientStop
+                Color="#482E91"
+                Offset="0.54" />
+
+            <GradientStop
+                Color="#922C73"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <LinearGradientBrush
+            x:Key="DiamondBrandBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#2BD8FF"
+                Offset="0" />
+
+            <GradientStop
+                Color="#8057FF"
+                Offset="0.5" />
+
+            <GradientStop
+                Color="#FF3E91"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <!-- Input style -->
+
+        <Style
+            x:Key="InputBorderStyle"
+            TargetType="Border">
+
+            <Setter
+                Property="BackgroundColor"
+                Value="#D50A0E22" />
+
+            <Setter
+                Property="Stroke"
+                Value="#35FFFFFF" />
+
+            <Setter
+                Property="StrokeThickness"
+                Value="1" />
+
+            <Setter
+                Property="StrokeShape"
+                Value="RoundRectangle 17" />
+
+        </Style>
+
+        <!-- Glass button -->
+
+        <Style
+            x:Key="GlassButtonStyle"
+            TargetType="Button">
+
+            <Setter
+                Property="HeightRequest"
+                Value="46" />
+
+            <Setter
+                Property="Padding"
+                Value="17,0" />
+
+            <Setter
+                Property="CornerRadius"
+                Value="15" />
+
+            <Setter
+                Property="FontSize"
+                Value="13" />
+
+            <Setter
+                Property="FontAttributes"
+                Value="Bold" />
+
+            <Setter
+                Property="BackgroundColor"
+                Value="#16FFFFFF" />
+
+            <Setter
+                Property="BorderColor"
+                Value="#35FFFFFF" />
+
+            <Setter
+                Property="BorderWidth"
+                Value="1" />
+
+            <Setter
+                Property="TextColor"
+                Value="White" />
+
+        </Style>
+
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <StaticResource Key="ComposePageBrush" />
+    </ContentPage.Background>
+
+    <Grid
+        RowDefinitions="Auto,*"
+        Padding="{OnIdiom Phone='14,18,14,18',
+                          Tablet='24,24,24,24',
+                          Desktop='32,27,32,27',
+                          TV='50,40,50,40'}"
+        RowSpacing="17">
+
+        <!-- Decorative diamonds -->
+
+        <Label
+            x:Name="FloatingDiamondOne"
+            Grid.RowSpan="2"
+            Text="◆"
+            FontSize="105"
+            TextColor="#102BD8FF"
+            Margin="-38,85,0,0"
+            HorizontalOptions="Start"
+            VerticalOptions="Start"
+            InputTransparent="True" />
+
+        <Label
+            x:Name="FloatingDiamondTwo"
+            Grid.RowSpan="2"
+            Text="◇"
+            FontSize="120"
+            TextColor="#10FF3E91"
+            Margin="0,0,-45,50"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            InputTransparent="True" />
+
+        <!-- Header -->
+
+        <Grid
+            x:Name="HeaderPanel"
+            Grid.Row="0"
+            ColumnDefinitions="Auto,*,Auto"
+            ColumnSpacing="11"
+            MaximumWidthRequest="940"
+            HorizontalOptions="Center">
+
+            <Button
+                Grid.Column="0"
+                Text="←"
+                Command="{Binding GoBackCommand}"
+                Clicked="OnAnimatedButtonClicked"
+                WidthRequest="48"
+                HeightRequest="48"
+                Padding="0"
+                CornerRadius="16"
+                FontSize="22"
+                FontAttributes="Bold"
+                BackgroundColor="#16FFFFFF"
+                BorderColor="#35FFFFFF"
+                BorderWidth="1"
+                TextColor="White"
+                SemanticProperties.Description="Go back" />
+
+            <VerticalStackLayout
+                Grid.Column="1"
+                Spacing="1"
+                VerticalOptions="Center">
+
+                <Label
+                    Text="Create a post"
+                    FontSize="{OnIdiom Phone=22,
+                                       Tablet=25,
+                                       Desktop=27,
+                                       TV=34}"
+                    FontAttributes="Bold"
+                    TextColor="White" />
+
+                <Label
+                    Text="Share a moment with the MarkUpTV community"
+                    FontSize="{OnIdiom Phone=10,
+                                       Tablet=11,
+                                       Desktop=11,
+                                       TV=14}"
+                    TextColor="{StaticResource MutedText}"
+                    MaxLines="1"
+                    LineBreakMode="TailTruncation" />
+
+            </VerticalStackLayout>
+
+            <Border
+                x:Name="HeaderDiamond"
+                Grid.Column="2"
+                WidthRequest="48"
+                HeightRequest="48"
+                Background="{StaticResource DiamondBrandBrush}"
+                Stroke="#70FFFFFF"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 16">
+
+                <Border.Shadow>
+
+                    <Shadow
+                        Brush="#702BD8FF"
+                        Offset="0,5"
+                        Radius="12"
+                        Opacity="0.65" />
+
+                </Border.Shadow>
+
+                <Label
+                    Text="◆"
+                    FontSize="25"
+                    TextColor="White"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+
+            </Border>
+
+        </Grid>
+
+        <!-- Scrolling content -->
+
+        <ScrollView
+            Grid.Row="1"
+            VerticalScrollBarVisibility="Never">
+
+            <VerticalStackLayout
+                x:Name="ContentStack"
+                Spacing="16"
+                MaximumWidthRequest="940"
+                HorizontalOptions="Center"
+                Padding="0,2,0,25">
+
+                <!-- Hero -->
+
+                <Border
+                    x:Name="HeroPanel"
+                    Padding="{OnIdiom Phone=18,
+                                      Tablet=22,
+                                      Desktop=25,
+                                      TV=32}"
+                    Background="{StaticResource ComposeHeroBrush}"
+                    Stroke="#45FFFFFF"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 28">
+
+                    <Border.Shadow>
+
+                        <Shadow
+                            Brush="#80000000"
+                            Offset="0,9"
+                            Radius="19"
+                            Opacity="0.66" />
+
+                    </Border.Shadow>
+
+                    <Grid
+                        ColumnDefinitions="*,Auto"
+                        ColumnSpacing="16">
+
+                        <VerticalStackLayout
+                            Grid.Column="0"
+                            Spacing="7"
+                            VerticalOptions="Center">
+
+                            <HorizontalStackLayout Spacing="7">
+
+                                <Label
+                                    Text="◆"
+                                    FontSize="13"
+                                    TextColor="{StaticResource DiamondGold}"
+                                    VerticalOptions="Center" />
+
+                                <Label
+                                    Text="COMMUNITY STUDIO"
+                                    FontSize="10"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="1.3"
+                                    TextColor="{StaticResource DiamondBlue}"
+                                    VerticalOptions="Center" />
+
+                            </HorizontalStackLayout>
+
+                            <Label
+                                Text="Share what is happening"
+                                FontSize="{OnIdiom Phone=24,
+                                                   Tablet=29,
+                                                   Desktop=32,
+                                                   TV=40}"
+                                FontAttributes="Bold"
+                                TextColor="White"
+                                MaxLines="2"
+                                LineBreakMode="WordWrap" />
+
+                            <Label
+                                Text="Talk about a live channel, football match, film, programme or breaking story."
+                                FontSize="{OnIdiom Phone=12,
+                                                   Tablet=13,
+                                                   Desktop=14,
+                                                   TV=17}"
+                                TextColor="#D7DCF2"
+                                MaxLines="3"
+                                LineBreakMode="WordWrap" />
+
+                        </VerticalStackLayout>
+
+                        <Label
+                            Grid.Column="1"
+                            Text="◇"
+                            FontSize="{OnIdiom Phone=54,
+                                               Tablet=65,
+                                               Desktop=72,
+                                               TV=90}"
+                            TextColor="#65FFFFFF"
+                            VerticalOptions="Center"
+                            InputTransparent="True" />
+
+                    </Grid>
+
+                </Border>
+
+                <!-- Composer -->
+
+                <Border
+                    x:Name="ComposerCard"
+                    Padding="{OnIdiom Phone=15,
+                                      Tablet=20,
+                                      Desktop=23,
+                                      TV=29}"
+                    BackgroundColor="#E0111731"
+                    Stroke="#35FFFFFF"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 26">
+
+                    <Border.Shadow>
+
+                        <Shadow
+                            Brush="#65000000"
+                            Offset="0,8"
+                            Radius="17"
+                            Opacity="0.58" />
+
+                    </Border.Shadow>
+
+                    <VerticalStackLayout Spacing="14">
+
+                        <!-- Author -->
+
+                        <Grid ColumnDefinitions="*,Auto">
+
+                            <VerticalStackLayout Spacing="1">
+
+                                <Label
+                                    Text="Display name"
+                                    FontSize="12"
+                                    FontAttributes="Bold"
+                                    TextColor="White" />
+
+                                <Label
+                                    Text="This name will appear above your post."
+                                    FontSize="10"
+                                    TextColor="{StaticResource MutedText}" />
+
+                            </VerticalStackLayout>
+
+                            <Border
+                                Grid.Column="1"
+                                Padding="8,4"
+                                BackgroundColor="#162BD8FF"
+                                Stroke="#302BD8FF"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 9"
+                                VerticalOptions="Center">
+
+                                <Label
+                                    Text="PUBLIC"
+                                    FontSize="8"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="1"
+                                    TextColor="{StaticResource DiamondBlue}" />
+
+                            </Border>
+
+                        </Grid>
+
+                        <Border
+                            x:Name="AuthorInputBorder"
+                            Style="{StaticResource InputBorderStyle}"
+                            HeightRequest="54"
+                            Padding="12,0">
+
+                            <Grid ColumnDefinitions="Auto,*">
+
+                                <Border
+                                    Grid.Column="0"
+                                    WidthRequest="34"
+                                    HeightRequest="34"
+                                    Background="{StaticResource DiamondBrandBrush}"
+                                    Stroke="#50FFFFFF"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 11"
+                                    VerticalOptions="Center">
+
+                                    <Label
+                                        Text="◆"
+                                        FontSize="15"
+                                        TextColor="White"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center" />
+
+                                </Border>
+
+                                <Entry
+                                    x:Name="AuthorEntry"
+                                    Grid.Column="1"
+                                    Text="{Binding AuthorName}"
+                                    Placeholder="Display name"
+                                    PlaceholderColor="#78819F"
+                                    TextColor="White"
+                                    BackgroundColor="Transparent"
+                                    FontSize="14"
+                                    MaxLength="80"
+                                    Margin="9,0,0,0"
+                                    Focused="OnAuthorEntryFocused"
+                                    Unfocused="OnAuthorEntryUnfocused"
+                                    VerticalOptions="Center" />
+
+                            </Grid>
+
+                        </Border>
+
+                        <!-- Content title and count -->
+
+                        <Grid ColumnDefinitions="*,Auto">
+
+                            <VerticalStackLayout Spacing="1">
+
+                                <Label
+                                    Text="Your message"
+                                    FontSize="12"
+                                    FontAttributes="Bold"
+                                    TextColor="White" />
+
+                                <Label
+                                    Text="Make it clear, respectful and interesting."
+                                    FontSize="10"
+                                    TextColor="{StaticResource MutedText}" />
+
+                            </VerticalStackLayout>
+
+                            <Border
+                                Grid.Column="1"
+                                Padding="9,5"
+                                BackgroundColor="#14FFFFFF"
+                                Stroke="#26FFFFFF"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10"
+                                VerticalOptions="Center">
+
+                                <Label
+                                    Text="{Binding CharacterCountText}"
+                                    FontSize="9"
+                                    FontAttributes="Bold"
+                                    TextColor="{StaticResource DiamondGold}" />
+
+                            </Border>
+
+                        </Grid>
+
+                        <!-- Editor -->
+
+                        <Border
+                            x:Name="EditorInputBorder"
+                            Style="{StaticResource InputBorderStyle}"
+                            Padding="12">
+
+                            <Editor
+                                x:Name="ContentEditor"
+                                Text="{Binding Content}"
+                                Placeholder="What is happening on MarkUpTV?"
+                                PlaceholderColor="#78819F"
+                                TextColor="White"
+                                BackgroundColor="Transparent"
+                                FontSize="{OnIdiom Phone=14,
+                                                   Tablet=15,
+                                                   Desktop=15,
+                                                   TV=19}"
+                                AutoSize="TextChanges"
+                                MinimumHeightRequest="{OnIdiom Phone=190,
+                                                              Tablet=220,
+                                                              Desktop=235,
+                                                              TV=290}"
+                                MaxLength="2000"
+                                Focused="OnContentEditorFocused"
+                                Unfocused="OnContentEditorUnfocused" />
+
+                        </Border>
+
+                        <!-- Character progress -->
+
+                        <Grid
+                            ColumnDefinitions="*,Auto"
+                            ColumnSpacing="10">
+
+                            <ProgressBar
+                                Grid.Column="0"
+                                Progress="{Binding ContentProgress}"
+                                ProgressColor="{StaticResource DiamondPurple}"
+                                BackgroundColor="#20FFFFFF"
+                                HeightRequest="5"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding RemainingCharacters,
+                                               StringFormat='{0} left'}"
+                                FontSize="9"
+                                TextColor="{StaticResource MutedText}"
+                                VerticalOptions="Center" />
+
+                        </Grid>
+
+                        <!-- Status -->
+
+                        <Border
+                            Padding="12,9"
+                            BackgroundColor="#D09A1D47"
+                            Stroke="#FFFFADC2"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 14"
+                            IsVisible="{Binding HasStatusMessage}">
+
+                            <Border.Triggers>
+
+                                <DataTrigger
+                                    TargetType="Border"
+                                    Binding="{Binding IsStatusSuccess}"
+                                    Value="True">
+
+                                    <Setter
+                                        Property="BackgroundColor"
+                                        Value="#C51B6D56" />
+
+                                    <Setter
+                                        Property="Stroke"
+                                        Value="#805CFFB0" />
+
+                                </DataTrigger>
+
+                            </Border.Triggers>
+
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+
+                                <Label
+                                    Grid.Column="0"
+                                    Text="◆"
+                                    FontSize="15"
+                                    TextColor="{StaticResource DiamondGold}"
+                                    VerticalOptions="Center">
+
+                                    <Label.Triggers>
+
+                                        <DataTrigger
+                                            TargetType="Label"
+                                            Binding="{Binding IsStatusSuccess}"
+                                            Value="True">
+
+                                            <Setter
+                                                Property="Text"
+                                                Value="✓" />
+
+                                            <Setter
+                                                Property="TextColor"
+                                                Value="#75FFB9" />
+
+                                        </DataTrigger>
+
+                                    </Label.Triggers>
+
+                                </Label>
+
+                                <Label
+                                    Grid.Column="1"
+                                    Text="{Binding StatusMessage}"
+                                    FontSize="11"
+                                    FontAttributes="Bold"
+                                    TextColor="White"
+                                    MaxLines="3"
+                                    LineBreakMode="WordWrap"
+                                    VerticalOptions="Center" />
+
+                            </Grid>
+
+                        </Border>
+
+                        <!-- Error -->
+
+                        <Border
+                            Padding="12,9"
+                            BackgroundColor="#D0A51B47"
+                            Stroke="#FFFFADC2"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 14"
+                            IsVisible="{Binding HasError}">
+
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+
+                                <Label
+                                    Grid.Column="0"
+                                    Text="⚠"
+                                    FontSize="17"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+
+                                <Label
+                                    Grid.Column="1"
+                                    Text="{Binding ErrorMessage}"
+                                    FontSize="11"
+                                    FontAttributes="Bold"
+                                    TextColor="White"
+                                    MaxLines="3"
+                                    LineBreakMode="WordWrap"
+                                    VerticalOptions="Center" />
+
+                            </Grid>
+
+                        </Border>
+
+                        <!-- Actions -->
+
+                        <Grid
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="10">
+
+                            <Button
+                                Grid.Column="0"
+                                Text="Clear"
+                                Command="{Binding ClearPostCommand}"
+                                Clicked="OnAnimatedButtonClicked"
+                                Style="{StaticResource GlassButtonStyle}"
+                                IsEnabled="{Binding IsNotPosting}" />
+
+                            <Button
+                                x:Name="PublishButton"
+                                Grid.Column="1"
+                                Text="◆  Publish post"
+                                Command="{Binding PublishCommand}"
+                                Clicked="OnAnimatedButtonClicked"
+                                IsEnabled="{Binding CanPublish}"
+                                HeightRequest="50"
+                                Padding="18,0"
+                                CornerRadius="16"
+                                FontSize="14"
+                                FontAttributes="Bold"
+                                BackgroundColor="{StaticResource DiamondPurple}"
+                                BorderColor="#70FFFFFF"
+                                BorderWidth="1"
+                                TextColor="White" />
+
+                        </Grid>
+
+                        <!-- Publishing -->
+
+                        <Border
+                            Padding="12,10"
+                            BackgroundColor="#12FFFFFF"
+                            Stroke="#25FFFFFF"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 14"
+                            IsVisible="{Binding IsPosting}">
+
+                            <HorizontalStackLayout
+                                Spacing="10"
+                                HorizontalOptions="Center">
+
+                                <ActivityIndicator
+                                    WidthRequest="30"
+                                    HeightRequest="30"
+                                    IsRunning="{Binding IsPosting}"
+                                    Color="{StaticResource DiamondGold}" />
+
+                                <VerticalStackLayout
+                                    Spacing="0"
+                                    VerticalOptions="Center">
+
+                                    <Label
+                                        Text="Publishing your post"
+                                        FontSize="11"
+                                        FontAttributes="Bold"
+                                        TextColor="White" />
+
+                                    <Label
+                                        Text="Sending it to the MarkUpTV community..."
+                                        FontSize="9"
+                                        TextColor="{StaticResource MutedText}" />
+
+                                </VerticalStackLayout>
+
+                            </HorizontalStackLayout>
+
+                        </Border>
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+                <!-- Community guidelines -->
+
+                <Border
+                    x:Name="GuidelinesCard"
+                    Padding="15"
+                    BackgroundColor="#0FFFFFFF"
+                    Stroke="#25FFFFFF"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 20">
+
+                    <Grid
+                        ColumnDefinitions="Auto,*"
+                        ColumnSpacing="12">
+
+                        <Border
+                            Grid.Column="0"
+                            WidthRequest="43"
+                            HeightRequest="43"
+                            BackgroundColor="#162BD8FF"
+                            Stroke="#352BD8FF"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 14">
+
+                            <Label
+                                Text="✦"
+                                FontSize="19"
+                                TextColor="{StaticResource DiamondBlue}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+
+                        </Border>
+
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="3">
+
+                            <Label
+                                Text="Community reminder"
+                                FontSize="12"
+                                FontAttributes="Bold"
+                                TextColor="White" />
+
+                            <Label
+                                Text="Avoid spam, abusive language and private information. Keep every discussion respectful."
+                                FontSize="10"
+                                TextColor="{StaticResource MutedText}"
+                                MaxLines="4"
+                                LineBreakMode="WordWrap" />
+
+                        </VerticalStackLayout>
+
+                    </Grid>
+
+                </Border>
+
+            </VerticalStackLayout>
+
+        </ScrollView>
+
+    </Grid>
+
+</ContentPage>

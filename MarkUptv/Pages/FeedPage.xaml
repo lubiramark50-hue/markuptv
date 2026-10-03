@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:MarkUptv.Helpers"
+             xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+             xmlns:models="clr-namespace:MarkUptv.Models"
+             xmlns:controls="clr-namespace:MarkUptv.Controls"
+             x:Class="MarkUptv.Pages.FeedPage"
+             x:Name="PageRoot"
+             x:DataType="vm:FeedViewModel"
+             Shell.NavBarIsVisible="True"
+             Shell.BackgroundColor="#080A16"
+             Title="Feed">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="✚ New Post" Command="{Binding ComposeCommand}" Order="Primary" />
+    </ContentPage.ToolbarItems>
+
+    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RefreshColor="#FF007F">
+        <CollectionView ItemsSource="{Binding FeedPosts}"
+                        RemainingItemsThreshold="2"
+                        RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ContentItem">
+                    <Border Style="{StaticResource GlassCard}" Padding="16" Margin="0,0,0,12">
+                        <Border.Behaviors>
+                            <helpers:TapScaleBehavior/>
+                        </Border.Behaviors>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={x:Reference PageRoot}, Path=BindingContext.OpenPostCommand}"
+                                                  CommandParameter="{Binding .}" />
+                        </Border.GestureRecognizers>
+
+                        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="8">
+                            <!-- Author & time -->
+                            <HorizontalStackLayout Spacing="12">
+                                <Border WidthRequest="36" HeightRequest="36" StrokeShape="RoundRectangle 18"
+                                        BackgroundColor="#FF007F" HorizontalOptions="Start">
+                                    <Label Text="{Binding AuthorInitials, FallbackValue='U'}"
+                                           TextColor="White" FontSize="14" FontAttributes="Bold"
+                                           HorizontalOptions="Center" VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout Spacing="2">
+                                    <Label Text="{Binding AuthorName, FallbackValue='User'}"
+                                           FontSize="14" FontAttributes="Bold" TextColor="White" />
+                                    <Label Text="{Binding TimeAgo}" FontSize="11" TextColor="#8A8A9E" />
+                                </VerticalStackLayout>
+                            </HorizontalStackLayout>
+
+                            <!-- Text content -->
+                            <Label Grid.Row="1" Text="{Binding Description}"
+                                   FontSize="15" TextColor="White" LineBreakMode="WordWrap"
+                                   MaxLines="4" />
+
+                            <!-- Media (if any) -->
+                            <Border Grid.Row="2" IsVisible="{Binding HasMedia}"
+                                    StrokeShape="RoundRectangle 12" BackgroundColor="#1A1A30"
+                                    HeightRequest="180">
+                                <Image Source="{Binding ThumbnailUrl}" Aspect="AspectFill" />
+                                <Label Text="▶" IsVisible="{Binding VideoUrl, Converter={StaticResource IsNotNullConverter}}"
+                                       FontSize="28" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+
+                            <!-- Like & Comment counts -->
+                            <HorizontalStackLayout Grid.Row="3" Spacing="16">
+                                <Label Text="{Binding LikeCount, StringFormat='♥ {0}'}" TextColor="#8A8A9E" FontSize="13" />
+                                <Label Text="{Binding CommentCount, StringFormat='💬 {0}'}" TextColor="#8A8A9E" FontSize="13" />
+                            </HorizontalStackLayout>
+
+                            <!-- Divider -->
+                            <BoxView Grid.Row="4" Color="#1F1F35" HeightRequest="1" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <!-- Footer loader for pagination -->
+            <CollectionView.Footer>
+                <ActivityIndicator IsVisible="{Binding IsLoadingMore}" IsRunning="True" Color="#FF007F" />
+            </CollectionView.Footer>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="MarkUptv.Pages.AdultsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Adults 18+"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#160A0E" Offset="0.0" />
+            <GradientStop Color="#1D1016" Offset="0.55" />
+            <GradientStop Color="#0E0A10" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="18,16,18,20">
+
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+
+            <Button
+                Grid.Column="0"
+                Text="←"
+                Clicked="OnBackClicked"
+                WidthRequest="44"
+                HeightRequest="44"
+                Padding="0"
+                CornerRadius="14"
+                FontSize="20"
+                FontAttributes="Bold"
+                BackgroundColor="#16FFFFFF"
+                BorderColor="#35FFFFFF"
+                BorderWidth="1"
+                TextColor="White"
+                SemanticProperties.Description="Go back" />
+
+            <VerticalStackLayout
+                Grid.Column="1"
+                Spacing="1"
+                VerticalOptions="Center">
+
+                <Label
+                    Text="Adults"
+                    FontSize="21"
+                    FontAttributes="Bold"
+                    TextColor="White" />
+
+                <Label
+                    Text="Restricted section — verify your age to continue"
+                    FontSize="10"
+                    TextColor="#9AA3B8"
+                    MaxLines="1"
+                    LineBreakMode="TailTruncation" />
+
+            </VerticalStackLayout>
+
+            <Border
+                Grid.Column="2"
+                WidthRequest="44"
+                HeightRequest="44"
+                BackgroundColor="#33B31847"
+                Stroke="#66B31847"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 14">
+
+                <Label
+                    Text="18+"
+                    FontSize="13"
+                    FontAttributes="Bold"
+                    TextColor="#FF8FA3"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+
+            </Border>
+
+        </Grid>
+
+        <!-- Gate / unlocked body -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout
+                VerticalOptions="Center"
+                Spacing="16"
+                MaximumWidthRequest="640"
+                HorizontalOptions="Center"
+                Padding="0,12">
+
+                <!-- Age gate card -->
+                <Border
+                    x:Name="GateCard"
+                    Padding="22,24"
+                    BackgroundColor="#E6151018"
+                    Stroke="#4DB31847"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 26">
+
+                    <Border.Shadow>
+                        <Shadow Brush="#66000000" Offset="0,8" Radius="18" Opacity="0.6" />
+                    </Border.Shadow>
+
+                    <VerticalStackLayout Spacing="14">
+
+                        <Border
+                            WidthRequest="64"
+                            HeightRequest="64"
+                            HorizontalOptions="Center"
+                            BackgroundColor="#33B31847"
+                            Stroke="#66B31847"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 20">
+
+                            <Label
+                                Text="18+"
+                                FontSize="20"
+                                FontAttributes="Bold"
+                                TextColor="#FF8FA3"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+
+                        </Border>
+
+                        <Label
+                            Text="This section contains adult content"
+                            FontSize="19"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            HorizontalOptions="Center"
+                            HorizontalTextAlignment="Center" />
+
+                        <Label
+                            Text="Channels here are intended strictly for adults and may be restricted by the laws of your country. You must be 18 or older to continue. By entering you confirm that you are of legal age and that viewing this material is permitted where you live."
+                            FontSize="12"
+                            LineHeight="1.35"
+                            TextColor="#C9CFE0"
+                            HorizontalTextAlignment="Center" />
+
+                        <VerticalStackLayout Spacing="8" Padding="4,0">
+
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="•" FontSize="12" TextColor="#B31847" VerticalOptions="Center" />
+                                <Label Text="Content is not filtered for individual sensitivity" FontSize="11" TextColor="#9AA3B8" />
+                            </HorizontalStackLayout>
+
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="•" FontSize="12" TextColor="#B31847" VerticalOptions="Center" />
+                                <Label Text="Do not share this section with minors" FontSize="11" TextColor="#9AA3B8" />
+                            </HorizontalStackLayout>
+
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="•" FontSize="12" TextColor="#B31847" VerticalOptions="Center" />
+                                <Label Text="You can lock this section again at any time" FontSize="11" TextColor="#9AA3B8" />
+                            </HorizontalStackLayout>
+
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+                <!-- Gate actions -->
+                <Grid
+                    x:Name="GateActions"
+                    ColumnDefinitions="*,2*"
+                    ColumnSpacing="10">
+
+                    <Button
+                        Grid.Column="0"
+                        Text="Leave"
+                        Clicked="OnBackClicked"
+                        HeightRequest="50"
+                        CornerRadius="16"
+                        FontSize="13"
+                        FontAttributes="Bold"
+                        BackgroundColor="#16FFFFFF"
+                        BorderColor="#35FFFFFF"
+                        BorderWidth="1"
+                        TextColor="White" />
+
+                    <Button
+                        Grid.Column="1"
+                        Text="I am 18 or older — Enter"
+                        Clicked="OnAcceptClicked"
+                        HeightRequest="50"
+                        CornerRadius="16"
+                        FontSize="13"
+                        FontAttributes="Bold"
+                        BackgroundColor="#B31847"
+                        BorderColor="#70FFFFFF"
+                        BorderWidth="1"
+                        TextColor="White"
+                        SemanticProperties.Description="Confirm age and enter the adults section" />
+
+                </Grid>
+
+                <!-- Unlocked body -->
+                <Border
+                    x:Name="UnlockedCard"
+                    IsVisible="False"
+                    Padding="20,22"
+                    BackgroundColor="#E6151018"
+                    Stroke="#4DB31847"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 24">
+
+                    <VerticalStackLayout Spacing="13">
+
+                        <Label
+                            Text="Section unlocked"
+                            FontSize="17"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            HorizontalOptions="Center" />
+
+                        <Label
+                            Text="You can now browse the adult channel list. Playback and channel quality are identical to the rest of MarkUp TV."
+                            FontSize="12"
+                            LineHeight="1.35"
+                            TextColor="#C9CFE0"
+                            HorizontalTextAlignment="Center" />
+
+                        <Button
+                            Text="Browse adult channels"
+                            Clicked="OnBrowseClicked"
+                            HeightRequest="50"
+                            CornerRadius="16"
+                            FontSize="13"
+                            FontAttributes="Bold"
+                            BackgroundColor="#B31847"
+                            BorderColor="#70FFFFFF"
+                            BorderWidth="1"
+                            TextColor="White" />
+
+                        <Button
+                            Text="Lock this section"
+                            Clicked="OnLockClicked"
+                            HeightRequest="46"
+                            CornerRadius="15"
+                            FontSize="12"
+                            FontAttributes="Bold"
+                            BackgroundColor="#16FFFFFF"
+                            BorderColor="#35FFFFFF"
+                            BorderWidth="1"
+                            TextColor="White" />
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Footer note -->
+        <Label
+            Grid.Row="2"
+            Text="Adult section · MarkUp TV"
+            FontSize="9"
+            CharacterSpacing="1"
+            TextColor="#6B7288"
+            HorizontalOptions="Center" />
+
+    </Grid>
+
+</ContentPage>

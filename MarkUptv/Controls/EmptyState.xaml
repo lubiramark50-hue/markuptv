@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MarkUptv.Controls.EmptyState"
+             x:Name="Root">
+
+    <!--
+        One empty state for the whole app.
+
+        Every list screen used to invent its own: some printed a bare sentence
+        with no icon ("Channels you watch will appear here."), some printed an
+        error that read like a failure ("No local channels found - pull to
+        refresh!"), and the wording for the same idea differed per page. This
+        gives them a single shape: icon, title, one line of guidance, and an
+        optional action.
+
+        The internal bindings use x:Reference to unnamed properties on this
+        control rather than BindingContext, so a screen can bind the content
+        without inheriting the parent page's view model here.
+    -->
+
+    <!--
+        DynamicResource, not StaticResource, for the theme keys: this view is
+        constructed before it is attached to a page, so a StaticResource lookup
+        for an application-level key can run too early and throw. Icons.xaml
+        and Colors.xaml are both application scope, so DynamicResource resolves
+        them reliably while still letting a theme change flow through.
+    -->
+    <Border Padding="28,32"
+            StrokeShape="RoundRectangle 20"
+            BackgroundColor="{DynamicResource GlassPanel}"
+            Stroke="{DynamicResource GlassStroke}"
+            StrokeThickness="1">
+
+        <VerticalStackLayout Spacing="0"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center">
+
+            <Border WidthRequest="76"
+                    HeightRequest="76"
+                    StrokeShape="RoundRectangle 38"
+                    BackgroundColor="{Binding AccentTint, Source={x:Reference Root}}"
+                    Stroke="{Binding Accent, Source={x:Reference Root}}"
+                    StrokeThickness="1"
+                    HorizontalOptions="Center">
+
+                <Path Data="{Binding Icon, Source={x:Reference Root}}"
+                      Style="{DynamicResource IconPathLarge}"
+                      Stroke="{Binding Accent, Source={x:Reference Root}}" />
+
+            </Border>
+
+            <Label Text="{Binding Title, Source={x:Reference Root}}"
+                   FontSize="17"
+                   FontAttributes="Bold"
+                   TextColor="{DynamicResource TextLight}"
+                   CharacterSpacing="0.6"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,18,0,0" />
+
+            <Label Text="{Binding Hint, Source={x:Reference Root}}"
+                   FontSize="13"
+                   TextColor="{DynamicResource TextMuted}"
+                   HorizontalTextAlignment="Center"
+                   LineHeight="1.35"
+                   MaximumWidthRequest="290"
+                   IsVisible="{Binding HasHint, Source={x:Reference Root}}"
+                   Margin="0,8,0,0" />
+
+            <Button Text="{Binding ActionText, Source={x:Reference Root}}"
+                    Command="{Binding ActionCommand, Source={x:Reference Root}}"
+                    IsVisible="{Binding HasAction, Source={x:Reference Root}}"
+                    BackgroundColor="{Binding Accent, Source={x:Reference Root}}"
+                    TextColor="#05060F"
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    CornerRadius="12"
+                    HeightRequest="46"
+                    MinimumWidthRequest="180"
+                    HorizontalOptions="Center"
+                    Margin="0,20,0,0" />
+
+        </VerticalStackLayout>
+
+    </Border>
+
+</ContentView>

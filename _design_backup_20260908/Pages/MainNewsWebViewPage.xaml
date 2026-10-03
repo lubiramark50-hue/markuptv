@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:MarkUptv.Helpers"
+             x:Class="MarkUptv.Pages.MainNewsWebViewPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#0A0E1A">
+
+    <ContentPage.Resources>
+        <Color x:Key="NewsGold">#FFD95A</Color>
+        <Color x:Key="NewsBlue">#2BD8FF</Color>
+        <Color x:Key="NewsPanel">#12172B</Color>
+        <Color x:Key="NewsMuted">#8B94AD</Color>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <!-- Top bar -->
+        <Grid Grid.Row="0" Padding="10,12" ColumnDefinitions="Auto,*,Auto"
+              ColumnSpacing="10" BackgroundColor="#0D1222">
+            <Border Grid.Column="0" WidthRequest="42" HeightRequest="42"
+                    BackgroundColor="#1AFFFFFF" Stroke="#30FFFFFF" StrokeThickness="1"
+                    StrokeShape="RoundRectangle 13" HorizontalOptions="Start">
+                <Border.Behaviors>
+                    <helpers:TapScaleBehavior/>
+                </Border.Behaviors>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                </Border.GestureRecognizers>
+                <Label Text="←" FontSize="20" TextColor="White"
+                       HorizontalOptions="Center" VerticalOptions="Center" />
+            </Border>
+
+            <Label Grid.Column="1" Text="{Binding PageTitle}"
+                   FontSize="15" FontAttributes="Bold" TextColor="White"
+                   VerticalOptions="Center" MaxLines="1" LineBreakMode="TailTruncation" />
+
+            <Border Grid.Column="2" WidthRequest="42" HeightRequest="42"
+                    BackgroundColor="#1AFFFFFF" Stroke="#30FFFFFF" StrokeThickness="1"
+                    StrokeShape="RoundRectangle 13">
+                <Border.Behaviors>
+                    <helpers:TapScaleBehavior/>
+                </Border.Behaviors>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding RefreshCommand}" />
+                </Border.GestureRecognizers>
+                <Label Text="⟳" FontSize="18" TextColor="{StaticResource NewsGold}"
+                       HorizontalOptions="Center" VerticalOptions="Center" />
+            </Border>
+        </Grid>
+
+        <!-- WebView -->
+        <Grid Grid.Row="1" x:Name="WebViewHost">
+
+            <WebView x:Name="ContentWebView"
+                     Navigating="OnWebViewNavigating"
+                     Navigated="OnWebViewNavigated" />
+
+            <!-- Loading overlay -->
+            <VerticalStackLayout IsVisible="{Binding IsLoading}"
+                                 HorizontalOptions="Center" VerticalOptions="Center"
+                                 Spacing="12" InputTransparent="True">
+                <ActivityIndicator IsRunning="{Binding IsLoading}" Color="{StaticResource NewsGold}"
+                                   WidthRequest="44" HeightRequest="44" />
+                <Label Text="Loading story…" FontSize="13" TextColor="{StaticResource NewsMuted}"
+                       HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
+            <!-- Error overlay -->
+            <VerticalStackLayout IsVisible="{Binding HasError}"
+                                 HorizontalOptions="Center" VerticalOptions="Center"
+                                 Spacing="14" Padding="30" InputTransparent="True">
+                <Label Text="⚠" FontSize="46" TextColor="{StaticResource NewsGold}"
+                       HorizontalOptions="Center" />
+                <Label Text="{Binding ErrorMessage}" FontSize="14" TextColor="White"
+                       HorizontalTextAlignment="Center" MaxLines="4" />
+                <Button Text="Try again" Command="{Binding RefreshCommand}"
+                        BackgroundColor="#2BD8FF" TextColor="#0A0E1A" FontAttributes="Bold"
+                        CornerRadius="10" Padding="24,10" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Bottom hint -->
+        <Label Grid.Row="2" Text="Opens in the in-app reader · Use ⟳ to reload"
+               FontSize="10" TextColor="#5A6380" HorizontalOptions="Center"
+               Padding="0,8" />
+    </Grid>
+</ContentPage>

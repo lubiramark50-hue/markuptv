@@ -1,0 +1,32 @@
+89,237 : SELECT A GOSPEL CHANNEL
+434,576 : GOSPEL
+266,679 : Select a channel to start worshi
+463,795 : Search gospel channels...
+93,800 : o SYNC
+87,940 : ALL
+125,1128 : 15-1
+85,1606 : S3ABN
+120,2071 : 3ABN
+259,940 : ANIMATION
+565,940 : KIDS
+751,940 : RELIGIOUS
+290,1079 : 15.1 BPB (720p)
+290,1141 : Program unavailable
+288,1184 : SD
+288,1317 : 3ABN Canada (720p)
+290,1379 : Program unavailable
+288,1422 : SD
+288,1555 : 3ABN English
+290,1617 : Program unavailable
+288,1660 : SD
+288,1793 : 3ABN French
+290,1855 : Program unavailable
+288,1898 : SD
+288,2031 : 3ABN International (720p)
+290,2093 : Program unavailable
+288,2136 : SD
+861,1128 : WATCH
+861,1366 : WATCH
+861,1604 : WATCH
+861,1842 : WATCH
+861,2080 : WATCH

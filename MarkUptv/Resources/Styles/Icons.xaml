@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!--
+        Vector icon set.
+
+        The screens used to draw "icons" by putting symbol characters into Text
+        (⟳ for sync, ⌕ for search, ═ as a divider, ▶ for play). Only OpenSans is
+        registered with the app, and it has no glyphs for any of those, so the
+        renderer fell back to whatever the platform font happened to contain -
+        which on Android is frequently a blank or a placeholder box. The same
+        character also renders at a different weight and size on every platform,
+        so buttons never lined up.
+
+        These are plain PathGeometry figures on a 24x24 grid. Use them as:
+
+            <Path Data="{StaticResource IconSearch}"
+                  Stroke="{StaticResource TextMuted}"
+                  StrokeThickness="2"
+                  StrokeLineCap="Round"
+                  WidthRequest="20" HeightRequest="20"
+                  Aspect="Uniform" />
+
+        Aspect="Uniform" matters: without it a Path draws at its own coordinate
+        size and ignores WidthRequest/HeightRequest.
+
+        All figures are open (stroke) unless the name says Filled, so a screen
+        can theme them by setting Stroke.
+    -->
+
+    <!-- Search: magnifier -->
+    <PathGeometry x:Key="IconSearch"
+                  Figures="M 10.5,3.5 A 7,7 0 1 0 10.5,17.5 A 7,7 0 1 0 10.5,3.5 M 15.8,15.8 L 21,21" />
+
+    <!-- Refresh / sync: circular arrow with two arrowheads -->
+    <PathGeometry x:Key="IconRefresh"
+                  Figures="M 4.5,12 A 7.5,7.5 0 0 1 19.5,12 M 19.5,12 L 19.5,6.5 M 19.5,12 L 14,12 M 19.5,12 A 7.5,7.5 0 0 1 4.5,12 M 4.5,12 L 4.5,17.5 M 4.5,12 L 10,12" />
+
+    <!-- Play: solid triangle -->
+    <PathGeometry x:Key="IconPlayFilled" Figures="M 8,5 L 19,12 L 8,19 Z" />
+
+    <!-- Broadcast: dot inside a signal ring -->
+    <PathGeometry x:Key="IconLive"
+                  Figures="M 12,8.5 A 3.5,3.5 0 1 0 12,15.5 A 3.5,3.5 0 1 0 12,8.5" />
+    <PathGeometry x:Key="IconLiveFilled"
+                  Figures="M 12,9.5 A 2.5,2.5 0 1 0 12,14.5 A 2.5,2.5 0 1 0 12,9.5 Z" />
+
+    <!-- Television: screen on a stand -->
+    <PathGeometry x:Key="IconTv"
+                  Figures="M 3,5 L 21,5 L 21,17 L 3,17 Z M 9,20 L 15,20 M 12,17 L 12,20" />
+
+    <!-- Film: clapperboard body with sprocket holes -->
+    <PathGeometry x:Key="IconFilm"
+                  Figures="M 3,6 L 21,6 L 21,19 L 3,19 Z M 3,10.5 L 21,10.5 M 7,6 L 7,10.5 M 12,6 L 12,10.5 M 17,6 L 17,10.5" />
+
+    <!-- News: page with rule lines -->
+    <PathGeometry x:Key="IconNews"
+                  Figures="M 4,4 L 20,4 L 20,20 L 4,20 Z M 7.5,8 L 16.5,8 M 7.5,12 L 16.5,12 M 7.5,16 L 13,16" />
+
+    <!-- Football: ball with pentagon centre -->
+    <PathGeometry x:Key="IconFootball"
+                  Figures="M 12,2.5 A 9.5,9.5 0 1 0 12,21.5 A 9.5,9.5 0 1 0 12,2.5 M 12,8 L 15.8,10.8 L 14.3,15.2 L 9.7,15.2 L 8.2,10.8 Z" />
+
+    <!-- Music: eighth note -->
+    <PathGeometry x:Key="IconMusic"
+                  Figures="M 10,18 L 10,5 L 19,3.5 L 19,16.5 M 10,18 A 2.8,2.8 0 1 1 4.4,18 A 2.8,2.8 0 1 1 10,18 Z M 19,16.5 A 2.8,2.8 0 1 1 13.4,16.5 A 2.8,2.8 0 1 1 19,16.5 Z" />
+
+    <!-- Globe with meridians -->
+    <PathGeometry x:Key="IconGlobe"
+                  Figures="M 12,2.5 A 9.5,9.5 0 1 0 12,21.5 A 9.5,9.5 0 1 0 12,2.5 M 2.5,12 L 21.5,12 M 12,2.5 A 5.5,9.5 0 0 1 12,21.5 M 12,2.5 A 5.5,9.5 0 0 0 12,21.5" />
+
+    <!-- History: clock face -->
+    <PathGeometry x:Key="IconHistory"
+                  Figures="M 12,3.5 A 8.5,8.5 0 1 0 12,20.5 A 8.5,8.5 0 1 0 12,3.5 M 12,7.5 L 12,12.5 L 16,14.5" />
+
+    <!-- Community: speech bubble -->
+    <PathGeometry x:Key="IconChat"
+                  Figures="M 4,5 L 20,5 L 20,16 L 12.5,16 L 8,20 L 8,16 L 4,16 Z" />
+
+    <!-- Warning: triangle with exclamation -->
+    <PathGeometry x:Key="IconWarning"
+                  Figures="M 12,3.5 L 21.5,20 L 2.5,20 Z M 12,10 L 12,14.5" />
+
+    <!-- Check -->
+    <PathGeometry x:Key="IconCheck" Figures="M 4.5,12.5 L 9.5,17.5 L 19.5,6.5" />
+
+    <!-- Close -->
+    <PathGeometry x:Key="IconClose" Figures="M 6,6 L 18,18 M 18,6 L 6,18" />
+
+    <!-- Chevron: points right -->
+    <PathGeometry x:Key="IconChevronRight" Figures="M 9,5 L 16,12 L 9,19" />
+    <PathGeometry x:Key="IconChevronDown" Figures="M 5,9 L 12,16 L 19,9" />
+
+    <!-- Star outline -->
+    <PathGeometry x:Key="IconStar"
+                  Figures="M 12,3 L 14.8,9.2 L 21.5,9.9 L 16.4,14.4 L 17.9,21 L 12,17.5 L 6.1,21 L 7.6,14.4 L 2.5,9.9 L 9.2,9.2 Z" />
+
+    <!-- Sparkle: assistant / recommendations -->
+    <PathGeometry x:Key="IconSparkle"
+                  Figures="M 12,3 L 13.8,9.2 L 20,11 L 13.8,12.8 L 12,19 L 10.2,12.8 L 4,11 L 10.2,9.2 Z M 19,16.5 L 19.7,18.8 L 22,19.5 L 19.7,20.2 L 19,22.5 L 18.3,20.2 L 16,19.5 L 18.3,18.8 Z" />
+
+    <!-- Sparkle filled, for accent badges -->
+    <PathGeometry x:Key="IconSparkleFilled"
+                  Figures="M 12,3 L 13.8,9.2 L 20,11 L 13.8,12.8 L 12,19 L 10.2,12.8 L 4,11 L 10.2,9.2 Z" />
+
+    <!-- Heart outline -->
+    <PathGeometry x:Key="IconHeart"
+                  Figures="M 12,20.5 L 4.5,13 A 4.6,4.6 0 0 1 12,8.2 A 4.6,4.6 0 0 1 19.5,13 Z" />
+
+    <!-- Lock: padlock body and shackle -->
+    <PathGeometry x:Key="IconLock"
+                  Figures="M 5,10.5 L 19,10.5 L 19,20.5 L 5,20.5 Z M 8,10.5 L 8,7.5 A 4,4 0 0 1 16,7.5 L 16,10.5" />
+
+    <!-- User: head and shoulders -->
+    <PathGeometry x:Key="IconUser"
+                  Figures="M 12,4 A 4,4 0 1 0 12,12 A 4,4 0 1 0 12,4 M 4.5,20 A 7.5,7.5 0 0 1 19.5,20" />
+
+    <!-- Download / save -->
+    <PathGeometry x:Key="IconDownload"
+                  Figures="M 12,3.5 L 12,15 M 7,10.5 L 12,15.5 L 17,10.5 M 4,20 L 20,20" />
+
+    <!-- Filter / tune -->
+    <PathGeometry x:Key="IconFilter"
+                  Figures="M 4,7 L 20,7 M 7,12 L 17,12 M 10,17 L 14,17" />
+
+    <!-- Hamburger: three bars, flyout / navigation menu -->
+    <PathGeometry x:Key="IconMenu"
+                  Figures="M 4,7 L 20,7 M 4,12 L 20,12 M 4,17 L 20,17" />
+
+    <!-- Empty-state glyph: an outlined tile, used when a list has no content -->
+    <PathGeometry x:Key="IconInbox"
+                  Figures="M 3,6 L 21,6 L 21,18 L 3,18 Z M 3,13 L 9,13 L 10.5,15.5 L 13.5,15.5 L 15,13 L 21,13" />
+
+    <!--
+        Default look for a stroked icon. Screens override Stroke (and
+        occasionally Size) rather than restating all six properties.
+    -->
+    <Style x:Key="IconPath" TargetType="Path">
+        <Setter Property="Aspect" Value="Uniform" />
+        <Setter Property="WidthRequest" Value="20" />
+        <Setter Property="HeightRequest" Value="20" />
+        <Setter Property="StrokeThickness" Value="2" />
+        <Setter Property="StrokeLineCap" Value="Round" />
+        <Setter Property="StrokeLineJoin" Value="Round" />
+        <Setter Property="Fill" Value="Transparent" />
+        <!--
+            Literal, not {StaticResource TextMuted}: this file is loaded as a
+            merged dictionary of its own, and StaticResource lookup inside it
+            cannot see keys that live in the sibling Colors.xaml. Screens that
+            want another colour set Stroke themselves.
+        -->
+        <Setter Property="Stroke" Value="#93A0BF" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+    </Style>
+
+    <!-- Larger variant for empty states and feature headers. -->
+    <Style x:Key="IconPathLarge" TargetType="Path" BasedOn="{StaticResource IconPath}">
+        <Setter Property="WidthRequest" Value="34" />
+        <Setter Property="HeightRequest" Value="34" />
+        <Setter Property="StrokeThickness" Value="1.6" />
+    </Style>
+
+</ResourceDictionary>

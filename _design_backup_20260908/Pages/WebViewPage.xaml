@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="MarkUptv.Pages.WebViewPage"
+    x:Name="BrowserPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="{Binding PageTitle}"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+
+        <Color x:Key="BrowserBlue">#54B7FF</Color>
+        <Color x:Key="BrowserPurple">#8057FF</Color>
+        <Color x:Key="BrowserGold">#FFD95A</Color>
+        <Color x:Key="BrowserMuted">#929BBE</Color>
+
+        <LinearGradientBrush
+            x:Key="BrowserBackground"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop Color="#050714" Offset="0" />
+            <GradientStop Color="#11153A" Offset="0.52" />
+            <GradientStop Color="#28113C" Offset="1" />
+
+        </LinearGradientBrush>
+
+        <LinearGradientBrush
+            x:Key="BrowserBrandBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop Color="#2BD8FF" Offset="0" />
+            <GradientStop Color="#8057FF" Offset="0.5" />
+            <GradientStop Color="#FF3E91" Offset="1" />
+
+        </LinearGradientBrush>
+
+        <Style
+            x:Key="BrowserButtonStyle"
+            TargetType="Button">
+
+            <Setter Property="WidthRequest" Value="43" />
+            <Setter Property="HeightRequest" Value="43" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="CornerRadius" Value="14" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="BackgroundColor" Value="#16FFFFFF" />
+            <Setter Property="BorderColor" Value="#30FFFFFF" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="TextColor" Value="White" />
+
+        </Style>
+
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <StaticResource Key="BrowserBackground" />
+    </ContentPage.Background>
+
+    <Grid
+        RowDefinitions="Auto,Auto,Auto,*"
+        Padding="{OnIdiom Phone='10,16,10,10',
+                          Tablet='16,20,16,14',
+                          Desktop='20,20,20,16',
+                          TV='34,30,34,24'}"
+        RowSpacing="9">
+
+        <!-- Main header -->
+
+        <Grid
+            x:Name="BrowserHeader"
+            Grid.Row="0"
+            ColumnDefinitions="Auto,Auto,*,Auto"
+            ColumnSpacing="9"
+            MaximumWidthRequest="1600"
+            HorizontalOptions="Center">
+
+            <Button
+                Grid.Column="0"
+                Text="×"
+                Style="{StaticResource BrowserButtonStyle}"
+                Clicked="OnCloseClicked" />
+
+            <Border
+                Grid.Column="1"
+                WidthRequest="43"
+                HeightRequest="43"
+                Background="{StaticResource BrowserBrandBrush}"
+                Stroke="#70FFFFFF"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 14">
+
+                <Label
+                    Text="◆"
+                    FontSize="21"
+                    TextColor="White"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+
+            </Border>
+
+            <VerticalStackLayout
+                Grid.Column="2"
+                Spacing="0"
+                VerticalOptions="Center">
+
+                <Label
+                    Text="{Binding PageTitle}"
+                    FontSize="{OnIdiom Phone=14,
+                                       Tablet=16,
+                                       Desktop=17,
+                                       TV=22}"
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    MaxLines="1"
+                    LineBreakMode="TailTruncation" />
+
+                <Label
+                    Text="MarkUpTV secure browser"
+                    FontSize="9"
+                    TextColor="{StaticResource BrowserMuted}" />
+
+            </VerticalStackLayout>
+
+            <Button
+                Grid.Column="3"
+                Text="↗"
+                Style="{StaticResource BrowserButtonStyle}"
+                Clicked="OnOpenExternalClicked"
+                SemanticProperties.Description="Open in external browser" />
+
+        </Grid>
+
+        <!-- Browser controls -->
+
+        <Border
+            Grid.Row="1"
+            Padding="8"
+            MaximumWidthRequest="1600"
+            HorizontalOptions="Center"
+            BackgroundColor="#E0111731"
+            Stroke="#30FFFFFF"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 18">
+
+            <Grid
+                ColumnDefinitions="Auto,Auto,*,Auto"
+                ColumnSpacing="7">
+
+                <Button
+                    Grid.Column="0"
+                    Text="←"
+                    Style="{StaticResource BrowserButtonStyle}"
+                    IsEnabled="{Binding CanGoBack}"
+                    Clicked="OnBackClicked" />
+
+                <Button
+                    Grid.Column="1"
+                    Text="→"
+                    Style="{StaticResource BrowserButtonStyle}"
+                    IsEnabled="{Binding CanGoForward}"
+                    Clicked="OnForwardClicked" />
+
+                <Border
+                    Grid.Column="2"
+                    HeightRequest="43"
+                    Padding="12,0"
+                    BackgroundColor="#C8080C1B"
+                    Stroke="#28FFFFFF"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 13">
+
+                    <Grid
+                        ColumnDefinitions="Auto,*"
+                        ColumnSpacing="7">
+
+                        <Label
+                            Text="◇"
+                            FontSize="15"
+                            TextColor="{StaticResource BrowserBlue}"
+                            VerticalOptions="Center" />
+
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding DisplayUrl}"
+                            FontSize="10"
+                            TextColor="#C5CBE0"
+                            MaxLines="1"
+                            LineBreakMode="MiddleTruncation"
+                            VerticalTextAlignment="Center" />
+
+                    </Grid>
+
+                </Border>
+
+                <Button
+                    Grid.Column="3"
+                    Text="⟳"
+                    Style="{StaticResource BrowserButtonStyle}"
+                    Clicked="OnRefreshClicked" />
+
+            </Grid>
+
+        </Border>
+
+        <!-- Loading bar -->
+
+        <Grid
+            Grid.Row="2"
+            MaximumWidthRequest="1600"
+            HorizontalOptions="Center"
+            IsVisible="{Binding IsLoading}">
+
+            <ProgressBar
+                x:Name="LoadingBar"
+                HeightRequest="4"
+                Progress="0"
+                ProgressColor="{StaticResource BrowserGold}"
+                BackgroundColor="#20FFFFFF" />
+
+        </Grid>
+
+        <!-- Browser -->
+
+        <Border
+            Grid.Row="3"
+            MaximumWidthRequest="1600"
+            HorizontalOptions="Center"
+            VerticalOptions="Fill"
+            BackgroundColor="White"
+            Stroke="#35FFFFFF"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 18"
+            >
+
+            <Grid>
+
+                <WebView
+                    x:Name="ContentWebView"
+                    Navigating="OnWebViewNavigating"
+                    Navigated="OnWebViewNavigated" />
+
+                <Border
+                    Padding="21"
+                    Margin="20"
+                    MaximumWidthRequest="520"
+                    BackgroundColor="#F0121731"
+                    Stroke="#45FFFFFF"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 22"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    IsVisible="{Binding HasError}"
+                    ZIndex="20">
+
+                    <VerticalStackLayout
+                        Spacing="10"
+                        HorizontalOptions="Center">
+
+                        <Label
+                            Text="◇"
+                            FontSize="52"
+                            TextColor="{StaticResource BrowserPurple}" />
+
+                        <Label
+                            Text="This page could not be opened"
+                            FontSize="19"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            HorizontalTextAlignment="Center" />
+
+                        <Label
+                            Text="{Binding ErrorMessage}"
+                            FontSize="12"
+                            TextColor="{StaticResource BrowserMuted}"
+                            HorizontalTextAlignment="Center" />
+
+                        <Button
+                            Text="Try again"
+                            Clicked="OnRetryClicked"
+                            HeightRequest="43"
+                            Padding="22,0"
+                            CornerRadius="14"
+                            BackgroundColor="{StaticResource BrowserPurple}"
+                            TextColor="White"
+                            FontAttributes="Bold" />
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+                <Border
+                    Padding="14,10"
+                    BackgroundColor="#E9111731"
+                    Stroke="#40FFFFFF"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 15"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start"
+                    Margin="0,14,0,0"
+                    IsVisible="{Binding IsLoading}"
+                    ZIndex="15">
+
+                    <HorizontalStackLayout Spacing="9">
+
+                        <ActivityIndicator
+                            WidthRequest="29"
+                            HeightRequest="29"
+                            IsRunning="{Binding IsLoading}"
+                            Color="{StaticResource BrowserGold}" />
+
+                        <Label
+                            Text="Loading page..."
+                            FontSize="11"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+
+                    </HorizontalStackLayout>
+
+                </Border>
+
+            </Grid>
+
+        </Border>
+
+    </Grid>
+
+</ContentPage>

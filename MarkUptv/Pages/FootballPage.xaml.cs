@@ -1,0 +1,161 @@
+using MarkUptv.ViewModels;
+using MarkUptv.Models;
+
+namespace MarkUptv.Pages;
+
+public partial class FootballPage : ContentPage
+{
+    private readonly FootballViewModel _viewModel;
+
+    public FootballPage(FootballViewModel viewModel)
+    {
+        InitializeComponent();
+        BindingContext = _viewModel = viewModel;
+
+        MarkUptv.Helpers.PlaybackCoordinator.Register(ChannelPlayer);
+    }
+    private void OnWatchMatchClicked(object? sender, EventArgs e)
+    {
+        if (sender is VisualElement element &&
+            element.BindingContext is Models.LiveMatch match)
+        {
+            _viewModel.WatchLiveMatchCommand.Execute(match);
+        }
+    }
+
+    private void OnWatchChannelClicked(object? sender, EventArgs e)
+    {
+        if (sender is VisualElement element &&
+            element.BindingContext is Models.TvChannel channel)
+        {
+            _viewModel.PlayChannelCommand.Execute(channel);
+        }
+    }
+
+    private void OnUpNextCardTapped(object? sender, TappedEventArgs e)
+    {
+        if (sender is VisualElement element &&
+            element.BindingContext is Models.LiveMatch match)
+        {
+            _viewModel.WatchLiveMatchCommand.Execute(match);
+        }
+    }
+
+    private void OnFeaturedWatchClicked(object? sender, EventArgs e)
+    {
+        if (_viewModel.FeaturedMatch is { } match)
+        {
+            _viewModel.WatchLiveMatchCommand.Execute(match);
+        }
+    }
+
+    private async void OnFeaturedHeroTapped(object? sender, TappedEventArgs e)
+    {
+        if (sender is VisualElement element)
+        {
+            await AnimateElementAsync(element);
+        }
+
+        OnFeaturedWatchClicked(sender, e);
+    }
+
+    private async void OnAnimatedButtonClicked(object? sender, EventArgs e)
+    {
+        if (sender is VisualElement element)
+        {
+            await AnimateElementAsync(element);
+        }
+    }
+
+    private async void OnChannelCardTapped(object? sender, TappedEventArgs e)
+    {
+        if (sender is not VisualElement element ||
+            element.BindingContext is not TvChannel channel)
+        {
+            return;
+        }
+
+        await AnimateElementAsync(element);
+
+        _viewModel.PlayChannelCommand.Execute(channel);
+    }
+
+    private static async Task AnimateElementAsync(VisualElement element)
+    {
+        element.CancelAnimations();
+
+        try
+        {
+            await Task.WhenAll(
+                element.ScaleToAsync(0.96, 75, Easing.CubicOut),
+                element.FadeToAsync(0.88, 75, Easing.CubicOut));
+
+            await Task.WhenAll(
+                element.ScaleToAsync(1, 150, Easing.SpringOut),
+                element.FadeToAsync(1, 130, Easing.CubicOut));
+        }
+        finally
+        {
+            element.Scale = 1;
+            element.Opacity = 1;
+        }
+    }
+
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        _viewModel.StartAutoRefresh();
+        if (_viewModel.Channels.Count == 0 && !_viewModel.IsLoading)
+        {
+            await _viewModel.LoadChannelsCommand.ExecuteAsync(null);
+        }
+        else if (_viewModel.LiveMatches.Count == 0)
+        {
+            // Channels came from cache but the live-match board is empty —
+            // pull it right away instead of waiting for the first
+            // auto-refresh tick.
+            await _viewModel.LoadLiveMatchesCommand.ExecuteAsync(null);
+        }
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        _viewModel.StopAutoRefresh();
+        MarkUptv.Helpers.PlaybackCoordinator.Release(ChannelPlayer);
+    }
+
+    private void OnChannelSelected(object? sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.FirstOrDefault() is TvChannel channel)
+        {
+            _viewModel.PlayChannelCommand.Execute(channel);
+            ((CollectionView)sender!).SelectedItem = null;
+        }
+    }
+
+    private void OnGroupSelected(object? sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.FirstOrDefault() is string group)
+            _viewModel.SelectedGroup = group;
+    }
+
+    private void OnLeagueSelected(object? sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.FirstOrDefault() is string league)
+            _viewModel.SelectedLeague = league;
+    }
+
+    private void OnMediaOpened(object? sender, EventArgs e) => _viewModel.MediaReadyCommand.Execute(null);
+    private void OnMediaFailed(object? sender, EventArgs e) => _viewModel.MediaFailedCommand.Execute(null);
+
+    private async void OnLogoClicked(object? sender, EventArgs e)
+    {
+        if (sender is View view)
+        {
+            await view.ScaleToAsync(1.2, 100, Easing.CubicOut);
+            await view.ScaleToAsync(1.0, 100, Easing.CubicIn);
+        }
+    }
+}

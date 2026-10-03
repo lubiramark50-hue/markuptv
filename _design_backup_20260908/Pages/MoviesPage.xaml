@@ -1,0 +1,1168 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="MarkUptv.Pages.MoviesPage"
+    x:Name="PageRoot"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:models="clr-namespace:MarkUptv.Models"
+    xmlns:helpers="clr-namespace:MarkUptv.Helpers"
+    xmlns:conv="clr-namespace:MarkUptv.Converters"
+    xmlns:pages="clr-namespace:MarkUptv.Pages"
+    xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+    x:DataType="vm:MoviesViewModel"
+    Title="Movies"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Behaviors>
+
+        <toolkit:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding LoadChannelsCommand}" />
+
+    </ContentPage.Behaviors>
+
+    <ContentPage.Resources>
+
+        <helpers:InvertBoolConverter
+            x:Key="InvertBoolConverter" />
+
+        <helpers:StringNullOrEmptyConverter
+            x:Key="StringNullOrEmptyConverter" />
+
+        <conv:IsNotNullConverter
+            x:Key="IsNotNullConverter" />
+
+        <conv:ChannelSubtitleConverter
+            x:Key="ChannelSubtitleConverter" />
+
+        <Color x:Key="MovieGold">#FFD95A</Color>
+        <Color x:Key="MoviePink">#FF3E91</Color>
+        <Color x:Key="MoviePurple">#8057FF</Color>
+        <Color x:Key="MovieMuted">#A29BBE</Color>
+        <Color x:Key="LiveRed">#E8254D</Color>
+
+        <LinearGradientBrush
+            x:Key="MoviePageBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#070610"
+                Offset="0" />
+
+            <GradientStop
+                Color="#25102E"
+                Offset="0.52" />
+
+            <GradientStop
+                Color="#3B102A"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <LinearGradientBrush
+            x:Key="MovieHeroBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#5B183A"
+                Offset="0" />
+
+            <GradientStop
+                Color="#8B265F"
+                Offset="0.5" />
+
+            <GradientStop
+                Color="#5A3193"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <Style
+            x:Key="MovieCardStyle"
+            TargetType="Border">
+
+            <Setter
+                Property="BackgroundColor"
+                Value="#E0111428" />
+
+            <Setter
+                Property="Stroke"
+                Value="#30FFFFFF" />
+
+            <Setter
+                Property="StrokeThickness"
+                Value="1" />
+
+            <Setter
+                Property="StrokeShape"
+                Value="RoundRectangle 22" />
+
+        </Style>
+
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <StaticResource Key="MoviePageBrush" />
+    </ContentPage.Background>
+
+    <Grid
+        RowDefinitions="Auto,*"
+        Padding="{OnIdiom Phone='13,19,13,13',
+                          Tablet='20,23,20,18',
+                          Desktop='26,25,26,22',
+                          TV='42,37,42,32'}"
+        RowSpacing="18">
+
+        <Label
+            x:Name="FloatingDiamondOne"
+            Grid.RowSpan="2"
+            Text="◆"
+            FontSize="150"
+            TextColor="#0FFF3E91"
+            Margin="-40,120,0,0"
+            HorizontalOptions="Start"
+            VerticalOptions="Start"
+            InputTransparent="True" />
+
+        <Label
+            x:Name="FloatingDiamondTwo"
+            Grid.RowSpan="2"
+            Text="◇"
+            FontSize="150"
+            TextColor="#108057FF"
+            Margin="0,0,-40,90"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            InputTransparent="True" />
+
+        <!-- =========================================================
+             HEADER
+             ========================================================= -->
+
+        <Grid
+            x:Name="HeaderPanel"
+            Grid.Row="0"
+            ColumnDefinitions="Auto,*,Auto"
+            ColumnSpacing="14"
+            MaximumWidthRequest="1600"
+            HorizontalOptions="Center">
+
+            <Button
+                Text="☰"
+                Command="{Binding OpenFlyoutCommand}"
+                Clicked="OnAnimatedButtonClicked"
+                WidthRequest="48"
+                HeightRequest="48"
+                Padding="0"
+                CornerRadius="16"
+                FontSize="22"
+                BackgroundColor="#16FFFFFF"
+                BorderColor="#35FFFFFF"
+                BorderWidth="1"
+                TextColor="White"
+                SemanticProperties.Description="Open navigation" />
+
+            <VerticalStackLayout
+                Grid.Column="1"
+                Spacing="2"
+                VerticalOptions="Center">
+
+                <HorizontalStackLayout
+                    Spacing="10"
+                    VerticalOptions="Center">
+
+                    <Label
+                        Text="MOVIES"
+                        FontSize="{OnIdiom Phone=22,
+                                           Tablet=26,
+                                           Desktop=28,
+                                           TV=36}"
+                        FontAttributes="Bold"
+                        CharacterSpacing="1.2"
+                        TextColor="White"
+                        VerticalOptions="Center" />
+
+                    <Border
+                        Padding="9,3"
+                        BackgroundColor="#228057FF"
+                        Stroke="#508057FF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 9"
+                        VerticalOptions="Center">
+
+                        <HorizontalStackLayout
+                            Spacing="5"
+                            VerticalOptions="Center">
+
+                            <Border
+                                WidthRequest="7"
+                                HeightRequest="7"
+                                BackgroundColor="{StaticResource MovieGold}"
+                                StrokeShape="RoundRectangle 4"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                Text="LIVE TV"
+                                FontSize="8"
+                                FontAttributes="Bold"
+                                CharacterSpacing="1"
+                                TextColor="{StaticResource MovieGold}"
+                                VerticalOptions="Center" />
+
+                        </HorizontalStackLayout>
+
+                    </Border>
+
+                </HorizontalStackLayout>
+
+                <Label
+                    Text="Cinema, films and entertainment — 24/7"
+                    FontSize="11.5"
+                    TextColor="{StaticResource MovieMuted}" />
+
+            </VerticalStackLayout>
+
+            <Button
+                Grid.Column="2"
+                Text="⟳"
+                Command="{Binding RefreshCommand}"
+                Clicked="OnAnimatedButtonClicked"
+                WidthRequest="48"
+                HeightRequest="48"
+                Padding="0"
+                CornerRadius="16"
+                FontSize="19"
+                BackgroundColor="{StaticResource MoviePurple}"
+                BorderColor="#70FFFFFF"
+                BorderWidth="1"
+                TextColor="White"
+                SemanticProperties.Description="Refresh movie channels" />
+
+        </Grid>
+
+        <!-- =========================================================
+             WORKSPACE
+             ========================================================= -->
+
+        <Grid
+            x:Name="WorkspaceGrid"
+            Grid.Row="1"
+            RowDefinitions="Auto,*"
+            ColumnDefinitions="*"
+            RowSpacing="16"
+            MaximumWidthRequest="1600"
+            HorizontalOptions="Center">
+
+            <VisualStateManager.VisualStateGroups>
+
+                <VisualStateGroup x:Name="LayoutStates">
+
+                    <VisualState x:Name="Narrow">
+
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="0" />
+                        </VisualState.StateTriggers>
+
+                        <VisualState.Setters>
+
+                            <Setter
+                                Property="RowDefinitions"
+                                Value="Auto,*" />
+
+                            <Setter
+                                Property="ColumnDefinitions"
+                                Value="*" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Row"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Column"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="HeightRequest"
+                                Value="{OnIdiom Phone=310, Tablet=410}" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Row"
+                                Value="1" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Column"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Margin"
+                                Value="0" />
+
+                        </VisualState.Setters>
+
+                    </VisualState>
+
+                    <VisualState x:Name="Wide">
+
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="900" />
+                        </VisualState.StateTriggers>
+
+                        <VisualState.Setters>
+
+                            <Setter
+                                Property="RowDefinitions"
+                                Value="*" />
+
+                            <Setter
+                                Property="ColumnDefinitions"
+                                Value="7*,5*" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Row"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Column"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="HeightRequest"
+                                Value="-1" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Margin"
+                                Value="0,0,18,0" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Row"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Column"
+                                Value="1" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Margin"
+                                Value="0" />
+
+                        </VisualState.Setters>
+
+                    </VisualState>
+
+                </VisualStateGroup>
+
+            </VisualStateManager.VisualStateGroups>
+
+            <!-- ============================
+                 PLAYER PANEL
+                 ============================ -->
+
+            <Border
+                x:Name="PlayerPanel"
+                Style="{StaticResource MovieCardStyle}"
+                Padding="9">
+
+                <Grid
+                    RowDefinitions="Auto,*"
+                    RowSpacing="9">
+
+                    <!-- Now streaming hero strip -->
+
+                    <Border
+                        Padding="15,12"
+                        Background="{StaticResource MovieHeroBrush}"
+                        Stroke="#45FFFFFF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 17">
+
+                        <Grid
+                            ColumnDefinitions="Auto,*,Auto"
+                            ColumnSpacing="13">
+
+                            <Border
+                                WidthRequest="46"
+                                HeightRequest="46"
+                                BackgroundColor="#25FFFFFF"
+                                Stroke="#70FFFFFF"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 15">
+
+                                <Label
+                                    Text="🎬"
+                                    FontSize="21"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" />
+
+                            </Border>
+
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="1"
+                                VerticalOptions="Center">
+
+                                <Label
+                                    Text="NOW SHOWING"
+                                    IsVisible="{Binding IsPlayerVisible}"
+                                    FontSize="8"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="1.7"
+                                    TextColor="{StaticResource MovieGold}" />
+
+                                <Label
+                                    Text="STANDBY"
+                                    IsVisible="{Binding IsPlayerVisible,
+                                                        Converter={StaticResource InvertBoolConverter}}"
+                                    FontSize="8"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="1.7"
+                                    TextColor="#E0FFFFFF" />
+
+                                <Label
+                                    Text="{Binding NowPlayingText}"
+                                    FontSize="15.5"
+                                    FontAttributes="Bold"
+                                    TextColor="White"
+                                    MaxLines="1"
+                                    LineBreakMode="TailTruncation" />
+
+                            </VerticalStackLayout>
+
+                            <HorizontalStackLayout
+                                Grid.Column="2"
+                                Spacing="8"
+                                VerticalOptions="Center">
+
+                                <Border
+                                    Padding="10,5"
+                                    BackgroundColor="#E8E8254D"
+                                    Stroke="#FFFFD9E0"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    IsVisible="{Binding IsStreaming}">
+
+                                    <HorizontalStackLayout
+                                        Spacing="6"
+                                        VerticalOptions="Center">
+
+                                        <Border
+                                            WidthRequest="7"
+                                            HeightRequest="7"
+                                            BackgroundColor="#FF6B81"
+                                            Stroke="White"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 4"
+                                            VerticalOptions="Center" />
+
+                                        <Label
+                                            Text="LIVE"
+                                            FontSize="8.5"
+                                            FontAttributes="Bold"
+                                            CharacterSpacing="1"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+
+                                    </HorizontalStackLayout>
+
+                                </Border>
+
+                                <ActivityIndicator
+                                    WidthRequest="22"
+                                    HeightRequest="22"
+                                    IsRunning="{Binding IsPlayerLoading}"
+                                    IsVisible="{Binding IsPlayerLoading}"
+                                    Color="{StaticResource MovieGold}"
+                                    VerticalOptions="Center" />
+
+                            </HorizontalStackLayout>
+
+                        </Grid>
+
+                    </Border>
+
+                    <!-- Video / idle art stage -->
+
+                    <Border
+                        Grid.Row="1"
+                        BackgroundColor="#020207"
+                        Stroke="#558057FF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 19">
+
+                        <Grid IsClippedToBounds="True">
+
+                            <toolkit:MediaElement x:Name="ChannelPlayer"
+                                Source="{Binding SelectedChannel.StreamUrl,
+                                                 TargetNullValue=''}"
+                                ShouldAutoPlay="True"
+                                ShouldShowPlaybackControls="True"
+                                ShouldKeepScreenOn="True"
+                                Volume="1"
+                                IsVisible="{Binding IsPlayerVisible}">
+
+                                <toolkit:MediaElement.Behaviors>
+
+                                    <toolkit:EventToCommandBehavior
+                                        EventName="MediaOpened"
+                                        Command="{Binding MediaReadyCommand}" />
+
+                                    <toolkit:EventToCommandBehavior
+                                        EventName="MediaFailed"
+                                        Command="{Binding MediaFailedCommand}" />
+
+                                </toolkit:MediaElement.Behaviors>
+
+                            </toolkit:MediaElement>
+
+                            <!-- On-air chip over the picture -->
+
+                            <Border
+                                Padding="10,5"
+                                Margin="12"
+                                BackgroundColor="#E8E8254D"
+                                Stroke="#FFFFD9E0"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 11"
+                                IsVisible="{Binding IsStreaming}"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Start"
+                                InputTransparent="True">
+
+                                <HorizontalStackLayout
+                                    Spacing="7"
+                                    VerticalOptions="Center">
+
+                                    <Border
+                                        WidthRequest="8"
+                                        HeightRequest="8"
+                                        BackgroundColor="#FF6B81"
+                                        Stroke="White"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 4"
+                                        VerticalOptions="Center" />
+
+                                    <Label
+                                        Text="ON AIR"
+                                        FontSize="9"
+                                        FontAttributes="Bold"
+                                        CharacterSpacing="1.1"
+                                        TextColor="White"
+                                        VerticalOptions="Center" />
+
+                                </HorizontalStackLayout>
+
+                            </Border>
+
+                            <!-- Idle artwork -->
+
+                            <VerticalStackLayout
+                                IsVisible="{Binding IsPlayerVisible,
+                                                    Converter={StaticResource InvertBoolConverter}}"
+                                Spacing="0"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center">
+
+                                <Grid
+                                    WidthRequest="190"
+                                    HeightRequest="190">
+
+                                    <Border
+                                        WidthRequest="190"
+                                        HeightRequest="190"
+                                        BackgroundColor="#148057FF"
+                                        Stroke="#25FFFFFF"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 95"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center"
+                                        InputTransparent="True" />
+
+                                    <Border
+                                        WidthRequest="118"
+                                        HeightRequest="118"
+                                        Background="{StaticResource MovieHeroBrush}"
+                                        Stroke="#90FFFFFF"
+                                        StrokeThickness="2"
+                                        StrokeShape="RoundRectangle 59"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center">
+
+                                        <Border.Shadow>
+
+                                            <Shadow
+                                                Brush="#B08057FF"
+                                                Offset="0,8"
+                                                Radius="22"
+                                                Opacity="0.65" />
+
+                                        </Border.Shadow>
+
+                                        <Label
+                                            Text="🎬"
+                                            FontSize="40"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+
+                                    </Border>
+
+                                    <Border
+                                        WidthRequest="38"
+                                        HeightRequest="38"
+                                        Margin="-18,0,0,0"
+                                        BackgroundColor="{StaticResource MovieGold}"
+                                        Stroke="White"
+                                        StrokeThickness="1.5"
+                                        StrokeShape="RoundRectangle 19"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="End"
+                                        InputTransparent="True">
+
+                                        <Label
+                                            Text="★"
+                                            FontSize="17"
+                                            TextColor="#3B102A"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+
+                                    </Border>
+
+                                </Grid>
+
+                                <Label
+                                    Text="ENTER CINEMA MODE"
+                                    Margin="0,17,0,0"
+                                    FontSize="18"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="1.4"
+                                    TextColor="White"
+                                    HorizontalOptions="Center" />
+
+                                <Label
+                                    Text="Pick a channel and let the show begin."
+                                    Margin="0,5,0,0"
+                                    FontSize="12"
+                                    TextColor="{StaticResource MovieMuted}"
+                                    HorizontalOptions="Center" />
+
+                                <Border
+                                    Margin="0,16,0,0"
+                                    Padding="14,6"
+                                    BackgroundColor="#1A8057FF"
+                                    Stroke="#408057FF"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 12"
+                                    HorizontalOptions="Center">
+
+                                    <Label
+                                        Text="24/7 MOVIE CHANNELS  •  WORLDWIDE  •  HD"
+                                        FontSize="8.5"
+                                        FontAttributes="Bold"
+                                        CharacterSpacing="1.3"
+                                        TextColor="{StaticResource MovieGold}" />
+
+                                </Border>
+
+                            </VerticalStackLayout>
+
+                            <ActivityIndicator
+                                WidthRequest="56"
+                                HeightRequest="56"
+                                IsRunning="{Binding IsPlayerLoading}"
+                                IsVisible="{Binding IsPlayerLoading}"
+                                Color="{StaticResource MovieGold}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                ZIndex="20" />
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+            </Border>
+
+            <!-- ============================
+                 CHANNEL PANEL
+                 ============================ -->
+
+            <Border
+                x:Name="ChannelPanel"
+                Style="{StaticResource MovieCardStyle}"
+                Padding="15">
+
+                <Grid
+                    RowDefinitions="Auto,Auto,*"
+                    RowSpacing="12">
+
+                    <!-- Search -->
+
+                    <Border
+                        x:Name="SearchBorder"
+                        Grid.Row="0"
+                        HeightRequest="47"
+                        Padding="8,0"
+                        BackgroundColor="#D00A0E22"
+                        Stroke="#35FFFFFF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 16">
+
+                        <Grid ColumnDefinitions="Auto,*">
+
+                            <Label
+                                Text="⌕"
+                                WidthRequest="38"
+                                FontSize="26"
+                                TextColor="{StaticResource MovieGold}"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center" />
+
+                            <Entry
+                                Grid.Column="1"
+                                Text="{Binding SearchText}"
+                                Placeholder="Search movie channels..."
+                                PlaceholderColor="#817995"
+                                TextColor="White"
+                                BackgroundColor="Transparent"
+                                FontSize="13"
+                                ClearButtonVisibility="WhileEditing"
+                                Focused="OnSearchFocused"
+                                Unfocused="OnSearchUnfocused"
+                                VerticalOptions="Center" />
+
+                        </Grid>
+
+                    </Border>
+
+                    <!-- Genre chips -->
+
+                    <CollectionView
+                        Grid.Row="1"
+                        ItemsSource="{Binding Groups}"
+                        SelectedItem="{Binding SelectedGroup,
+                                               Mode=TwoWay}"
+                        SelectionMode="Single"
+                        HeightRequest="44"
+                        HorizontalScrollBarVisibility="Never">
+
+                        <CollectionView.ItemsLayout>
+
+                            <LinearItemsLayout
+                                Orientation="Horizontal"
+                                ItemSpacing="8" />
+
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+
+                            <DataTemplate x:DataType="x:String">
+
+                                <Border
+                                    Padding="17,0"
+                                    BackgroundColor="#14FFFFFF"
+                                    Stroke="#28FFFFFF"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 22">
+
+                                    <VisualStateManager.VisualStateGroups>
+
+                                        <VisualStateGroupList>
+
+                                            <VisualStateGroup x:Name="CommonStates">
+
+                                                <VisualState x:Name="Normal" />
+
+                                                <VisualState x:Name="Selected">
+
+                                                    <VisualState.Setters>
+
+                                                        <Setter
+                                                            Property="BackgroundColor"
+                                                            Value="{StaticResource MoviePurple}" />
+
+                                                        <Setter
+                                                            Property="Stroke"
+                                                            Value="{StaticResource MovieGold}" />
+
+                                                        <Setter
+                                                            Property="StrokeThickness"
+                                                            Value="1.5" />
+
+                                                    </VisualState.Setters>
+
+                                                </VisualState>
+
+                                            </VisualStateGroup>
+
+                                        </VisualStateGroupList>
+
+                                    </VisualStateManager.VisualStateGroups>
+
+                                    <Label
+                                        Text="{Binding .}"
+                                        FontSize="11.5"
+                                        FontAttributes="Bold"
+                                        TextColor="White"
+                                        TextTransform="Uppercase"
+                                        VerticalOptions="Center" />
+
+                                </Border>
+
+                            </DataTemplate>
+
+                        </CollectionView.ItemTemplate>
+
+                    </CollectionView>
+
+                    <!-- Channel list -->
+
+                    <RefreshView
+                        Grid.Row="2"
+                        Command="{Binding RefreshCommand}"
+                        IsRefreshing="{Binding IsLoading}"
+                        RefreshColor="{StaticResource MovieGold}">
+
+                        <CollectionView
+                            ItemsSource="{Binding Channels}"
+                            SelectionMode="None">
+
+                            <CollectionView.ItemsLayout>
+
+                                <LinearItemsLayout
+                                    Orientation="Vertical"
+                                    ItemSpacing="10" />
+
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+
+                                <DataTemplate x:DataType="models:TvChannel">
+
+                                    <Border
+                                        Padding="11"
+                                        BackgroundColor="#C80A0B18"
+                                        Stroke="#28FFFFFF"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 18">
+
+                                        <Border.Triggers>
+
+                                            <DataTrigger
+                                                TargetType="Border"
+                                                Binding="{Binding IsPlaying}"
+                                                Value="True">
+
+                                                <Setter
+                                                    Property="BackgroundColor"
+                                                    Value="#2B241040" />
+
+                                                <Setter
+                                                    Property="Stroke"
+                                                    Value="#D0FFD95A" />
+
+                                                <Setter
+                                                    Property="StrokeThickness"
+                                                    Value="1.5" />
+
+                                            </DataTrigger>
+
+                                        </Border.Triggers>
+
+                                        <Border.Behaviors>
+                                            <helpers:TapScaleBehavior/>
+                                        </Border.Behaviors>
+
+                                        <Border.GestureRecognizers>
+
+                                            <TapGestureRecognizer
+                                                Tapped="OnChannelCardTapped" />
+
+                                        </Border.GestureRecognizers>
+
+                                        <Grid
+                                            ColumnDefinitions="66,*,Auto"
+                                            ColumnSpacing="13">
+
+                                            <!-- Artwork tile -->
+
+                                            <Border
+                                                WidthRequest="66"
+                                                HeightRequest="60"
+                                                Background="{StaticResource MovieHeroBrush}"
+                                                Stroke="#40FFFFFF"
+                                                StrokeThickness="1"
+                                                StrokeShape="RoundRectangle 18">
+
+                                                <Border.Triggers>
+
+                                                    <DataTrigger
+                                                        TargetType="Border"
+                                                        Binding="{Binding IsPlaying}"
+                                                        Value="True">
+
+                                                        <Setter
+                                                            Property="Stroke"
+                                                            Value="{StaticResource MovieGold}" />
+
+                                                        <Setter
+                                                            Property="StrokeThickness"
+                                                            Value="2" />
+
+                                                    </DataTrigger>
+
+                                                </Border.Triggers>
+
+                                                <Grid InputTransparent="True">
+
+                                                    <Label
+                                                        Text="🎬"
+                                                        FontSize="22"
+                                                        Opacity="0.85"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center"
+                                                        IsVisible="{Binding LogoUrl,
+                                                                            Converter={StaticResource StringNullOrEmptyConverter}}" />
+
+                                                    <Image
+                                                        Source="{Binding LogoUrl}"
+                                                        Aspect="AspectFit"
+                                                        Margin="7" />
+
+                                                </Grid>
+
+                                            </Border>
+
+                                            <!-- Text -->
+
+                                            <VerticalStackLayout
+                                                Grid.Column="1"
+                                                Spacing="2.5"
+                                                VerticalOptions="Center"
+                                                InputTransparent="True">
+
+                                                <HorizontalStackLayout
+                                                    Spacing="8">
+
+                                                    <Label
+                                                        Text="{Binding Name}"
+                                                        FontSize="15"
+                                                        FontAttributes="Bold"
+                                                        TextColor="White"
+                                                        MaxLines="1"
+                                                        LineBreakMode="TailTruncation"
+                                                        VerticalOptions="Center" />
+
+                                                    <Border
+                                                        Padding="6,2"
+                                                        BackgroundColor="#E8E8254D"
+                                                        Stroke="#80FF8FA5"
+                                                        StrokeThickness="1"
+                                                        StrokeShape="RoundRectangle 8"
+                                                        IsVisible="{Binding IsPlaying}"
+                                                        VerticalOptions="Center">
+
+                                                        <Label
+                                                            Text="LIVE"
+                                                            FontSize="7.5"
+                                                            FontAttributes="Bold"
+                                                            CharacterSpacing="1"
+                                                            TextColor="White" />
+
+                                                    </Border>
+
+                                                </HorizontalStackLayout>
+
+                                                <Label
+                                                    Text="{Binding CurrentProgrammeTitle,
+                                                                   Converter={StaticResource ChannelSubtitleConverter},
+                                                                   ConverterParameter='24/7 cinema — always on air'}"
+                                                    FontSize="11.5"
+                                                    TextColor="{StaticResource MovieMuted}"
+                                                    MaxLines="1"
+                                                    LineBreakMode="TailTruncation" />
+
+                                                <HorizontalStackLayout
+                                                    Spacing="8">
+
+                                                    <HorizontalStackLayout
+                                                        Spacing="5">
+
+                                                        <Border
+                                                            WidthRequest="6"
+                                                            HeightRequest="6"
+                                                            BackgroundColor="#66FF99"
+                                                            Stroke="#40FFFFFF"
+                                                            StrokeThickness="0.5"
+                                                            StrokeShape="RoundRectangle 3"
+                                                            VerticalOptions="Center" />
+
+                                                        <Label
+                                                            Text="ON AIR 24/7"
+                                                            FontSize="9"
+                                                            FontAttributes="Bold"
+                                                            CharacterSpacing="0.6"
+                                                            TextColor="#9FE8B5"
+                                                            VerticalOptions="Center" />
+
+                                                    </HorizontalStackLayout>
+
+                                                    <Border
+                                                        Padding="6,2"
+                                                        BackgroundColor="#22FFD95A"
+                                                        Stroke="#45FFD95A"
+                                                        StrokeThickness="1"
+                                                        StrokeShape="RoundRectangle 7"
+                                                        IsVisible="{Binding QualityLabel,
+                                                                          Converter={StaticResource IsNotNullConverter}}"
+                                                        VerticalOptions="Center">
+
+                                                        <Label
+                                                            Text="{Binding QualityLabel}"
+                                                            FontSize="8"
+                                                            FontAttributes="Bold"
+                                                            CharacterSpacing="0.6"
+                                                            TextTransform="Uppercase"
+                                                            TextColor="{StaticResource MovieGold}"
+                                                            VerticalOptions="Center" />
+
+                                                    </Border>
+
+                                                </HorizontalStackLayout>
+
+                                            </VerticalStackLayout>
+
+                                            <!-- Play state tile -->
+
+                                            <Grid
+                                                Grid.Column="2"
+                                                WidthRequest="46"
+                                                HeightRequest="46"
+                                                VerticalOptions="Center"
+                                                InputTransparent="True">
+
+                                                <Border
+                                                    BackgroundColor="#228057FF"
+                                                    Stroke="#708057FF"
+                                                    StrokeThickness="1"
+                                                    StrokeShape="RoundRectangle 15"
+                                                    IsVisible="{Binding IsPlaying,
+                                                                        Converter={StaticResource InvertBoolConverter}}">
+
+                                                    <Label
+                                                        Text="▶"
+                                                        FontSize="14"
+                                                        TextColor="White"
+                                                        Margin="2,0,0,0"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center" />
+
+                                                </Border>
+
+                                                <Border
+                                                    BackgroundColor="{StaticResource MovieGold}"
+                                                    Stroke="White"
+                                                    StrokeThickness="1.5"
+                                                    StrokeShape="RoundRectangle 15"
+                                                    IsVisible="{Binding IsPlaying}">
+
+                                                    <Label
+                                                        Text="🎬"
+                                                        FontSize="13"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center" />
+
+                                                </Border>
+
+                                            </Grid>
+
+                                        </Grid>
+
+                                    </Border>
+
+                                </DataTemplate>
+
+                            </CollectionView.ItemTemplate>
+
+                            <CollectionView.EmptyView>
+
+                                <VerticalStackLayout
+                                    Spacing="9"
+                                    Margin="0,50"
+                                    HorizontalOptions="Center">
+
+                                    <Label
+                                        Text="🎬"
+                                        FontSize="64"
+                                        Opacity="0.7"
+                                        HorizontalOptions="Center" />
+
+                                    <Label
+                                        Text="No movie channels found"
+                                        FontSize="16"
+                                        FontAttributes="Bold"
+                                        TextColor="White"
+                                        HorizontalOptions="Center" />
+
+                                    <Label
+                                        Text="Try another search or genre, or refresh the list."
+                                        FontSize="11.5"
+                                        TextColor="{StaticResource MovieMuted}"
+                                        HorizontalOptions="Center" />
+
+                                </VerticalStackLayout>
+
+                            </CollectionView.EmptyView>
+
+                        </CollectionView>
+
+                    </RefreshView>
+
+                    <!-- Error toast -->
+
+                    <Border
+                        Grid.Row="2"
+                        Padding="13,9"
+                        Margin="8"
+                        BackgroundColor="#D0B11D47"
+                        Stroke="#FFFFAEC2"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 14"
+                        HorizontalOptions="Center"
+                        VerticalOptions="End"
+                        IsVisible="{Binding HasError}"
+                        ZIndex="25">
+
+                        <Label
+                            Text="{Binding ErrorMessage}"
+                            FontSize="11"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            HorizontalTextAlignment="Center" />
+
+                    </Border>
+
+                </Grid>
+
+            </Border>
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

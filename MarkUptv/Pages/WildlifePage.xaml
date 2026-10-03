@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:Toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+             xmlns:models="clr-namespace:MarkUptv.Models"
+             xmlns:local="clr-namespace:MarkUptv.Helpers"
+             xmlns:converters="clr-namespace:MarkUptv.Converters"
+             x:Class="MarkUptv.Pages.WildlifePage"
+             xmlns:views="clr-namespace:MarkUptv.Views"
+             x:DataType="vm:WildLifeViewModel"
+             Title="Wildlife"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+
+        <!-- Same subtitle rule as every other channel rail: a channel whose EPG
+             is missing gets an inviting line instead of the backend's
+             "Program unavailable" placeholder. -->
+
+        <converters:ChannelSubtitleConverter x:Key="ChannelSubtitleConverter" />
+
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#1E2F23" Offset="0.0"/>
+            <!-- deep forest green -->
+            <GradientStop Color="#2C4A30" Offset="0.5"/>
+            <!-- rich green -->
+            <GradientStop Color="#5A3D2B" Offset="1.0"/>
+            <!-- earthy brown -->
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <!-- Adaptive root grid -->
+    <Grid x:Name="RootGrid" Padding="12">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveStates">
+                <!-- NARROW (phones) -->
+                <VisualState x:Name="Narrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Property="RowDefinitions" Value="Auto,Auto,*" />
+                        <Setter Property="ColumnDefinitions" Value="*" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Column" Value="0" />
+                        <!-- Star row: a '*' inside an Auto parent row collapses,
+                             which hid the whole channel list on phones. -->
+                        <Setter TargetName="ChannelPanel" Property="Grid.Row" Value="2" />
+                        <Setter TargetName="ChannelPanel" Property="Grid.Column" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <!-- WIDE (tablets / desktops) -->
+                <VisualState x:Name="Wide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Property="RowDefinitions" Value="*" />
+                        <Setter Property="ColumnDefinitions" Value="2*,1*" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="PlayerPanel" Property="Margin" Value="0,0,8,0" />
+                        <Setter TargetName="ChannelPanel" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="ChannelPanel" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="ChannelPanel" Property="Margin" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!-- ==================== PLAYER ==================== -->
+        <Grid x:Name="PlayerPanel" RowDefinitions="Auto,*" Margin="0,0,0,8">
+            <Border Grid.Row="0" BackgroundColor="#8B5A2B" StrokeShape="RoundRectangle 12"
+                    Padding="8,6" Stroke="Transparent" Margin="0,0,0,8">
+                <Label Text="{Binding NowPlayingText}" FontSize="18" FontAttributes="Bold"
+                       TextColor="White" HorizontalOptions="Center"
+                       FontFamily="OpenSansSemibold" />
+            </Border>
+
+            <Border Grid.Row="1" BackgroundColor="#152B1A" StrokeShape="RoundRectangle 20"
+                    Padding="0" Stroke="Transparent">
+                <Grid>
+                    <Toolkit:MediaElement x:Name="ChannelPlayer"
+                                      Source="{Binding SelectedChannel.Url, FallbackValue=''}"
+                                          ShouldAutoPlay="True"
+                                          ShouldShowPlaybackControls="True"
+                                          ShouldKeepScreenOn="True"
+                                          IsVisible="{Binding IsPlayerVisible}"
+                                          MediaOpened="OnMediaOpened"
+                                          MediaFailed="OnMediaFailed" />
+                    <ActivityIndicator IsRunning="{Binding IsPlayerLoading}"
+                                       IsVisible="{Binding IsPlayerLoading}"
+                                       Color="#FFD700"
+                                       HeightRequest="60" WidthRequest="60"
+                                       HorizontalOptions="Center" VerticalOptions="Center">
+                    </ActivityIndicator>
+                    <VerticalStackLayout IsVisible="{Binding IsPlayerVisible, Converter={StaticResource InvertBoolConverter}}"
+                                         VerticalOptions="Center" HorizontalOptions="Center">
+                        <Label Text="🦁" FontSize="100" HorizontalOptions="Center" />
+                        <Label Text="Explore the wild on TV"
+                               FontSize="20" TextColor="#FFD700"
+                               HorizontalOptions="Center" Margin="0,10"
+                               FontAttributes="Bold" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ==================== CHANNEL LIST ==================== -->
+        <Grid x:Name="ChannelPanel" RowDefinitions="Auto,Auto,Auto,*" Margin="0,8,0,0">
+            <HorizontalStackLayout Grid.Row="0" Spacing="6" Margin="0,0,0,6">
+                <!-- Matches the ⟳ SYNC button every other channel page uses;
+                     the previous emoji-only label rendered as a bare "Load". -->
+                <Button Text="⟳ SYNC"
+                        Command="{Binding LoadChannelsCommand}"
+                        BackgroundColor="#8B5A2B" TextColor="White"
+                        CornerRadius="15" HeightRequest="42" WidthRequest="90"
+                        FontSize="14" FontAttributes="Bold" CharacterSpacing="1" />
+                <SearchBar Placeholder="Find wildlife..."
+                           Text="{Binding SearchText}"
+                           BackgroundColor="#2C4A30" TextColor="White"
+                           PlaceholderColor="#AAA" CancelButtonColor="#FFD700"
+                           FlexLayout.Grow="1" />
+            </HorizontalStackLayout>
+
+            <CollectionView Grid.Row="1" ItemsSource="{Binding Groups}"
+                            SelectionMode="Single"
+                            SelectionChanged="OnGroupSelected"
+                            HeightRequest="40" Margin="0,0,0,4">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="6" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <Border StrokeShape="RoundRectangle 12"
+                                BackgroundColor="#8B5A2B" Padding="8,4"
+                                Stroke="Transparent">
+                            <Label Text="{Binding .}" TextColor="White" FontSize="13" FontAttributes="Bold" />
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <ActivityIndicator Grid.Row="2" IsRunning="{Binding IsLoading}"
+                               IsVisible="{Binding IsLoading}" Color="#FFD700"
+                               HeightRequest="30" Margin="0,4" />
+
+            <RefreshView Grid.Row="3" IsRefreshing="{Binding IsLoading}"
+                         Command="{Binding LoadChannelsCommand}">
+                <CollectionView ItemsSource="{Binding Channels}"
+                                SelectionMode="Single"
+                                SelectionChanged="OnChannelSelected">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="{OnIdiom Phone=2, Tablet=4, Desktop=6, TV=6}"
+                                         HorizontalItemSpacing="10" VerticalItemSpacing="10" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:TvChannel">
+                            <!-- Dense 2-up tile: 8 channels per screen instead of 5. -->
+                            <views:ChannelTileCard WatchClicked="OnWatchClicked"
+                                                   LogoClicked="OnLogoClicked" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <Label Text="No wildlife channels – pull to refresh!"
+                               TextColor="#FFD700" FontSize="20"
+                               HorizontalOptions="Center" Margin="0,30" />
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </RefreshView>
+
+            <Label Grid.Row="3" Text="{Binding ErrorMessage}" TextColor="White"
+                   BackgroundColor="#FF0000" Padding="6"
+                   IsVisible="{Binding HasError}" HorizontalOptions="Center"
+                   VerticalOptions="End" Margin="0,4" FontAttributes="Bold" />
+        </Grid>
+    </Grid>
+</ContentPage>

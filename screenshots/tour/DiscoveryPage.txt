@@ -1,0 +1,30 @@
+89,237 : SELECT A DISCOVERY CHANNEL
+387,576 : DISCOVERY
+244,680 : Ex lore new and trendin channels.
+463,795 : Search discovery channels...
+87,940 : ALL
+85,2072 : u.ll
+135,2100 : Oscovery
+262,940 : BUSINESS
+532,940 : DOCUMENTARY
+288,1079 : 30A Loomered IV
+290,1141 : Program unavailable
+288,1184 : SD
+288,1317 : 365 days (576p)
+290,1379 : Program unavailable
+288,1422 : SD
+287,1554 : Al Arabiya Programs (128...
+290,1617 : Program unavailable
+288,1660 : SD
+287,1792 : Arsenal (576p)
+290,1855 : Program unavailable
+288,1898 : SD
+287,2034 : Asharq Discovery (1080p)
+290,2093 : Program unavailable
+288,2136 : SD
+899,940 : CULTURE
+861,1128 : WATCH
+861,1366 : WATCH
+861,1604 : WATCH
+861,1842 : WATCH
+861,2080 : WATCH

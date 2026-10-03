@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="MarkUptv.Pages.MovieDownloadsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:MarkUptv.Controls"
+    xmlns:helpers="clr-namespace:MarkUptv.Helpers"
+    xmlns:models="clr-namespace:MarkUptv.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+    x:DataType="vm:MovieDownloadsViewModel"
+    Title="Offline films"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="#070712">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Appearing"
+                                        Command="{Binding LoadCommand}" />
+    </ContentPage.Behaviors>
+
+    <ContentPage.Resources>
+        <helpers:InvertBoolConverter x:Key="InvertBool" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*">
+
+        <!-- ═══ HEADER ═══ -->
+        <Grid Grid.Row="0" Padding="16,52,16,10"
+              ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+
+            <Border Grid.Column="0" WidthRequest="42" HeightRequest="42"
+                    StrokeShape="RoundRectangle 21"
+                    Stroke="#1E1E38" BackgroundColor="#0D0D22">
+                <Label Text="←" FontSize="20" TextColor="White"
+                       HorizontalOptions="Center" VerticalOptions="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenCatalogueCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+
+            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                <Label Text="Offline films" FontSize="21"
+                       FontAttributes="Bold" TextColor="White" />
+                <Label Text="{Binding StorageText}" FontSize="11" TextColor="#6E7A9A" />
+            </VerticalStackLayout>
+
+            <Border Grid.Column="2" WidthRequest="42" HeightRequest="42"
+                    StrokeShape="RoundRectangle 21"
+                    Stroke="#1E1E38" BackgroundColor="#0D0D22">
+                <Label Text="↻" FontSize="18" TextColor="#8A8A9E"
+                       HorizontalOptions="Center" VerticalOptions="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding LoadCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+
+        </Grid>
+
+        <!-- ═══ PLAYER ═══ -->
+        <Grid Grid.Row="1" IsVisible="{Binding IsPlayerVisible}"
+              HeightRequest="220" Margin="16,0" BackgroundColor="#000000">
+            <toolkit:MediaElement Source="{Binding PlayerSource}"
+                                  ShouldAutoPlay="True"
+                                  ShouldShowPlaybackControls="True"
+                                  ShouldKeepScreenOn="True"
+                                  Aspect="AspectFit" />
+        </Grid>
+
+        <Grid Grid.Row="2" IsVisible="{Binding IsPlayerVisible}"
+              Margin="16,8" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+            <Label Grid.Column="0" Text="{Binding NowPlaying}"
+                   FontSize="12" TextColor="#8A8A9E"
+                   VerticalOptions="Center" LineBreakMode="TailTruncation" />
+            <Border Grid.Column="1" StrokeShape="RoundRectangle 10"
+                    StrokeThickness="0" BackgroundColor="#1A1A38" Padding="12,8">
+                <Label Text="Stop" FontSize="12" TextColor="#FF006E" FontAttributes="Bold" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding StopPlaybackCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+        </Grid>
+
+        <!-- ═══ LIBRARY ═══ -->
+        <CollectionView Grid.Row="3"
+                        ItemsSource="{Binding Library}"
+                        SelectionMode="None">
+
+            <CollectionView.Header>
+                <Label Text="{Binding FolderText}" FontSize="11" TextColor="#5A6A8E"
+                       Margin="20,6,20,10" />
+            </CollectionView.Header>
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Spacing="14" Padding="0,40">
+                    <controls:EmptyState
+                        IsVisible="{Binding ShowEmptyState}"
+                        Icon="{StaticResource IconDownload}"
+                        Title="No films saved yet"
+                        Hint="Open any film and tap “Save offline” to keep it inside the app."
+                        Accent="#00D4FF"
+                        Margin="20,0" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:MovieDownloadRecord">
+                    <Border Margin="16,0,16,10"
+                            StrokeShape="RoundRectangle 16"
+                            StrokeThickness="1" Stroke="#1A1A38"
+                            BackgroundColor="#0D0D22"
+                            Padding="12">
+                        <Grid ColumnDefinitions="74,*,Auto" ColumnSpacing="12">
+
+                            <Border Grid.Column="0"
+                                    StrokeShape="RoundRectangle 12"
+                                    StrokeThickness="0"
+                                    HeightRequest="92"
+                                    BackgroundColor="#12122A">
+                                <Image Source="{Binding PosterUrl}" Aspect="AspectFill" />
+                            </Border>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                <Label Text="{Binding Title}" FontSize="13"
+                                       FontAttributes="Bold" TextColor="White"
+                                       MaxLines="2" LineBreakMode="TailTruncation" />
+                                <Label Text="{Binding YearText}" FontSize="11" TextColor="#8A8A9E" />
+                                <Label Text="{Binding SizeText}" FontSize="11" TextColor="#00D4FF" />
+                                <Label Text="{Binding SavedText}" FontSize="10" TextColor="#5A6A8E" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="2" Spacing="8" VerticalOptions="Center">
+                                <Border StrokeShape="RoundRectangle 10"
+                                        StrokeThickness="0"
+                                        BackgroundColor="#FF006E" Padding="12,8">
+                                    <Label Text="▶ Play" FontSize="12"
+                                           FontAttributes="Bold" TextColor="White" />
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MovieDownloadsViewModel}}, Path=PlayOfflineCommand}"
+                                                              CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+                                </Border>
+
+                                <Border StrokeShape="RoundRectangle 10"
+                                        StrokeThickness="1" Stroke="#3A1A2E"
+                                        BackgroundColor="Transparent" Padding="12,8">
+                                    <Label Text="Delete" FontSize="12" TextColor="#FF6B9D" />
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MovieDownloadsViewModel}}, Path=DeleteCommand}"
+                                                              CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+                                </Border>
+                            </VerticalStackLayout>
+
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>

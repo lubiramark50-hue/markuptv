@@ -1,0 +1,1166 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="MarkUptv.Pages.MusicPage"
+    x:Name="PageRoot"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:models="clr-namespace:MarkUptv.Models"
+    xmlns:helpers="clr-namespace:MarkUptv.Helpers"
+    xmlns:conv="clr-namespace:MarkUptv.Converters"
+    xmlns:pages="clr-namespace:MarkUptv.Pages"
+    xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+    x:DataType="vm:MusicViewModel"
+    Title="Music"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Behaviors>
+
+        <toolkit:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding LoadChannelsCommand}" />
+
+    </ContentPage.Behaviors>
+
+    <ContentPage.Resources>
+
+        <helpers:InvertBoolConverter
+            x:Key="InvertBoolConverter" />
+
+        <helpers:StringNullOrEmptyConverter
+            x:Key="StringNullOrEmptyConverter" />
+
+        <conv:MusicProgrammeSubtitleConverter
+            x:Key="MusicSubtitleConverter" />
+
+        <conv:MusicExtraTagsConverter
+            x:Key="MusicExtraTagsConverter" />
+
+        <conv:MusicHasExtraTagsConverter
+            x:Key="MusicHasExtraTagsConverter" />
+
+        <Color x:Key="MusicPurple">#A63CFF</Color>
+        <Color x:Key="MusicPink">#FF3E91</Color>
+        <Color x:Key="MusicBlue">#2BD8FF</Color>
+        <Color x:Key="MusicGold">#FFD95A</Color>
+        <Color x:Key="MusicMuted">#A49BB9</Color>
+
+        <LinearGradientBrush
+            x:Key="MusicPageBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#090510"
+                Offset="0" />
+
+            <GradientStop
+                Color="#2C0F46"
+                Offset="0.5" />
+
+            <GradientStop
+                Color="#170A29"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <LinearGradientBrush
+            x:Key="MusicHeroBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop
+                Color="#6724B5"
+                Offset="0" />
+
+            <GradientStop
+                Color="#A32987"
+                Offset="0.55" />
+
+            <GradientStop
+                Color="#D9336B"
+                Offset="1" />
+
+        </LinearGradientBrush>
+
+        <Style
+            x:Key="MusicCardStyle"
+            TargetType="Border">
+
+            <Setter
+                Property="BackgroundColor"
+                Value="#E0141028" />
+
+            <Setter
+                Property="Stroke"
+                Value="#30FFFFFF" />
+
+            <Setter
+                Property="StrokeThickness"
+                Value="1" />
+
+            <Setter
+                Property="StrokeShape"
+                Value="RoundRectangle 22" />
+
+        </Style>
+
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <StaticResource Key="MusicPageBrush" />
+    </ContentPage.Background>
+
+    <Grid
+        RowDefinitions="Auto,*"
+        Padding="{OnIdiom Phone='13,19,13,13',
+                          Tablet='20,23,20,18',
+                          Desktop='26,25,26,22',
+                          TV='42,37,42,32'}"
+        RowSpacing="18">
+
+        <Label
+            x:Name="FloatingDiamondOne"
+            Grid.RowSpan="2"
+            Text="♪"
+            FontSize="150"
+            TextColor="#14A63CFF"
+            Margin="-40,120,0,0"
+            HorizontalOptions="Start"
+            VerticalOptions="Start"
+            InputTransparent="True" />
+
+        <Label
+            x:Name="FloatingDiamondTwo"
+            Grid.RowSpan="2"
+            Text="♫"
+            FontSize="150"
+            TextColor="#14FF3E91"
+            Margin="0,0,-40,90"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            InputTransparent="True" />
+
+        <!-- =========================================================
+             HEADER
+             ========================================================= -->
+
+        <Grid
+            x:Name="HeaderPanel"
+            Grid.Row="0"
+            ColumnDefinitions="Auto,*,Auto"
+            ColumnSpacing="14"
+            MaximumWidthRequest="1600"
+            HorizontalOptions="Center">
+
+            <Button
+                Text="☰"
+                Command="{Binding OpenFlyoutCommand}"
+                Clicked="OnAnimatedButtonClicked"
+                WidthRequest="48"
+                HeightRequest="48"
+                Padding="0"
+                CornerRadius="16"
+                FontSize="22"
+                BackgroundColor="#16FFFFFF"
+                BorderColor="#35FFFFFF"
+                BorderWidth="1"
+                TextColor="White"
+                SemanticProperties.Description="Open navigation" />
+
+            <VerticalStackLayout
+                Grid.Column="1"
+                Spacing="2"
+                VerticalOptions="Center">
+
+                <HorizontalStackLayout
+                    Spacing="10"
+                    VerticalOptions="Center">
+
+                    <Label
+                        Text="MUSIC"
+                        FontSize="{OnIdiom Phone=22,
+                                           Tablet=26,
+                                           Desktop=28,
+                                           TV=36}"
+                        FontAttributes="Bold"
+                        CharacterSpacing="1.2"
+                        TextColor="White"
+                        VerticalOptions="Center" />
+
+                    <Border
+                        Padding="9,3"
+                        BackgroundColor="#22A63CFF"
+                        Stroke="#50A63CFF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 9"
+                        VerticalOptions="Center">
+
+                        <HorizontalStackLayout
+                            Spacing="5"
+                            VerticalOptions="Center">
+
+                            <Border
+                                WidthRequest="7"
+                                HeightRequest="7"
+                                BackgroundColor="{StaticResource MusicGold}"
+                                StrokeShape="RoundRectangle 4"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                Text="LIVE TV"
+                                FontSize="8"
+                                FontAttributes="Bold"
+                                CharacterSpacing="1"
+                                TextColor="{StaticResource MusicGold}"
+                                VerticalOptions="Center" />
+
+                        </HorizontalStackLayout>
+
+                    </Border>
+
+                </HorizontalStackLayout>
+
+                <Label
+                    Text="Live radio, music television and global sounds"
+                    FontSize="11.5"
+                    TextColor="{StaticResource MusicMuted}" />
+
+            </VerticalStackLayout>
+
+            <Button
+                Grid.Column="2"
+                Text="⟳"
+                Command="{Binding RefreshCommand}"
+                Clicked="OnAnimatedButtonClicked"
+                WidthRequest="48"
+                HeightRequest="48"
+                Padding="0"
+                CornerRadius="16"
+                FontSize="19"
+                BackgroundColor="{StaticResource MusicPurple}"
+                BorderColor="#70FFFFFF"
+                BorderWidth="1"
+                TextColor="White"
+                SemanticProperties.Description="Refresh music channels" />
+
+        </Grid>
+
+        <!-- =========================================================
+             WORKSPACE
+             ========================================================= -->
+
+        <Grid
+            x:Name="WorkspaceGrid"
+            Grid.Row="1"
+            RowDefinitions="Auto,*"
+            ColumnDefinitions="*"
+            RowSpacing="16"
+            MaximumWidthRequest="1600"
+            HorizontalOptions="Center">
+
+            <VisualStateManager.VisualStateGroups>
+
+                <VisualStateGroup x:Name="LayoutStates">
+
+                    <VisualState x:Name="Narrow">
+
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="0" />
+                        </VisualState.StateTriggers>
+
+                        <VisualState.Setters>
+
+                            <Setter
+                                Property="RowDefinitions"
+                                Value="Auto,*" />
+
+                            <Setter
+                                Property="ColumnDefinitions"
+                                Value="*" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Row"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Column"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="HeightRequest"
+                                Value="{OnIdiom Phone=310, Tablet=410}" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Row"
+                                Value="1" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Column"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Margin"
+                                Value="0" />
+
+                        </VisualState.Setters>
+
+                    </VisualState>
+
+                    <VisualState x:Name="Wide">
+
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="900" />
+                        </VisualState.StateTriggers>
+
+                        <VisualState.Setters>
+
+                            <Setter
+                                Property="RowDefinitions"
+                                Value="*" />
+
+                            <Setter
+                                Property="ColumnDefinitions"
+                                Value="7*,5*" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Row"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Grid.Column"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="HeightRequest"
+                                Value="-1" />
+
+                            <Setter
+                                TargetName="PlayerPanel"
+                                Property="Margin"
+                                Value="0,0,18,0" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Row"
+                                Value="0" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Grid.Column"
+                                Value="1" />
+
+                            <Setter
+                                TargetName="ChannelPanel"
+                                Property="Margin"
+                                Value="0" />
+
+                        </VisualState.Setters>
+
+                    </VisualState>
+
+                </VisualStateGroup>
+
+            </VisualStateManager.VisualStateGroups>
+
+            <!-- ============================
+                 PLAYER PANEL
+                 ============================ -->
+
+            <Border
+                x:Name="PlayerPanel"
+                Style="{StaticResource MusicCardStyle}"
+                Padding="9">
+
+                <Grid
+                    RowDefinitions="Auto,*"
+                    RowSpacing="9">
+
+                    <!-- Now streaming hero strip -->
+
+                    <Border
+                        Padding="15,12"
+                        Background="{StaticResource MusicHeroBrush}"
+                        Stroke="#45FFFFFF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 17">
+
+                        <Grid
+                            ColumnDefinitions="Auto,*,Auto"
+                            ColumnSpacing="13">
+
+                            <Border
+                                WidthRequest="46"
+                                HeightRequest="46"
+                                BackgroundColor="#25FFFFFF"
+                                Stroke="#70FFFFFF"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 15">
+
+                                <Label
+                                    Text="♪"
+                                    FontSize="23"
+                                    TextColor="White"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" />
+
+                            </Border>
+
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="1"
+                                VerticalOptions="Center">
+
+                                <Label
+                                    Text="NOW STREAMING"
+                                    IsVisible="{Binding IsPlayerVisible}"
+                                    FontSize="8"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="1.7"
+                                    TextColor="{StaticResource MusicGold}" />
+
+                                <Label
+                                    Text="STATION IDLE"
+                                    IsVisible="{Binding IsPlayerVisible,
+                                                        Converter={StaticResource InvertBoolConverter}}"
+                                    FontSize="8"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="1.7"
+                                    TextColor="#E0FFFFFF" />
+
+                                <Label
+                                    Text="{Binding NowPlayingText}"
+                                    FontSize="15.5"
+                                    FontAttributes="Bold"
+                                    TextColor="White"
+                                    MaxLines="1"
+                                    LineBreakMode="TailTruncation" />
+
+                            </VerticalStackLayout>
+
+                            <HorizontalStackLayout
+                                Grid.Column="2"
+                                Spacing="8"
+                                VerticalOptions="Center">
+
+                                <Border
+                                    Padding="10,5"
+                                    BackgroundColor="#E8E8254D"
+                                    Stroke="#FFFFD9E0"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    IsVisible="{Binding IsStreaming}">
+
+                                    <HorizontalStackLayout
+                                        Spacing="6"
+                                        VerticalOptions="Center">
+
+                                        <Border
+                                            WidthRequest="7"
+                                            HeightRequest="7"
+                                            BackgroundColor="#FF6B81"
+                                            Stroke="White"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 4"
+                                            VerticalOptions="Center" />
+
+                                        <Label
+                                            Text="LIVE"
+                                            FontSize="8.5"
+                                            FontAttributes="Bold"
+                                            CharacterSpacing="1"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+
+                                    </HorizontalStackLayout>
+
+                                </Border>
+
+                                <ActivityIndicator
+                                    WidthRequest="22"
+                                    HeightRequest="22"
+                                    IsRunning="{Binding IsPlayerLoading}"
+                                    IsVisible="{Binding IsPlayerLoading}"
+                                    Color="{StaticResource MusicGold}"
+                                    VerticalOptions="Center" />
+
+                            </HorizontalStackLayout>
+
+                        </Grid>
+
+                    </Border>
+
+                    <!-- Video / idle art stage -->
+
+                    <Border
+                        Grid.Row="1"
+                        BackgroundColor="#020205"
+                        Stroke="#55A63CFF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 19">
+
+                        <Grid IsClippedToBounds="True">
+
+                            <toolkit:MediaElement x:Name="ChannelPlayer"
+                                Source="{Binding SelectedChannel.StreamUrl,
+                                                 TargetNullValue=''}"
+                                ShouldAutoPlay="True"
+                                ShouldShowPlaybackControls="True"
+                                ShouldKeepScreenOn="True"
+                                Volume="1"
+                                IsVisible="{Binding IsPlayerVisible}">
+
+                                <toolkit:MediaElement.Behaviors>
+
+                                    <toolkit:EventToCommandBehavior
+                                        EventName="MediaOpened"
+                                        Command="{Binding MediaReadyCommand}" />
+
+                                    <toolkit:EventToCommandBehavior
+                                        EventName="MediaFailed"
+                                        Command="{Binding MediaFailedCommand}" />
+
+                                </toolkit:MediaElement.Behaviors>
+
+                            </toolkit:MediaElement>
+
+                            <!-- On-air chip over the picture -->
+
+                            <Border
+                                Padding="10,5"
+                                Margin="12"
+                                BackgroundColor="#E8E8254D"
+                                Stroke="#FFFFD9E0"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 11"
+                                IsVisible="{Binding IsStreaming}"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Start"
+                                InputTransparent="True">
+
+                                <HorizontalStackLayout
+                                    Spacing="7"
+                                    VerticalOptions="Center">
+
+                                    <Border
+                                        WidthRequest="8"
+                                        HeightRequest="8"
+                                        BackgroundColor="#FF6B81"
+                                        Stroke="White"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 4"
+                                        VerticalOptions="Center" />
+
+                                    <Label
+                                        Text="ON AIR"
+                                        FontSize="9"
+                                        FontAttributes="Bold"
+                                        CharacterSpacing="1.1"
+                                        TextColor="White"
+                                        VerticalOptions="Center" />
+
+                                </HorizontalStackLayout>
+
+                            </Border>
+
+                            <!-- Idle artwork -->
+
+                            <VerticalStackLayout
+                                IsVisible="{Binding IsPlayerVisible,
+                                                    Converter={StaticResource InvertBoolConverter}}"
+                                Spacing="0"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center">
+
+                                <Grid
+                                    WidthRequest="190"
+                                    HeightRequest="190">
+
+                                    <Border
+                                        WidthRequest="190"
+                                        HeightRequest="190"
+                                        BackgroundColor="#14A63CFF"
+                                        Stroke="#25FFFFFF"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 95"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center"
+                                        InputTransparent="True" />
+
+                                    <Border
+                                        x:Name="MusicOrb"
+                                        WidthRequest="118"
+                                        HeightRequest="118"
+                                        Background="{StaticResource MusicHeroBrush}"
+                                        Stroke="#90FFFFFF"
+                                        StrokeThickness="2"
+                                        StrokeShape="RoundRectangle 59"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center">
+
+                                        <Border.Shadow>
+
+                                            <Shadow
+                                                Brush="#B0A63CFF"
+                                                Offset="0,8"
+                                                Radius="22"
+                                                Opacity="0.65" />
+
+                                        </Border.Shadow>
+
+                                        <Label
+                                            Text="♫"
+                                            FontSize="47"
+                                            TextColor="White"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+
+                                    </Border>
+
+                                    <Border
+                                        WidthRequest="38"
+                                        HeightRequest="38"
+                                        Margin="-18,0,0,0"
+                                        BackgroundColor="#FFD95A"
+                                        Stroke="White"
+                                        StrokeThickness="1.5"
+                                        StrokeShape="RoundRectangle 19"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="End"
+                                        InputTransparent="True">
+
+                                        <Label
+                                            Text="♪"
+                                            FontSize="17"
+                                            TextColor="#2C0F46"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+
+                                    </Border>
+
+                                </Grid>
+
+                                <Label
+                                    Text="TUNE INTO THE VIBE"
+                                    Margin="0,17,0,0"
+                                    FontSize="18"
+                                    FontAttributes="Bold"
+                                    CharacterSpacing="1.4"
+                                    TextColor="White"
+                                    HorizontalOptions="Center" />
+
+                                <Label
+                                    Text="Pick a station to start watching and listening."
+                                    Margin="0,5,0,0"
+                                    FontSize="12"
+                                    TextColor="{StaticResource MusicMuted}"
+                                    HorizontalOptions="Center" />
+
+                                <Border
+                                    Margin="0,16,0,0"
+                                    Padding="14,6"
+                                    BackgroundColor="#1AA63CFF"
+                                    Stroke="#40A63CFF"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 12"
+                                    HorizontalOptions="Center">
+
+                                    <Label
+                                        Text="500+ STATIONS  •  WORLDWIDE  •  24/7"
+                                        FontSize="8.5"
+                                        FontAttributes="Bold"
+                                        CharacterSpacing="1.3"
+                                        TextColor="{StaticResource MusicGold}" />
+
+                                </Border>
+
+                            </VerticalStackLayout>
+
+                            <ActivityIndicator
+                                WidthRequest="56"
+                                HeightRequest="56"
+                                IsRunning="{Binding IsPlayerLoading}"
+                                IsVisible="{Binding IsPlayerLoading}"
+                                Color="{StaticResource MusicGold}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                ZIndex="20" />
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+            </Border>
+
+            <!-- ============================
+                 CHANNEL PANEL
+                 ============================ -->
+
+            <Border
+                x:Name="ChannelPanel"
+                Style="{StaticResource MusicCardStyle}"
+                Padding="15">
+
+                <Grid
+                    RowDefinitions="Auto,Auto,*"
+                    RowSpacing="12">
+
+                    <!-- Search -->
+
+                    <Border
+                        x:Name="SearchBorder"
+                        Grid.Row="0"
+                        HeightRequest="47"
+                        Padding="8,0"
+                        BackgroundColor="#D00A0E22"
+                        Stroke="#35FFFFFF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 16">
+
+                        <Grid ColumnDefinitions="Auto,*">
+
+                            <Label
+                                Text="⌕"
+                                WidthRequest="38"
+                                FontSize="26"
+                                TextColor="{StaticResource MusicPink}"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center" />
+
+                            <Entry
+                                Grid.Column="1"
+                                Text="{Binding SearchText}"
+                                Placeholder="Search 500+ music channels..."
+                                PlaceholderColor="#817995"
+                                TextColor="White"
+                                BackgroundColor="Transparent"
+                                FontSize="13"
+                                ClearButtonVisibility="WhileEditing"
+                                Focused="OnSearchFocused"
+                                Unfocused="OnSearchUnfocused"
+                                VerticalOptions="Center" />
+
+                        </Grid>
+
+                    </Border>
+
+                    <!-- Genre chips -->
+
+                    <CollectionView
+                        Grid.Row="1"
+                        ItemsSource="{Binding Groups}"
+                        SelectedItem="{Binding SelectedGroup,
+                                               Mode=TwoWay}"
+                        SelectionMode="Single"
+                        HeightRequest="44"
+                        HorizontalScrollBarVisibility="Never">
+
+                        <CollectionView.ItemsLayout>
+
+                            <LinearItemsLayout
+                                Orientation="Horizontal"
+                                ItemSpacing="8" />
+
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+
+                            <DataTemplate x:DataType="x:String">
+
+                                <Border
+                                    Padding="17,0"
+                                    BackgroundColor="#14FFFFFF"
+                                    Stroke="#28FFFFFF"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 22">
+
+                                    <VisualStateManager.VisualStateGroups>
+
+                                        <VisualStateGroupList>
+
+                                            <VisualStateGroup x:Name="CommonStates">
+
+                                                <VisualState x:Name="Normal" />
+
+                                                <VisualState x:Name="Selected">
+
+                                                    <VisualState.Setters>
+
+                                                        <Setter
+                                                            Property="BackgroundColor"
+                                                            Value="{StaticResource MusicPurple}" />
+
+                                                        <Setter
+                                                            Property="Stroke"
+                                                            Value="{StaticResource MusicGold}" />
+
+                                                        <Setter
+                                                            Property="StrokeThickness"
+                                                            Value="1.5" />
+
+                                                    </VisualState.Setters>
+
+                                                </VisualState>
+
+                                            </VisualStateGroup>
+
+                                        </VisualStateGroupList>
+
+                                    </VisualStateManager.VisualStateGroups>
+
+                                    <Label
+                                        Text="{Binding .}"
+                                        FontSize="11.5"
+                                        FontAttributes="Bold"
+                                        TextColor="White"
+                                        TextTransform="Uppercase"
+                                        VerticalOptions="Center" />
+
+                                </Border>
+
+                            </DataTemplate>
+
+                        </CollectionView.ItemTemplate>
+
+                    </CollectionView>
+
+                    <!-- Channel list -->
+
+                    <RefreshView
+                        Grid.Row="2"
+                        Command="{Binding RefreshCommand}"
+                        IsRefreshing="{Binding IsLoading}"
+                        RefreshColor="{StaticResource MusicPink}">
+
+                        <CollectionView
+                            ItemsSource="{Binding Channels}"
+                            SelectionMode="None">
+
+                            <CollectionView.ItemsLayout>
+
+                                <LinearItemsLayout
+                                    Orientation="Vertical"
+                                    ItemSpacing="10" />
+
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+
+                                <DataTemplate x:DataType="models:TvChannel">
+
+                                    <Border
+                                        x:Name="ChannelRow"
+                                        Padding="11"
+                                        BackgroundColor="#C80A0A18"
+                                        Stroke="#28FFFFFF"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 18">
+
+                                        <Border.Triggers>
+
+                                            <DataTrigger
+                                                TargetType="Border"
+                                                Binding="{Binding IsPlaying}"
+                                                Value="True">
+
+                                                <Setter
+                                                    Property="BackgroundColor"
+                                                    Value="#2B241040" />
+
+                                                <Setter
+                                                    Property="Stroke"
+                                                    Value="#D0FFD95A" />
+
+                                                <Setter
+                                                    Property="StrokeThickness"
+                                                    Value="1.5" />
+
+                                            </DataTrigger>
+
+                                        </Border.Triggers>
+
+                                        <Border.Behaviors>
+                                            <helpers:TapScaleBehavior/>
+                                        </Border.Behaviors>
+
+                                        <Border.GestureRecognizers>
+
+                                            <TapGestureRecognizer
+                                                Tapped="OnChannelCardTapped" />
+
+                                        </Border.GestureRecognizers>
+
+                                        <Grid
+                                            ColumnDefinitions="66,*,Auto"
+                                            ColumnSpacing="13">
+
+                                            <!-- Artwork tile -->
+
+                                            <Border
+                                                x:Name="ArtTile"
+                                                WidthRequest="66"
+                                                HeightRequest="60"
+                                                Background="{StaticResource MusicHeroBrush}"
+                                                Stroke="#40FFFFFF"
+                                                StrokeThickness="1"
+                                                StrokeShape="RoundRectangle 18">
+
+                                                <Border.Triggers>
+
+                                                    <DataTrigger
+                                                        TargetType="Border"
+                                                        Binding="{Binding IsPlaying}"
+                                                        Value="True">
+
+                                                        <Setter
+                                                            Property="Stroke"
+                                                            Value="{StaticResource MusicGold}" />
+
+                                                        <Setter
+                                                            Property="StrokeThickness"
+                                                            Value="2" />
+
+                                                    </DataTrigger>
+
+                                                </Border.Triggers>
+
+                                                <Grid InputTransparent="True">
+
+                                                    <Label
+                                                        Text="♫"
+                                                        FontSize="25"
+                                                        TextColor="#80FFFFFF"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center" />
+
+                                                    <Image
+                                                        Source="{Binding LogoUrl}"
+                                                        Aspect="AspectFit"
+                                                        Margin="7" />
+
+                                                </Grid>
+
+                                            </Border>
+
+                                            <!-- Text -->
+
+                                            <VerticalStackLayout
+                                                Grid.Column="1"
+                                                Spacing="2.5"
+                                                VerticalOptions="Center"
+                                                InputTransparent="True">
+
+                                                <HorizontalStackLayout
+                                                    Spacing="8">
+
+                                                    <Label
+                                                        Text="{Binding Name}"
+                                                        FontSize="15"
+                                                        FontAttributes="Bold"
+                                                        TextColor="White"
+                                                        MaxLines="1"
+                                                        LineBreakMode="TailTruncation"
+                                                        VerticalOptions="Center" />
+
+                                                    <Border
+                                                        x:Name="LivePill"
+                                                        Padding="6,2"
+                                                        BackgroundColor="#E8E8254D"
+                                                        Stroke="#80FF8FA5"
+                                                        StrokeThickness="1"
+                                                        StrokeShape="RoundRectangle 8"
+                                                        IsVisible="{Binding IsPlaying}"
+                                                        VerticalOptions="Center">
+
+                                                        <Label
+                                                            Text="LIVE"
+                                                            FontSize="7.5"
+                                                            FontAttributes="Bold"
+                                                            CharacterSpacing="1"
+                                                            TextColor="White" />
+
+                                                    </Border>
+
+                                                </HorizontalStackLayout>
+
+                                                <Label
+                                                    Text="{Binding CurrentProgrammeTitle,
+                                                                   Converter={StaticResource MusicSubtitleConverter}}"
+                                                    FontSize="11.5"
+                                                    TextColor="{StaticResource MusicMuted}"
+                                                    MaxLines="1"
+                                                    LineBreakMode="TailTruncation" />
+
+                                                <HorizontalStackLayout
+                                                    Spacing="8">
+
+                                                    <HorizontalStackLayout
+                                                        Spacing="5">
+
+                                                        <Border
+                                                            WidthRequest="6"
+                                                            HeightRequest="6"
+                                                            BackgroundColor="#66FF99"
+                                                            Stroke="#40FFFFFF"
+                                                            StrokeThickness="0.5"
+                                                            StrokeShape="RoundRectangle 3"
+                                                            VerticalOptions="Center" />
+
+                                                        <Label
+                                                            Text="ON AIR 24/7"
+                                                            FontSize="9"
+                                                            FontAttributes="Bold"
+                                                            CharacterSpacing="0.6"
+                                                            TextColor="#9FE8B5"
+                                                            VerticalOptions="Center" />
+
+                                                    </HorizontalStackLayout>
+
+                                                    <Label
+                                                        Text="{Binding Group,
+                                                                       Converter={StaticResource MusicExtraTagsConverter}}"
+                                                        FontSize="9"
+                                                        FontAttributes="Bold"
+                                                        TextTransform="Uppercase"
+                                                        TextColor="#FF9FC7"
+                                                        IsVisible="{Binding Group,
+                                                                          Converter={StaticResource MusicHasExtraTagsConverter}}"
+                                                        VerticalOptions="Center" />
+
+                                                </HorizontalStackLayout>
+
+                                            </VerticalStackLayout>
+
+                                            <!-- Play state tile -->
+
+                                            <Grid
+                                                Grid.Column="2"
+                                                WidthRequest="46"
+                                                HeightRequest="46"
+                                                VerticalOptions="Center"
+                                                InputTransparent="True">
+
+                                                <Border
+                                                    BackgroundColor="#22A63CFF"
+                                                    Stroke="#70A63CFF"
+                                                    StrokeThickness="1"
+                                                    StrokeShape="RoundRectangle 15"
+                                                    IsVisible="{Binding IsPlaying,
+                                                                        Converter={StaticResource InvertBoolConverter}}">
+
+                                                    <Label
+                                                        Text="▶"
+                                                        FontSize="14"
+                                                        TextColor="White"
+                                                        Margin="2,0,0,0"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center" />
+
+                                                </Border>
+
+                                                <Border
+                                                    BackgroundColor="{StaticResource MusicGold}"
+                                                    Stroke="White"
+                                                    StrokeThickness="1.5"
+                                                    StrokeShape="RoundRectangle 15"
+                                                    IsVisible="{Binding IsPlaying}">
+
+                                                    <Label
+                                                        Text="♪"
+                                                        FontSize="17"
+                                                        TextColor="#2C0F46"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center" />
+
+                                                </Border>
+
+                                            </Grid>
+
+                                        </Grid>
+
+                                    </Border>
+
+                                </DataTemplate>
+
+                            </CollectionView.ItemTemplate>
+
+                            <CollectionView.EmptyView>
+
+                                <VerticalStackLayout
+                                    Spacing="9"
+                                    Margin="0,50"
+                                    HorizontalOptions="Center">
+
+                                    <Label
+                                        Text="♫"
+                                        FontSize="64"
+                                        TextColor="{StaticResource MusicPurple}"
+                                        Opacity="0.7"
+                                        HorizontalOptions="Center" />
+
+                                    <Label
+                                        Text="No music channels found"
+                                        FontSize="16"
+                                        FontAttributes="Bold"
+                                        TextColor="White"
+                                        HorizontalOptions="Center" />
+
+                                    <Label
+                                        Text="Try another search or genre, or refresh the list."
+                                        FontSize="11.5"
+                                        TextColor="{StaticResource MusicMuted}"
+                                        HorizontalOptions="Center" />
+
+                                </VerticalStackLayout>
+
+                            </CollectionView.EmptyView>
+
+                        </CollectionView>
+
+                    </RefreshView>
+
+                    <!-- Error toast -->
+
+                    <Border
+                        Grid.Row="2"
+                        Padding="13,9"
+                        Margin="8"
+                        BackgroundColor="#D0B11D47"
+                        Stroke="#FFFFAEC2"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 14"
+                        HorizontalOptions="Center"
+                        VerticalOptions="End"
+                        IsVisible="{Binding HasError}"
+                        ZIndex="25">
+
+                        <Label
+                            Text="{Binding ErrorMessage}"
+                            FontSize="11"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            HorizontalTextAlignment="Center" />
+
+                    </Border>
+
+                </Grid>
+
+            </Border>
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MarkUptv.Pages.MorePage"
+             Title="More"
+             BackgroundColor="{StaticResource DeepVoid}">
+    <ScrollView Padding="20">
+        <VerticalStackLayout Spacing="14">
+            <Label Text="More on MarkUp TV" Style="{StaticResource SectionTitle}" FontSize="24" />
+            <Button Text="Recently Watched" Style="{StaticResource GhostButton}" Clicked="OnRecentlyWatchedClicked" />
+            <Button Text="Support MarkUp TV" Style="{StaticResource GhostButton}" Clicked="OnSupportClicked" />
+            <Button Text="Community" Style="{StaticResource GhostButton}" Clicked="OnCommunityClicked" />
+            <Button Text="Search" Style="{StaticResource GhostButton}" Clicked="OnSearchClicked" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

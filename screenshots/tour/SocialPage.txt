@@ -1,0 +1,13 @@
+57,324 : Community
+54,382 : 0 viewers online
+161,482 : All
+384,489 : Trending
+241,649 : Alpha Tester
+241,696 : 43 min ago
+659,488 : 9
+715,491 : Sports
+1008,486 : New:
+101,780 : Hello MarkUp community - first end-to-end post!
+168,905 : 0
+443,905 : 0
+720,904 : Share

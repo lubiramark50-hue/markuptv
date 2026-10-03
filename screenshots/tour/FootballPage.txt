@@ -1,0 +1,20 @@
+227,226 : FOOTBALL
+589,226 : O O FIXTURES
+225,292 : Live scores and broadcasts from every league
+260,454 : STANDBY
+261,498 : Select a football channel
+212,1326 : Search matches or channels...
+943,256 : O
+125,1478 : ALL
+137,1926 : ACCON
+297,1478 : AUTO
+497,1478 : OUTDOOR
+764,1478 : SPORTS
+319,1627 : 12 Parma (540p) [Not2 n
+319,1686 : Matchday coverage - 24/7
+318,1733 :  ON AIR 24/7 SD
+316,1876 : ACC Digital Network (1080
+319,1935 : Matchday coverage - 24/7
+318,1982 :  ON AIR 24/7 SD
+835,1678 : WATCH
+835,1926 : WATCH

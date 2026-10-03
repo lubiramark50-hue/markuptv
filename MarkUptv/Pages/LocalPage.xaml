@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:Toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+             xmlns:models="clr-namespace:MarkUptv.Models"
+             xmlns:local="clr-namespace:MarkUptv.Helpers"
+             xmlns:controls="clr-namespace:MarkUptv.Controls"
+             x:Class="MarkUptv.Pages.LocalPage"
+             xmlns:views="clr-namespace:MarkUptv.Views"
+             x:DataType="vm:LocalViewModel"
+             Title="Local TV"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#0B0E1A" Offset="0.0"/>
+            <GradientStop Color="#141B33" Offset="0.5"/>
+            <GradientStop Color="#070A12" Offset="1.0"/>
+            <!-- bold blue -->
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <!-- Adaptive root grid -->
+    <Grid x:Name="RootGrid" Padding="12">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveStates">
+                <!-- NARROW (phones) -->
+                <VisualState x:Name="Narrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Property="RowDefinitions" Value="Auto,Auto,*" />
+                        <Setter Property="ColumnDefinitions" Value="*" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Column" Value="0" />
+                        <!-- Star row: a '*' inside an Auto parent row collapses,
+                             which hid the whole channel list on phones. -->
+                        <Setter TargetName="ChannelPanel" Property="Grid.Row" Value="2" />
+                        <Setter TargetName="ChannelPanel" Property="Grid.Column" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <!-- WIDE (tablets / desktops) -->
+                <VisualState x:Name="Wide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Property="RowDefinitions" Value="*" />
+                        <Setter Property="ColumnDefinitions" Value="2*,1*" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="PlayerPanel" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="PlayerPanel" Property="Margin" Value="0,0,8,0" />
+                        <Setter TargetName="ChannelPanel" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="ChannelPanel" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="ChannelPanel" Property="Margin" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!-- ==================== PLAYER ==================== -->
+        <Grid x:Name="PlayerPanel" RowDefinitions="Auto,*" Margin="0,0,0,8">
+            <Border Grid.Row="0" BackgroundColor="#FF6F00" StrokeShape="RoundRectangle 12"
+                    Padding="8,6" Stroke="Transparent" Margin="0,0,0,8">
+                <Label Text="{Binding NowPlayingText}" FontSize="18" FontAttributes="Bold"
+                       TextColor="White" HorizontalOptions="Center"
+                       FontFamily="OpenSansSemibold" />
+            </Border>
+
+            <Border Grid.Row="1" BackgroundColor="#0D1B3E" StrokeShape="RoundRectangle 20"
+                    Padding="0" Stroke="Transparent">
+                <Grid>
+                    <Toolkit:MediaElement x:Name="ChannelPlayer"
+                                      Source="{Binding SelectedChannel.Url,FallbackValue=''}"
+                                          ShouldAutoPlay="True"
+                                          ShouldShowPlaybackControls="True"
+                                          ShouldKeepScreenOn="True"
+                                          IsVisible="{Binding IsPlayerVisible}"
+                                          MediaOpened="OnMediaOpened"
+                                          MediaFailed="OnMediaFailed" />
+                    <ActivityIndicator IsRunning="{Binding IsPlayerLoading}"
+                                       IsVisible="{Binding IsPlayerLoading}"
+                                       Color="#FFAB00"
+                                       HeightRequest="60" WidthRequest="60"
+                                       HorizontalOptions="Center" VerticalOptions="Center">
+                    </ActivityIndicator>
+                    <!--
+                        Idle stage. The old copy bound CountryName ("Local TV")
+                        into 'Discover local TV from {0}', so the screen literally
+                        read "Discover local TV from Local TV". It also spent a
+                        100pt emoji on the slot. Now it says what the page holds
+                        and uses the shared icon set.
+                    -->
+                    <VerticalStackLayout IsVisible="{Binding IsPlayerVisible, Converter={StaticResource InvertBoolConverter}}"
+                                         VerticalOptions="Center" HorizontalOptions="Center"
+                                         Spacing="12">
+                        <Border WidthRequest="76" HeightRequest="76"
+                                StrokeShape="RoundRectangle 38"
+                                BackgroundColor="#24FFAB00" Stroke="#FFAB00" StrokeThickness="1"
+                                HorizontalOptions="Center">
+                            <Path Data="{StaticResource IconTv}"
+                                  Style="{StaticResource IconPathLarge}"
+                                  Stroke="{StaticResource NeonAmber}" />
+                        </Border>
+                        <Label Text="Pick a local channel to start watching"
+                               FontSize="18" TextColor="{StaticResource NeonAmber}"
+                               HorizontalOptions="Center" Margin="0,6,0,0"
+                               FontAttributes="Bold" />
+                        <Label Text="National and regional broadcasters, free to watch."
+                               FontSize="13" TextColor="{StaticResource TextMuted}"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ==================== CHANNEL LIST ==================== -->
+        <Grid x:Name="ChannelPanel" RowDefinitions="Auto,Auto,Auto,*" Margin="0,8,0,0">
+            <HorizontalStackLayout Grid.Row="0" Spacing="6" Margin="0,0,0,6">
+                <Button Text="📺 Load"
+                        Command="{Binding LoadChannelsCommand}"
+                        BackgroundColor="#FF6F00" TextColor="White"
+                        CornerRadius="15" HeightRequest="42" WidthRequest="90"
+                        FontSize="16" FontAttributes="Bold" />
+                <SearchBar Placeholder="Find local channels..."
+                           Text="{Binding SearchText}"
+                           BackgroundColor="#283593" TextColor="White"
+                           PlaceholderColor="#AAA" CancelButtonColor="#FFAB00"
+                           FlexLayout.Grow="1" />
+            </HorizontalStackLayout>
+
+            <CollectionView Grid.Row="1" ItemsSource="{Binding Groups}"
+                            SelectionMode="Single"
+                            SelectionChanged="OnGroupSelected"
+                            HeightRequest="40" Margin="0,0,0,4">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="6" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <Border StrokeShape="RoundRectangle 12"
+                                BackgroundColor="#FF6F00" Padding="8,4"
+                                Stroke="Transparent">
+                            <Label Text="{Binding .}" TextColor="White" FontSize="13" FontAttributes="Bold" />
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <ActivityIndicator Grid.Row="2" IsRunning="{Binding IsLoading}"
+                               IsVisible="{Binding IsLoading}" Color="#FFAB00"
+                               HeightRequest="30" Margin="0,4" />
+
+            <RefreshView Grid.Row="3" IsRefreshing="{Binding IsLoading}"
+                         Command="{Binding LoadChannelsCommand}">
+                <CollectionView ItemsSource="{Binding Channels}"
+                                SelectionMode="Single"
+                                SelectionChanged="OnChannelSelected">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="{OnIdiom Phone=2, Tablet=4, Desktop=6, TV=6}"
+                                         HorizontalItemSpacing="10" VerticalItemSpacing="10" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:TvChannel">
+                            <!-- Dense 2-up tile: 8 channels per screen instead of 5. -->
+                            <views:ChannelTileCard WatchClicked="OnWatchClicked"
+                                                   LogoClicked="OnLogoClicked" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <!--
+                            Was a bare amber sentence that read like a failure.
+                            An empty result is a normal state, so it gets the
+                            standard empty-state shape and an action that
+                            actually retries.
+                        -->
+                        <controls:EmptyState
+                            Icon="{StaticResource IconGlobe}"
+                            Title="No local channels yet"
+                            Hint="Regional and national broadcasters appear here once they are indexed. Pull down or tap refresh to try again."
+                            Accent="{StaticResource NeonAmber}"
+                            ActionText="Refresh"
+                            ActionCommand="{Binding LoadChannelsCommand}"
+                            Margin="16,24" />
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </RefreshView>
+
+            <Label Grid.Row="3" Text="{Binding ErrorMessage}" TextColor="White"
+                   BackgroundColor="#FF0000" Padding="6"
+                   IsVisible="{Binding HasError}" HorizontalOptions="Center"
+                   VerticalOptions="End" Margin="0,4" FontAttributes="Bold" />
+        </Grid>
+    </Grid>
+</ContentPage>

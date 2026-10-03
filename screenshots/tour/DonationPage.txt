@@ -1,0 +1,10 @@
+81,68 : 6:49
+193,212 : Donate to MarkUp
+316,637 : Support MarkUp
+124,746 : Your donation helps us keep the channels free for
+460,804 : everyone.
+63,940 : Amount (UGX)
+67,1097 : Email
+67,1255 : Phone Number
+67,1413 : First Name
+67,1572 : Last Name

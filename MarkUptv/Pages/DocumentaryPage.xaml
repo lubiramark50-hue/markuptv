@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MarkUptv.Pages.DocumentaryPage"
+             Title="Documentary"
+             BackgroundColor="{StaticResource DeepVoid}">
+    <Grid Padding="24">
+        <Border Style="{StaticResource GlassCard}" Padding="20" HorizontalOptions="Center" VerticalOptions="Center" MaximumWidthRequest="420">
+            <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                <ActivityIndicator IsRunning="True" Color="{StaticResource Primary}" />
+                <Label Text="Opening Documentary" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                <Label Text="Loading live channels from MarkUp TV." Style="{StaticResource SectionCaption}" HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+</ContentPage>

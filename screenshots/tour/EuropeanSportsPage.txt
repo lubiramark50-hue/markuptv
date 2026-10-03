@@ -1,0 +1,29 @@
+89,237 : SELECT A EUROPEAN FOOTBALL
+89,294 : CHANNEL
+234,632 : EUROPEAN FOOTBALL
+48,736 : Free-to-air channels carrying European football - pick one
+60,789 : o start streamin .
+463,901 : Search sports or channels...
+87,1046 : ALL
+118,1216 : arena
+216,1230 : 2
+85,1238 : sport
+151,1502 : SPORT
+261,1046 : SPORTS
+287,1185 : Arena Sport 2
+290,1247 : European football - free to air
+288,1290 : SD
+287,1423 : AS3 sport (1080p)
+290,1485 : European football - free to air
+288,1528 : SD
+290,1660 : Belarus-5 (1080p) [Not
+290,1723 : European football - free to air
+288,1766 : SD
+290,1898 : Belarus-5 HD (1080p)
+290,1961 : European football - free to air
+288,2004 : SD
+290,2134 : Relarus-q Internet (1 OROn)
+861,1234 : WATCH
+861,1472 : WATCH
+861,1710 : WATCH
+861,1948 : WATCH

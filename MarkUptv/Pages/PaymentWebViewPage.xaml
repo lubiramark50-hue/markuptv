@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+             x:Class="MarkUptv.Pages.PaymentWebViewPage" 
+             x:DataType="vm:PaymentWebViewViewModel"
+             Title="Secure Checkout"
+             BackgroundColor="#0D0D1E">
+
+    <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+        <WebView x:Name="InternalPaymentWebView" 
+                 Source="{Binding PaymentUrl}"
+                 Navigating="OnWebViewNavigating"
+                 Navigated="OnWebViewNavigated"
+                 HorizontalOptions="Fill"
+                 VerticalOptions="Fill" />
+
+        <ActivityIndicator IsRunning="{Binding IsLoading}" 
+                           IsVisible="{Binding IsLoading}" 
+                           Color="#FFD700" 
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           WidthRequest="45"
+                           HeightRequest="45"/>
+    </Grid>
+</ContentPage>

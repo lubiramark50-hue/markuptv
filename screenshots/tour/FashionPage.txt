@@ -1,0 +1,24 @@
+89,237 : SELECT A FASHION CHANNEL
+420,576 : FASHION
+167,679 : Select a channel to ex lore fashion and st le.
+93,800 : o SYNC
+87,940 : ALL
+150,1129 : BOLD
+111,1402 : DISCOVEREI
+116,1610 : 366
+463,795 : Search fashion channels...
+262,940 : BUSINESS
+531,940 : CULTURE
+290,1079 : 10 Bold (1080p)
+290,1141 : Program unavailable
+288,1184 : SD
+288,1317 : 30A Luxe Life Discovered (...
+290,1379 : Program unavailable
+288,1422 : SD
+288,1555 : 36.6
+290,1617 : Program unavailable
+288,1660 : SD
+792,940 : LIFESTYLE
+861,1128 : WATCH
+861,1366 : WATCH
+861,1604 : WATCH

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+             xmlns:models="clr-namespace:MarkUptv.Models"
+             x:Class="MarkUptv.Pages.CommunityHubPage"
+             x:DataType="vm:CommunityHubViewModel"
+             Title="Community Hub"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource DeepVoid}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="18" Spacing="16">
+
+            <!-- HEADER -->
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+
+                <VerticalStackLayout Spacing="4" VerticalOptions="Center">
+                    <Label Text="Community Hub"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextLight}" />
+                    <Label Text="{Binding SummaryText}"
+                           FontSize="12"
+                           TextColor="{StaticResource TextMuted}" />
+                </VerticalStackLayout>
+
+                <Button Grid.Column="1"
+                        Text="Export records"
+                        Clicked="OnExportClicked"
+                        BackgroundColor="Transparent"
+                        BorderColor="{StaticResource Primary}"
+                        BorderWidth="1"
+                        TextColor="{StaticResource Primary}"
+                        FontSize="12.5"
+                        HeightRequest="42"
+                        VerticalOptions="Center" />
+
+            </Grid>
+
+            <Label Text="{Binding ExportPath}"
+                   IsVisible="{Binding HasExportPath}"
+                   FontSize="11"
+                   TextColor="{StaticResource TextMuted}" />
+
+            <!-- MATCH THREADS -->
+            <VerticalStackLayout Spacing="8">
+
+                <Label Text="MATCH THREADS"
+                       FontSize="11"
+                       FontAttributes="Bold"
+                       CharacterSpacing="1.4"
+                       TextColor="{StaticResource Primary}" />
+
+                <Label Text="Open a thread from the live player to post, react and reply with other supporters."
+                       FontSize="12"
+                       TextColor="{StaticResource TextMuted}" />
+
+                <Label Text="No threads yet - open one from the live player."
+                       IsVisible="{Binding HasNoThreads}"
+                       FontSize="12.5"
+                       TextColor="{StaticResource TextMuted}" />
+
+                <VerticalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Threads}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:MatchThread">
+                            <Border Padding="14,12"
+                                    BackgroundColor="{StaticResource NightPanel}"
+                                    Stroke="{StaticResource GlassStroke}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 14">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnThreadTapped" />
+                                </Border.GestureRecognizers>
+                                <VerticalStackLayout Spacing="3">
+                                    <Label Text="{Binding Title}"
+                                           FontSize="14.5"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource TextLight}" />
+                                    <Label Text="{Binding Subtitle}"
+                                           FontSize="11.5"
+                                           TextColor="{StaticResource TextMuted}" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+
+            <!-- FOLLOWED TEAMS -->
+            <VerticalStackLayout Spacing="8">
+
+                <Label Text="FOLLOWED TEAMS"
+                       FontSize="11"
+                       FontAttributes="Bold"
+                       CharacterSpacing="1.4"
+                       TextColor="{StaticResource Primary}" />
+
+                <Label Text="Follow a team from any match thread to highlight its fixtures."
+                       IsVisible="{Binding HasNoFollows}"
+                       FontSize="12.5"
+                       TextColor="{StaticResource TextMuted}" />
+
+                <HorizontalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding FollowedTeams}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <Border Padding="12,6"
+                                    BackgroundColor="#1AE8B54A"
+                                    Stroke="#44E8B54A"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 20">
+                                <HorizontalStackLayout Spacing="6">
+                                    <Label Text="{Binding .}"
+                                           FontSize="12.5"
+                                           TextColor="{StaticResource Primary}"
+                                           VerticalOptions="Center" />
+                                    <Button Text="✕"
+                                            Clicked="OnUnfollowClicked"
+                                            BackgroundColor="Transparent"
+                                            TextColor="{StaticResource Primary}"
+                                            FontSize="11"
+                                            HeightRequest="30"
+                                            WidthRequest="30"
+                                            Padding="0" />
+                                </HorizontalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+
+            <!-- MODERATION -->
+            <VerticalStackLayout Spacing="8">
+
+                <Label Text="MODERATION QUEUE"
+                       FontSize="11"
+                       FontAttributes="Bold"
+                       CharacterSpacing="1.4"
+                       TextColor="{StaticResource Primary}" />
+
+                <Label Text="{Binding ModerationText}"
+                       FontSize="12"
+                       TextColor="{StaticResource TextMuted}" />
+
+                <VerticalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Reports}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:CommunityReport">
+                            <Border Padding="14,12"
+                                    BackgroundColor="{StaticResource NightPanel}"
+                                    Stroke="{StaticResource GlassStroke}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 14">
+                                <VerticalStackLayout Spacing="6">
+
+                                    <HorizontalStackLayout Spacing="8">
+                                        <Label Text="{Binding Summary}"
+                                               FontSize="13"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource TextLight}" />
+                                        <Label Text="{Binding StatusLabel}"
+                                               FontSize="10"
+                                               TextColor="{StaticResource Primary}"
+                                               VerticalOptions="Center" />
+                                        <Label Text="{Binding TimeAgo}"
+                                               FontSize="10.5"
+                                               TextColor="{StaticResource TextMuted}"
+                                               VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+
+                                    <Label Text="{Binding TargetPreview}"
+                                           FontSize="12"
+                                           TextColor="{StaticResource TextMuted}" />
+
+                                    <HorizontalStackLayout Spacing="8" IsVisible="{Binding IsOpen}">
+                                        <Button Text="Uphold"
+                                                Clicked="OnUpholdClicked"
+                                                BackgroundColor="{StaticResource Primary}"
+                                                TextColor="{StaticResource PrimaryDarkText}"
+                                                FontSize="12"
+                                                HeightRequest="36" />
+                                        <Button Text="Dismiss"
+                                                Clicked="OnDismissClicked"
+                                                BackgroundColor="Transparent"
+                                                BorderColor="{StaticResource GlassStroke}"
+                                                BorderWidth="1"
+                                                TextColor="{StaticResource TextMuted}"
+                                                FontSize="12"
+                                                HeightRequest="36" />
+                                    </HorizontalStackLayout>
+
+                                    <Label Text="{Binding Resolution}"
+                                           FontSize="11"
+                                           TextColor="{StaticResource TextMuted}" />
+
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+
+            <!-- BLOCKED AUTHORS -->
+            <VerticalStackLayout Spacing="8">
+
+                <Label Text="BLOCKED AUTHORS"
+                       FontSize="11"
+                       FontAttributes="Bold"
+                       CharacterSpacing="1.4"
+                       TextColor="{StaticResource Primary}" />
+
+                <Label Text="No blocked authors."
+                       IsVisible="{Binding HasNoBlocks}"
+                       FontSize="12.5"
+                       TextColor="{StaticResource TextMuted}" />
+
+                <VerticalStackLayout Spacing="6" BindableLayout.ItemsSource="{Binding BlockedAuthors}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="{Binding .}"
+                                       FontSize="13"
+                                       TextColor="{StaticResource TextLight}"
+                                       VerticalOptions="Center" />
+                                <Button Grid.Column="1"
+                                        Text="Unblock"
+                                        Clicked="OnUnblockClicked"
+                                        BackgroundColor="Transparent"
+                                        BorderColor="{StaticResource GlassStroke}"
+                                        BorderWidth="1"
+                                        TextColor="{StaticResource TextMuted}"
+                                        FontSize="11.5"
+                                        HeightRequest="34" />
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+
+            <!-- ACTIVITY RECORDS -->
+            <VerticalStackLayout Spacing="8">
+
+                <Label Text="ACTIVITY RECORDS"
+                       FontSize="11"
+                       FontAttributes="Bold"
+                       CharacterSpacing="1.4"
+                       TextColor="{StaticResource Primary}" />
+
+                <Label Text="Every action is stored on this device and included in the export."
+                       FontSize="12"
+                       TextColor="{StaticResource TextMuted}" />
+
+                <VerticalStackLayout Spacing="2" BindableLayout.ItemsSource="{Binding Records}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:CommunityRecord">
+                            <Label Text="{Binding Line}"
+                                   FontSize="12"
+                                   TextColor="{StaticResource TextMuted}" />
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

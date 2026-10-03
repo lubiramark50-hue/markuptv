@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!--
+    DayPassCard — the paid product surface for films and the 18+ shelf.
+
+    One card, two states, decided by the server:
+      • locked  → price, what the pass covers, email + a pay button
+      • active  → a quiet "pass active" strip with a live countdown
+
+    Every figure shown here comes from the backend status payload, so the
+    app can never advertise a price the gateway will not charge.
+-->
+<ContentView
+    x:Class="MarkUptv.Controls.DayPassCard"
+    x:Name="Root"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:MarkUptv.Helpers">
+
+    <!--
+        No converter and no resource lookups here on purpose. This control is
+        constructed before it is attached to a page, so an early StaticResource
+        resolution can throw during construction and leave the host page blank.
+        The two mutually exclusive states are plain bool properties instead.
+    -->
+    <Border StrokeShape="RoundRectangle 22"
+            StrokeThickness="1"
+            Stroke="#33204F"
+            Padding="0">
+
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#1D0C2E" Offset="0.0" />
+                <GradientStop Color="#0B1226" Offset="1.0" />
+            </LinearGradientBrush>
+        </Border.Background>
+
+        <VerticalStackLayout Padding="20,18" Spacing="14">
+
+            <!-- ─── Title row ─── -->
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+
+                <Border Grid.Column="0"
+                        StrokeShape="RoundRectangle 10"
+                        StrokeThickness="0"
+                        Padding="10,5">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#FF006E" Offset="0.0" />
+                            <GradientStop Color="#8A2BE2" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Label Text="DAY PASS"
+                           FontSize="10"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           CharacterSpacing="1.2" />
+                </Border>
+
+                <Label Grid.Column="1"
+                       Text="Films + 18+"
+                       FontSize="14"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       VerticalOptions="Center" />
+
+                <Border Grid.Column="2"
+                        StrokeShape="RoundRectangle 10"
+                        StrokeThickness="1"
+                        Stroke="#2E4A6B"
+                        BackgroundColor="#12203A"
+                        Padding="10,5">
+                    <Label Text="{Binding DurationText, Source={x:Reference Root}}"
+                           FontSize="11"
+                           TextColor="#7FD4FF" />
+                </Border>
+
+            </Grid>
+
+            <!-- ─── Price ─── -->
+            <VerticalStackLayout Spacing="2">
+                <Label Text="{Binding PriceText, Source={x:Reference Root}}"
+                       FontSize="30"
+                       FontAttributes="Bold"
+                       TextColor="White" />
+                <Label Text="per day · nothing recurring, nothing hidden"
+                       FontSize="11"
+                       TextColor="#8E86A8" />
+            </VerticalStackLayout>
+
+            <!-- ─── What the pass covers ─── -->
+            <VerticalStackLayout Spacing="9">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <Label Grid.Column="0" Text="✓" FontSize="13" TextColor="#00E0A4" />
+                    <Label Grid.Column="1"
+                           Text="Every film — stream it or save it offline"
+                           FontSize="12"
+                           TextColor="#D6D0E6" />
+                </Grid>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <Label Grid.Column="0" Text="✓" FontSize="13" TextColor="#00E0A4" />
+                    <Label Grid.Column="1"
+                           Text="The 18+ channel shelf, unlocked"
+                           FontSize="12"
+                           TextColor="#D6D0E6" />
+                </Grid>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <Label Grid.Column="0" Text="✓" FontSize="13" TextColor="#00E0A4" />
+                    <Label Grid.Column="1"
+                           Text="Buying again while active adds another day"
+                           FontSize="12"
+                           TextColor="#D6D0E6" />
+                </Grid>
+            </VerticalStackLayout>
+
+            <!-- ─── Locked: checkout ─── -->
+            <VerticalStackLayout Spacing="10"
+                                 IsVisible="{Binding IsLocked, Source={x:Reference Root}}">
+
+                <Border StrokeShape="RoundRectangle 12"
+                        StrokeThickness="1"
+                        Stroke="#2A2A4A"
+                        BackgroundColor="#0E0F1E">
+                    <Entry Text="{Binding Email, Source={x:Reference Root}, Mode=TwoWay}"
+                           Placeholder="Email for the receipt"
+                           PlaceholderColor="#6E6790"
+                           TextColor="White"
+                           Keyboard="Email"
+                           FontSize="13"
+                           BackgroundColor="Transparent"
+                           Margin="6,0" />
+                </Border>
+
+                <Button Text="{Binding PayButtonText, Source={x:Reference Root}}"
+                        Command="{Binding PayCommand, Source={x:Reference Root}}"
+                        IsEnabled="{Binding IsNotBusy, Source={x:Reference Root}}"
+                        BackgroundColor="#FF006E"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="15"
+                        HeightRequest="52"
+                        CornerRadius="14" />
+
+                <ActivityIndicator IsRunning="{Binding IsBusy, Source={x:Reference Root}}"
+                                   IsVisible="{Binding IsBusy, Source={x:Reference Root}}"
+                                   Color="#FF006E" />
+
+                <Label Text="{Binding Message, Source={x:Reference Root}}"
+                       IsVisible="{Binding HasMessage, Source={x:Reference Root}}"
+                       FontSize="11"
+                       TextColor="#FF8FB1" />
+            </VerticalStackLayout>
+
+            <!-- ─── Active: quiet confirmation ─── -->
+            <Border IsVisible="{Binding IsActive, Source={x:Reference Root}}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    BackgroundColor="#12291F"
+                    Padding="14,12">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <Label Grid.Column="0" Text="✓" FontSize="16" TextColor="#00E0A4" />
+                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                        <Label Text="Pass active"
+                               FontSize="13"
+                               FontAttributes="Bold"
+                               TextColor="#9BFFD9" />
+                        <Label Text="{Binding ExpiryText, Source={x:Reference Root}}"
+                               FontSize="11"
+                               TextColor="#6FD9B4" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+        </VerticalStackLayout>
+    </Border>
+
+</ContentView>

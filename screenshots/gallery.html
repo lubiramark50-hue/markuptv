@@ -1,0 +1,462 @@
+﻿<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MarkUpTV page gallery</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 26px; background: #070912; color: #EEF3FB;
+         font: 14px/1.5 "Segoe UI", system-ui, sans-serif; }
+  h1 { margin: 0 0 4px; font-size: 24px; letter-spacing: .4px; }
+  .sub { color: #93A0BF; margin-bottom: 22px; }
+  .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  .card { background: #0F1322; border: 1px solid #232A42; border-radius: 16px; overflow: hidden;
+          display: flex; flex-direction: column; }
+  .shot { background: #05060F; text-align: center; }
+  .shot img { width: 100%; max-height: 460px; object-fit: contain; display: block; }
+  .meta { padding: 12px 14px 14px; }
+  .title { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .title h2 { margin: 0; font-size: 15px; }
+  .dead { font-size: 12px; color: #E8B54A; white-space: nowrap; }
+  .dead.bad { color: #FF4D8D; }
+  .bands { margin: 6px 0 0; font-size: 11.5px; color: #93A0BF; }
+  .ocr { margin: 10px 0 0; padding: 9px 10px; background: #0A0E1A; border: 1px solid #1D2438;
+         border-radius: 10px; font: 11.5px/1.45 Consolas, ui-monospace, monospace; color: #B9C4DE;
+         max-height: 150px; overflow: auto; white-space: pre-wrap; }
+</style>
+</head><body>
+<h1>MarkUpTV &mdash; every page</h1>
+<div class='sub'>21 captures from the Pixel 7 emulator. â€œDeadâ€ is the share of the screen height that is a flat, empty band - the measurable form of an unbalanced page.</div>
+<div class='grid'>
+<div class="card">
+  <div class='shot'><img src='tour/CartoonPage.png' alt='CartoonPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>CartoonPage</h2><span class='dead'>dead 21%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=0 (138px), y=2148 (216px)</div>
+    <pre class='ocr'>CARTOONS
+CARTOON STANDBY
+Choose a cartoon and start the ...
+O STANDBY
+Pick your next adventure
+Tap any cartoon card to begin watching.
+Choose your cartoon
+Live channels and shows for every mood
+Search channels or programmes...</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/CommunityHubPage.png' alt='CommunityHubPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>CommunityHubPage</h2><span class='dead bad'>dead 64.5%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (114px), y=624 (72px), y=792 (72px), y=1452 (912px)</div>
+    <pre class='ocr'>4:35
+Community Hub
+0 followed teams  0 match threads  0
+recorded actions
+MATCH THREADS
+Export records
+Open a thread from the live player to post, react and reply with
+other supporters.
+No threads yet - open one from the live player.
+FOLLOWED TEAMS
+Follow a team from any match thread to highlight its fixtures.
+MODERATION QUEUE
+No open reports.
+MarkUptv isn&#39;t responding</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/DiscoveryPage.png' alt='DiscoveryPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>DiscoveryPage</h2><span class='dead bad'>dead 38.2%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (132px), y=258 (72px), y=1452 (90px), y=1674 (108px), y=1914 (102px), y=2142 (222px)</div>
+    <pre class='ocr'>5:21
+SELECT A DISCOVERY CHANNEL
+DISCOVERY
+Ex lore new and trendin channels.
+o SYNC
+ALL
+Search discovery channels..
+BUSINESS
+DOCUMENTARY
+CULTURE
+MarkUptv isn&#39;t responding
+X
+Close app
+Wait</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/DonationPage.png' alt='DonationPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>DonationPage</h2><span class='dead bad'>dead 63.5%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (102px), y=246 (348px), y=822 (108px), y=1452 (108px), y=1590 (174px), y=1896 (468px)</div>
+    <pre class='ocr'>4:36
+Donate to MarkUp
+Support MarkUp
+Your donation helps us keep the channels free for
+everyone.
+Amount (UGX)
+MarkUptv isn&#39;t responding
+X
+Close app
+Wait
+Last Name
+Donate Now</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/EuropeanSportsPage.png' alt='EuropeanSportsPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>EuropeanSportsPage</h2><span class='dead'>dead 28%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (96px), y=2148 (216px)</div>
+    <pre class='ocr'>SELECT A EUROPEAN FOOTBALL
+CHANNEL
+EUROPEAN FOOTBALL
+Free-to-air channels carrying European football - pick one
+o start streamin .
+Search sports or channels...
+ALL
+arena
+2
+sport
+SPORT
+SPORTS
+Arena Sport 2
+European football - free to air</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/FashionPage.png' alt='FashionPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>FashionPage</h2><span class='dead'>dead 25%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (96px), y=2148 (216px)</div>
+    <pre class='ocr'>5:22
+SELECT A FASHION CHANNEL
+FASHION
+Select a channel to ex lore fashion and st le.
+o SYNC
+ALL
+BUSINESS
+CULTURE
+MarkUptv isn&#39;t responding
+X
+366
+rr Order
+Close app
+Wait</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/FootballPage.png' alt='FootballPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>FootballPage</h2><span class='dead'>dead 28%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (96px), y=1758 (96px), y=2154 (210px)</div>
+    <pre class='ocr'>4:06
+FOOTBALL
+O O FIXTURES
+Live scores and broadcasts from every league
+STANDBY
+Select a football channel
+MarkUptv isn&#39;t responding
+O
+X
+ALL
+PARM,
+ACCDN
+Close app
+Wait</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/GospelPage.png' alt='GospelPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>GospelPage</h2><span class='dead'>dead 27.5%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (90px), y=2148 (216px)</div>
+    <pre class='ocr'>SELECT A GOSPEL CHANNEL
+GOSPEL
+Select a channel to start worshi
+Search gospel channels...
+o SYNC
+ALL
+15-1
+ANIMATION
+CULTURE
+15.1 BPB (720p)
+Program unavailable
+SD
+3ABN Canada (720p)
+Program unavailable</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/Lifestyle.png' alt='Lifestyle' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>Lifestyle</h2><span class='dead'>dead 27.2%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (96px), y=2148 (216px)</div>
+    <pre class='ocr'>SELECT A LIFESTYLE CHANNEL
+LIFESTYLE
+Select a channel to erio lifest le content.
+o SYNC
+ALL
+o red
+Search lifestyle channels...
+ANIMATION
+CLASSIC
+.black (576p)
+Program unavailable
+SD
+.red HD (1080p)
+Program unavailable</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/LocalPage.png' alt='LocalPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>LocalPage</h2><span class='dead'>dead 24.5%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (84px), y=2160 (204px)</div>
+    <pre class='ocr'>Select a local channel
+S
+Discover local from Local
+Load
+a
+Find local channels...
+All
+Porno Auto
+18+ POCKOWHblV1 5
+SD
+18+Private 41
+14
+SD
+19</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/MainPage.png' alt='MainPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>MainPage</h2><span class='dead bad'>dead 36.2%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (186px), y=528 (72px), y=1452 (102px), y=2028 (180px)</div>
+    <pre class='ocr'>4:53
+GOOD AFTERNOON FROM
+MAR KU PTV
+Welcome to
+MarklJpTV
+ Sunday, September 20
+LOCAL TIME
+Search channels, news, movies and more..
+Explore the universe
+Jump directly into your favourite section.
+MarkUptv isn&#39;t responding
+X
+News
+Close app</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/MoviesPage.png' alt='MoviesPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>MoviesPage</h2><span class='dead bad'>dead 36%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (186px), y=2028 (180px)</div>
+    <pre class='ocr'>5:03
+GOOD EVENING FROM MARKUPTV
+Welcome to
+MarklJpTV
+ Sunday, September 20
+LOCAL TIME
+Search channels, news, movies and more..
+Explore the universe
+Jump directly into your favourite section.
+Sports
+MarkUptv isn&#39;t responding
+X
+News
+Close app</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/MusicPage.png' alt='MusicPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>MusicPage</h2><span class='dead'>dead 29.5%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (90px), y=2148 (216px)</div>
+    <pre class='ocr'>SELECT A DISCOVERY CHANNEL
+DISCOVERY
+Ex lore new and trendin channels.
+Search discovery channels...
+ALL
+international
+MAPACDOH
+YKPATHA
+PORNO
+1
+SD
+AUTO
+1+1 International HD (720p)
+SD</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/NewsPage.png' alt='NewsPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>NewsPage</h2><span class='dead'>dead 17.2%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=0 (186px)</div>
+    <pre class='ocr'>LIVE NEWS
+ LIVE
+O
+Breaking stories and global live channels
+STANDBY
+Select a live news channel
+Search news channels...
+ALL
+NEWS
+Home
+BUSINESS
+CLASSIC
+.24 (1080p)
+Live coverage - 24/7</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/RecentlyWatchedPage.png' alt='RecentlyWatchedPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>RecentlyWatchedPage</h2><span class='dead bad'>dead 43%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (240px), y=1452 (72px), y=1650 (114px), y=1896 (108px), y=2136 (228px)</div>
+    <pre class='ocr'>4:35
+WATCH HISTORY
+Select a channel from our histor to resume.
+Search history..
+MarkUptv isn&#39;t responding
+X
+Sa-OR
+Close app
+Wait
+A spor SD (1080p)
+Program unavailable
+SD
+ACI sport SD (1080p)
+Program unavailable</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/ReligiousTvPage.png' alt='ReligiousTvPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>ReligiousTvPage</h2><span class='dead'>dead 28.2%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (90px), y=2118 (246px)</div>
+    <pre class='ocr'>SELECT A RELIGIOUS CHANNEL
+RELIGIOUS TV
+Select a channel fors iritual content.
+o SYNC
+ALL
+Search religious channels...
+ANIMATION
+CULTURE
+Program unavailable
+SD
+3ABN Proclaim! Network
+Program unavailable
+SD
+3ABN Russia (720p)</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/SearchPage.png' alt='SearchPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>SearchPage</h2><span class='dead bad'>dead 46%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (96px), y=840 (126px), y=1830 (534px)</div>
+    <pre class='ocr'>4:36
+Search MarkUpTV
+Find channels, stories, films, images and trusted websites
+Search MarkUpTV and the web x
+Images 0
+Videos 0
+Articles 0
+Top results
+Search channels, movies, music, news, images and the web.
+MarkUptv isn&#39;t responding
+X
+Close app
+Wait
+Find your next favourite</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/SocialPage.png' alt='SocialPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>SocialPage</h2><span class='dead bad'>dead 65%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (198px), y=540 (216px), y=1452 (912px)</div>
+    <pre class='ocr'>4:34
+Community
+0 viewers online
+All
+Sports
+No posts yet. Be the first to share!
+MarkUptv isn&#39;t responding
+X
+Close app
+Wait</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/SportsPage.png' alt='SportsPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>SportsPage</h2><span class='dead bad'>dead 36.2%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (186px), y=528 (72px), y=1452 (102px), y=2028 (180px)</div>
+    <pre class='ocr'>4:58
+GOOD AFTERNOON FROM
+MAR KU PTV
+Welcome to
+MarklJpTV
+ Sunday, September 20
+LOCAL TIME
+Search channels, news, movies and more..
+Explore the universe
+Jump directly into your favourite section.
+MarkUptv isn&#39;t responding
+X
+News
+Close app</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/WildlifePage.png' alt='WildlifePage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>WildlifePage</h2><span class='dead'>dead 25.8%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (84px), y=2160 (204px)</div>
+    <pre class='ocr'>National Geographic Wild (Czech
+Republic)
+o SYNC
+Find wildlife...
+All Auto Documentary Education
+INWILD (1080p)
+Wildlife and nature - live
+SD
+Entertainment
+-J
+.IIONAL
+HIC
+G
+.IIONAL</pre>
+  </div>
+</div>
+<div class="card">
+  <div class='shot'><img src='tour/WorldChannelsPage.png' alt='WorldChannelsPage' loading='lazy'></div>
+  <div class="meta">
+    <div class='title'><h2>WorldChannelsPage</h2><span class='dead bad'>dead 51.8%</span></div>
+    <div class='bands'>1080x2400 &middot; dead bands: y=90 (114px), y=372 (84px), y=486 (78px), y=588 (90px), y=768 (72px), y=1872 (120px), y=2076 (288px)</div>
+    <pre class='ocr'>4:33
+World Channels
+Free, official sports broadcasters by
+country. Nothing paid, nothing pirated.
+Playback self-test
+Search country, channel, language or league
+28 free sources from 18 countries  official and free to watch
+Africa / Global
+1 free source
+CAFW
+Confederation of African
+Football (official)
+Opens official free player
+MarkUptv isn&#39;t responding</pre>
+  </div>
+</div>
+</div></body></html>
+

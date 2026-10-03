@@ -1,0 +1,945 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="MarkUptv.Pages.SearchPage"
+    x:Name="PageRoot"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:MarkUptv.Helpers"
+    xmlns:models="clr-namespace:MarkUptv.Models"
+    xmlns:pages="clr-namespace:MarkUptv.Pages"
+    xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+    x:DataType="vm:SearchViewModel"
+    Title="Search"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+
+        <Color x:Key="DeepSky">#060816</Color>
+        <Color x:Key="DiamondGold">#FFD95A</Color>
+        <Color x:Key="DiamondBlue">#54B7FF</Color>
+        <Color x:Key="DiamondPurple">#8057FF</Color>
+        <Color x:Key="DiamondPink">#FF3E91</Color>
+        <Color x:Key="MutedText">#9BA5C6</Color>
+
+        <LinearGradientBrush
+            x:Key="SearchPageBackground"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop Color="#050714" Offset="0" />
+            <GradientStop Color="#11153A" Offset="0.48" />
+            <GradientStop Color="#28113C" Offset="1" />
+
+        </LinearGradientBrush>
+
+        <LinearGradientBrush
+            x:Key="SearchHeroBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop Color="#152456" Offset="0" />
+            <GradientStop Color="#482E91" Offset="0.55" />
+            <GradientStop Color="#852D73" Offset="1" />
+
+        </LinearGradientBrush>
+
+        <LinearGradientBrush
+            x:Key="DiamondBrandBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop Color="#2BD8FF" Offset="0" />
+            <GradientStop Color="#8057FF" Offset="0.5" />
+            <GradientStop Color="#FF3E91" Offset="1" />
+
+        </LinearGradientBrush>
+
+        <LinearGradientBrush
+            x:Key="ResultImageBrush"
+            StartPoint="0,0"
+            EndPoint="1,1">
+
+            <GradientStop Color="#223477" Offset="0" />
+            <GradientStop Color="#553795" Offset="0.55" />
+            <GradientStop Color="#A7357F" Offset="1" />
+
+        </LinearGradientBrush>
+
+        <Style
+            x:Key="SearchTabButtonStyle"
+            TargetType="Button">
+
+            <Setter Property="HeightRequest" Value="42" />
+            <Setter Property="MinimumWidthRequest" Value="84" />
+            <Setter Property="Padding" Value="15,0" />
+            <Setter Property="CornerRadius" Value="15" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="BackgroundColor" Value="#16FFFFFF" />
+            <Setter Property="TextColor" Value="{StaticResource MutedText}" />
+            <Setter Property="BorderColor" Value="#24FFFFFF" />
+            <Setter Property="BorderWidth" Value="1" />
+
+        </Style>
+
+        <Style
+            x:Key="SearchResultCardStyle"
+            TargetType="Border">
+
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="BackgroundColor" Value="#D9121732" />
+            <Setter Property="Stroke" Value="#30FFFFFF" />
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 20" />
+
+            <Setter Property="VisualStateManager.VisualStateGroups">
+
+                <VisualStateGroupList>
+
+                    <VisualStateGroup x:Name="CommonStates">
+
+                        <VisualState x:Name="Normal" />
+
+                        <VisualState x:Name="PointerOver">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource DiamondBlue}" />
+
+                                <Setter
+                                    Property="BackgroundColor"
+                                    Value="#F2182144" />
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="1.008" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                        <VisualState x:Name="Focused">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource DiamondGold}" />
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="1.01" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                    </VisualStateGroup>
+
+                </VisualStateGroupList>
+
+            </Setter>
+
+        </Style>
+
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <StaticResource Key="SearchPageBackground" />
+    </ContentPage.Background>
+
+    <Grid
+        RowDefinitions="Auto,Auto,Auto,*"
+        RowSpacing="12"
+        Padding="{OnIdiom Phone='12,18,12,10',
+                          Tablet='18,22,18,12',
+                          Desktop='24,22,24,14',
+                          TV='36,30,36,20'}">
+
+        <Label
+            x:Name="FloatingDiamondOne"
+            Grid.RowSpan="4"
+            Text="◆"
+            FontSize="95"
+            TextColor="#0D2BD8FF"
+            Margin="-30,65,0,0"
+            HorizontalOptions="Start"
+            VerticalOptions="Start"
+            InputTransparent="True" />
+
+        <Label
+            x:Name="FloatingDiamondTwo"
+            Grid.RowSpan="4"
+            Text="◇"
+            FontSize="110"
+            TextColor="#0EFF3E91"
+            Margin="0,0,-40,70"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            InputTransparent="True" />
+
+        <!-- Header -->
+
+        <Grid
+            x:Name="HeaderPanel"
+            Grid.Row="0"
+            ColumnDefinitions="Auto,*,Auto"
+            ColumnSpacing="11"
+            MaximumWidthRequest="1180"
+            HorizontalOptions="Center">
+
+            <Button
+                Text="←"
+                Command="{Binding GoBackCommand}"
+                Clicked="OnAnimatedButtonClicked"
+                WidthRequest="46"
+                HeightRequest="46"
+                Padding="0"
+                CornerRadius="15"
+                FontSize="22"
+                BackgroundColor="#16FFFFFF"
+                BorderColor="#2AFFFFFF"
+                BorderWidth="1"
+                TextColor="White" />
+
+            <VerticalStackLayout
+                Grid.Column="1"
+                Spacing="0"
+                VerticalOptions="Center">
+
+                <Label
+                    Text="Search MarkUpTV"
+                    FontSize="{OnIdiom Phone=21,
+                                       Tablet=24,
+                                       Desktop=25,
+                                       TV=31}"
+                    FontAttributes="Bold"
+                    TextColor="White" />
+
+                <Label
+                    Text="Find channels, stories, films, images and trusted websites"
+                    FontSize="10"
+                    TextColor="{StaticResource MutedText}"
+                    MaxLines="1"
+                    LineBreakMode="TailTruncation" />
+
+            </VerticalStackLayout>
+
+            <Border
+                x:Name="HeaderDiamond"
+                Grid.Column="2"
+                WidthRequest="47"
+                HeightRequest="47"
+                Background="{StaticResource DiamondBrandBrush}"
+                Stroke="#70FFFFFF"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 16">
+
+                <Label
+                    Text="◆"
+                    FontSize="24"
+                    TextColor="White"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+
+            </Border>
+
+        </Grid>
+
+        <!-- Search field -->
+
+        <Border
+            x:Name="SearchPanel"
+            Grid.Row="1"
+            Padding="{OnIdiom Phone=10,
+                              Tablet=13,
+                              Desktop=14,
+                              TV=18}"
+            MaximumWidthRequest="1180"
+            HorizontalOptions="Center"
+            Background="{StaticResource SearchHeroBrush}"
+            Stroke="#35FFFFFF"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 25">
+
+            <Border.Shadow>
+
+                <Shadow
+                    Brush="#85000000"
+                    Offset="0,8"
+                    Radius="18"
+                    Opacity="0.65" />
+
+            </Border.Shadow>
+
+            <Grid
+                RowDefinitions="Auto,Auto"
+                RowSpacing="9">
+
+                <Grid
+                    ColumnDefinitions="*,Auto"
+                    ColumnSpacing="9">
+
+                    <Border
+                        x:Name="SearchEntryBorder"
+                        HeightRequest="56"
+                        Padding="5,0,3,0"
+                        BackgroundColor="#E70A0E22"
+                        Stroke="#4CFFFFFF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 18">
+
+                        <Grid
+                            ColumnDefinitions="Auto,*,Auto">
+
+                            <Label
+                                Text="⌕"
+                                WidthRequest="44"
+                                FontSize="30"
+                                TextColor="{StaticResource DiamondBlue}"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center" />
+
+                            <Entry
+                                x:Name="SearchEntry"
+                                Grid.Column="1"
+                                Text="{Binding SearchText, Mode=TwoWay}"
+                                Placeholder="Search MarkUpTV and the web"
+                                PlaceholderColor="#7D86A7"
+                                TextColor="White"
+                                BackgroundColor="Transparent"
+                                FontSize="{OnIdiom Phone=13,
+                                                   Tablet=14,
+                                                   Desktop=15,
+                                                   TV=18}"
+                                ReturnType="Search"
+                                ReturnCommand="{Binding SearchCommand}"
+                                ClearButtonVisibility="Never"
+                                Focused="OnSearchEntryFocused"
+                                Unfocused="OnSearchEntryUnfocused"
+                                VerticalOptions="Center" />
+
+                            <Button
+                                Grid.Column="2"
+                                Text="×"
+                                Command="{Binding ClearSearchCommand}"
+                                Clicked="OnAnimatedButtonClicked"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                Padding="0"
+                                CornerRadius="12"
+                                FontSize="18"
+                                BackgroundColor="#12FFFFFF"
+                                TextColor="#C8CEE5"
+                                VerticalOptions="Center" />
+
+                        </Grid>
+
+                    </Border>
+
+                    <Button
+                        Grid.Column="1"
+                        Text="◆"
+                        Command="{Binding SearchCommand}"
+                        Clicked="OnAnimatedButtonClicked"
+                        WidthRequest="56"
+                        HeightRequest="56"
+                        Padding="0"
+                        CornerRadius="18"
+                        FontSize="21"
+                        BackgroundColor="{StaticResource DiamondPurple}"
+                        BorderColor="#70FFFFFF"
+                        BorderWidth="1"
+                        TextColor="White" />
+
+                </Grid>
+
+                <Border
+                    Grid.Row="1"
+                    Padding="12,8"
+                    BackgroundColor="#D8B51E4C"
+                    Stroke="#FFFFACC1"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 13"
+                    IsVisible="{Binding HasError}">
+
+                    <Grid
+                        ColumnDefinitions="Auto,*"
+                        ColumnSpacing="8">
+
+                        <Label
+                            Text="⚠"
+                            FontSize="18"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding ErrorMessage}"
+                            FontSize="12"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            MaxLines="2"
+                            LineBreakMode="WordWrap"
+                            VerticalOptions="Center" />
+
+                    </Grid>
+
+                </Border>
+
+            </Grid>
+
+        </Border>
+
+        <!-- Tabs and count -->
+
+        <Grid
+            x:Name="TabsPanel"
+            Grid.Row="2"
+            RowDefinitions="Auto,Auto"
+            RowSpacing="8"
+            MaximumWidthRequest="1180"
+            HorizontalOptions="Center">
+
+            <ScrollView
+                Orientation="Horizontal"
+                HorizontalScrollBarVisibility="Never">
+
+                <HorizontalStackLayout Spacing="7">
+
+                    <Button
+                        Text="{Binding AllCount, StringFormat='All  {0}'}"
+                        Style="{StaticResource SearchTabButtonStyle}"
+                        Command="{Binding SelectTabCommand}"
+                        CommandParameter="All"
+                        Clicked="OnAnimatedButtonClicked">
+
+                        <Button.Triggers>
+
+                            <DataTrigger
+                                TargetType="Button"
+                                Binding="{Binding IsAllSelected}"
+                                Value="True">
+
+                                <Setter Property="BackgroundColor"
+                                        Value="{StaticResource DiamondGold}" />
+
+                                <Setter Property="TextColor"
+                                        Value="{StaticResource DeepSky}" />
+
+                            </DataTrigger>
+
+                        </Button.Triggers>
+
+                    </Button>
+
+                    <Button
+                        Text="{Binding ImageCount, StringFormat='Images  {0}'}"
+                        Style="{StaticResource SearchTabButtonStyle}"
+                        Command="{Binding SelectTabCommand}"
+                        CommandParameter="Images"
+                        Clicked="OnAnimatedButtonClicked">
+
+                        <Button.Triggers>
+
+                            <DataTrigger
+                                TargetType="Button"
+                                Binding="{Binding IsImagesSelected}"
+                                Value="True">
+
+                                <Setter Property="BackgroundColor"
+                                        Value="{StaticResource DiamondBlue}" />
+
+                                <Setter Property="TextColor"
+                                        Value="{StaticResource DeepSky}" />
+
+                            </DataTrigger>
+
+                        </Button.Triggers>
+
+                    </Button>
+
+                    <Button
+                        Text="{Binding VideoCount, StringFormat='Videos  {0}'}"
+                        Style="{StaticResource SearchTabButtonStyle}"
+                        Command="{Binding SelectTabCommand}"
+                        CommandParameter="Videos"
+                        Clicked="OnAnimatedButtonClicked">
+
+                        <Button.Triggers>
+
+                            <DataTrigger
+                                TargetType="Button"
+                                Binding="{Binding IsVideosSelected}"
+                                Value="True">
+
+                                <Setter Property="BackgroundColor"
+                                        Value="{StaticResource DiamondPink}" />
+
+                                <Setter Property="TextColor"
+                                        Value="White" />
+
+                            </DataTrigger>
+
+                        </Button.Triggers>
+
+                    </Button>
+
+                    <Button
+                        Text="{Binding ArticleCount, StringFormat='Articles  {0}'}"
+                        Style="{StaticResource SearchTabButtonStyle}"
+                        Command="{Binding SelectTabCommand}"
+                        CommandParameter="Articles"
+                        Clicked="OnAnimatedButtonClicked">
+
+                        <Button.Triggers>
+
+                            <DataTrigger
+                                TargetType="Button"
+                                Binding="{Binding IsArticlesSelected}"
+                                Value="True">
+
+                                <Setter Property="BackgroundColor"
+                                        Value="{StaticResource DiamondPurple}" />
+
+                                <Setter Property="TextColor"
+                                        Value="White" />
+
+                            </DataTrigger>
+
+                        </Button.Triggers>
+
+                    </Button>
+
+                    <Button
+                        Text="{Binding WebCount, StringFormat='Web  {0}'}"
+                        Style="{StaticResource SearchTabButtonStyle}"
+                        Command="{Binding SelectTabCommand}"
+                        CommandParameter="Web"
+                        Clicked="OnAnimatedButtonClicked">
+
+                        <Button.Triggers>
+
+                            <DataTrigger
+                                TargetType="Button"
+                                Binding="{Binding IsWebSelected}"
+                                Value="True">
+
+                                <Setter Property="BackgroundColor"
+                                        Value="#54E58A" />
+
+                                <Setter Property="TextColor"
+                                        Value="{StaticResource DeepSky}" />
+
+                            </DataTrigger>
+
+                        </Button.Triggers>
+
+                    </Button>
+
+                </HorizontalStackLayout>
+
+            </ScrollView>
+
+            <Grid
+                Grid.Row="1"
+                ColumnDefinitions="*,Auto"
+                ColumnSpacing="8">
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Label
+                        Text="{Binding SelectedTabTitle}"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        TextColor="White" />
+
+                    <Label
+                        Text="{Binding SearchSummary}"
+                        FontSize="11"
+                        TextColor="{StaticResource MutedText}" />
+
+                </VerticalStackLayout>
+
+                <Border
+                    Grid.Column="1"
+                    Padding="10,5"
+                    BackgroundColor="#14FFFFFF"
+                    Stroke="#26FFFFFF"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 11"
+                    VerticalOptions="Center"
+                    IsVisible="{Binding HasSearched}">
+
+                    <HorizontalStackLayout Spacing="5">
+
+                        <Label
+                            Text="✦"
+                            TextColor="{StaticResource DiamondGold}" />
+
+                        <Label
+                            Text="{Binding ResultCount}"
+                            FontAttributes="Bold"
+                            TextColor="White" />
+
+                    </HorizontalStackLayout>
+
+                </Border>
+
+            </Grid>
+
+        </Grid>
+
+        <!-- Results -->
+
+        <Grid
+            x:Name="ResultsPanel"
+            Grid.Row="3"
+            MaximumWidthRequest="1180"
+            HorizontalOptions="Center"
+            VerticalOptions="Fill">
+
+            <CollectionView
+                x:Name="ResultsCollection"
+                ItemsSource="{Binding DisplayedResults}"
+                SelectionMode="None"
+                ItemSizingStrategy="MeasureAllItems"
+                VerticalOptions="Fill"
+                IsVisible="{Binding HasResults}">
+
+                <CollectionView.ItemsLayout>
+
+                    <LinearItemsLayout
+                        Orientation="Vertical"
+                        ItemSpacing="11" />
+
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+
+                    <DataTemplate x:DataType="models:SearchResult">
+
+                        <Border
+                            Style="{StaticResource SearchResultCardStyle}">
+
+                            <Border.Behaviors>
+                                <helpers:TapScaleBehavior/>
+                            </Border.Behaviors>
+                            <Border.GestureRecognizers>
+
+                                <TapGestureRecognizer
+                                    Tapped="OnResultTapped" />
+
+                            </Border.GestureRecognizers>
+
+                            <Grid
+                                RowDefinitions="Auto,Auto,Auto"
+                                RowSpacing="7">
+
+                                <!-- Google-style source line -->
+
+                                <Grid
+                                    ColumnDefinitions="*,Auto"
+                                    ColumnSpacing="10">
+
+                                    <HorizontalStackLayout
+                                        Spacing="7"
+                                        VerticalOptions="Center">
+
+                                        <Border
+                                            WidthRequest="28"
+                                            HeightRequest="28"
+                                            Background="{StaticResource DiamondBrandBrush}"
+                                            Stroke="#50FFFFFF"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 10">
+
+                                            <Label
+                                                Text="◆"
+                                                FontSize="12"
+                                                TextColor="White"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center" />
+
+                                        </Border>
+
+                                        <Label
+                                            Text="{Binding Url}"
+                                            FontSize="10"
+                                            TextColor="#80D7A2"
+                                            MaxLines="1"
+                                            LineBreakMode="MiddleTruncation"
+                                            VerticalOptions="Center" />
+
+                                    </HorizontalStackLayout>
+
+                                    <Border
+                                        Grid.Column="1"
+                                        Padding="8,4"
+                                        BackgroundColor="#14000000"
+                                        Stroke="#35FFFFFF"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 9">
+
+                                        <Label
+                                            Text="{Binding Type}"
+                                            FontSize="9"
+                                            FontAttributes="Bold"
+                                            TextTransform="Uppercase"
+                                            TextColor="{StaticResource DiamondGold}" />
+
+                                    </Border>
+
+                                </Grid>
+
+                                <!-- Title, description and image -->
+
+                                <Grid
+                                    Grid.Row="1"
+                                    ColumnDefinitions="*,Auto"
+                                    ColumnSpacing="14">
+
+                                    <VerticalStackLayout
+                                        Spacing="6"
+                                        VerticalOptions="Start">
+
+                                        <Label
+                                            Text="{Binding Title}"
+                                            FontSize="{OnIdiom Phone=17,
+                                                               Tablet=19,
+                                                               Desktop=20,
+                                                               TV=24}"
+                                            FontAttributes="Bold"
+                                            TextColor="{StaticResource DiamondBlue}"
+                                            MaxLines="2"
+                                            LineBreakMode="TailTruncation" />
+
+                                        <Label
+                                            Text="{Binding Description}"
+                                            FontSize="{OnIdiom Phone=12,
+                                                               Tablet=13,
+                                                               Desktop=13,
+                                                               TV=16}"
+                                            TextColor="#C4CAE0"
+                                            MaxLines="3"
+                                            LineBreakMode="TailTruncation" />
+
+                                    </VerticalStackLayout>
+
+                                    <Border
+                                        Grid.Column="1"
+                                        WidthRequest="{OnIdiom Phone=96,
+                                                              Tablet=120,
+                                                              Desktop=130,
+                                                              TV=170}"
+                                        HeightRequest="{OnIdiom Phone=78,
+                                                               Tablet=90,
+                                                               Desktop=96,
+                                                               TV=125}"
+                                        Background="{StaticResource ResultImageBrush}"
+                                        Stroke="#30FFFFFF"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 14"
+                                       >
+
+                                        <Grid InputTransparent="True">
+
+                                            <Label
+                                                Text="◆"
+                                                FontSize="34"
+                                                TextColor="#55FFFFFF"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center" />
+
+                                            <Image
+                                                Source="{Binding ThumbnailUrl}"
+                                                Aspect="AspectFill" />
+
+                                        </Grid>
+
+                                    </Border>
+
+                                </Grid>
+
+                                <HorizontalStackLayout
+                                    Grid.Row="2"
+                                    Spacing="6"
+                                    HorizontalOptions="Start">
+
+                                    <Label
+                                        Text="Open result"
+                                        FontSize="10"
+                                        FontAttributes="Bold"
+                                        TextColor="White" />
+
+                                    <Label
+                                        Text="›"
+                                        FontSize="16"
+                                        FontAttributes="Bold"
+                                        TextColor="{StaticResource DiamondGold}"
+                                        VerticalOptions="Center" />
+
+                                </HorizontalStackLayout>
+
+                            </Grid>
+
+                        </Border>
+
+                    </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+            <!-- Welcome -->
+
+            <Border
+                Padding="28"
+                MaximumWidthRequest="620"
+                BackgroundColor="#12FFFFFF"
+                Stroke="#2CFFFFFF"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 27"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                IsVisible="{Binding ShowWelcome}">
+
+                <VerticalStackLayout
+                    Spacing="10"
+                    HorizontalOptions="Center">
+
+                    <Border
+                        WidthRequest="93"
+                        HeightRequest="93"
+                        Background="{StaticResource DiamondBrandBrush}"
+                        Stroke="#80FFFFFF"
+                        StrokeThickness="2"
+                        StrokeShape="RoundRectangle 31">
+
+                        <Label
+                            Text="◆"
+                            FontSize="48"
+                            TextColor="White"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
+
+                    </Border>
+
+                    <Label
+                        Text="Find your next favourite"
+                        FontSize="23"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        HorizontalTextAlignment="Center" />
+
+                    <Label
+                        Text="Search live television, films, news, music, images and trusted websites."
+                        FontSize="13"
+                        TextColor="{StaticResource MutedText}"
+                        HorizontalTextAlignment="Center"
+                        MaximumWidthRequest="480" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- Empty -->
+
+            <Border
+                Padding="28"
+                MaximumWidthRequest="600"
+                BackgroundColor="#12FFFFFF"
+                Stroke="#2CFFFFFF"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 25"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                IsVisible="{Binding IsEmpty}">
+
+                <VerticalStackLayout
+                    Spacing="9"
+                    HorizontalOptions="Center">
+
+                    <Label
+                        Text="◇"
+                        FontSize="67"
+                        TextColor="{StaticResource DiamondPurple}" />
+
+                    <Label
+                        Text="No matching diamonds"
+                        FontSize="21"
+                        FontAttributes="Bold"
+                        TextColor="White" />
+
+                    <Label
+                        Text="{Binding EmptyMessage}"
+                        FontSize="13"
+                        TextColor="{StaticResource MutedText}"
+                        HorizontalTextAlignment="Center" />
+
+                    <Button
+                        Text="Clear search"
+                        Command="{Binding ClearSearchCommand}"
+                        Clicked="OnAnimatedButtonClicked"
+                        HeightRequest="43"
+                        Padding="20,0"
+                        CornerRadius="14"
+                        BackgroundColor="{StaticResource DiamondPurple}"
+                        TextColor="White"
+                        FontAttributes="Bold" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- Loading -->
+
+            <Border
+                Padding="18,13"
+                BackgroundColor="#ED10162E"
+                Stroke="#45FFFFFF"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 17"
+                HorizontalOptions="Center"
+                VerticalOptions="Start"
+                Margin="0,18,0,0"
+                IsVisible="{Binding IsLoading}"
+                ZIndex="30">
+
+                <HorizontalStackLayout Spacing="11">
+
+                    <ActivityIndicator
+                        WidthRequest="35"
+                        HeightRequest="35"
+                        IsRunning="{Binding IsLoading}"
+                        Color="{StaticResource DiamondGold}" />
+
+                    <VerticalStackLayout
+                        Spacing="1"
+                        VerticalOptions="Center">
+
+                        <Label
+                            Text="Searching MarkUpTV"
+                            FontSize="13"
+                            FontAttributes="Bold"
+                            TextColor="White" />
+
+                        <Label
+                            Text="Collecting the strongest matching results..."
+                            FontSize="10"
+                            TextColor="{StaticResource MutedText}" />
+
+                    </VerticalStackLayout>
+
+                </HorizontalStackLayout>
+
+            </Border>
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

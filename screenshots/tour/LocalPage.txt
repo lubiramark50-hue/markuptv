@@ -1,0 +1,29 @@
+302,220 : Select a local channel
+144,575 : Pick a local channel to start watching
+146,663 : National and regional broadcasters, free to watch.
+138,792 : Load
+56,910 : All Auto
+435,792 : Find local channels...
+304,910 : Outdoor
+504,914 : Sports CRIME
+837,910 : Culture
+114,1274 : M
+95,1668 : IT
+207,1034 : 1+1 International HD (720p)
+207,1088 : Program unavailable
+205,1126 : SD
+207,1231 : 1+1 Marafon (1080p)
+207,1284 : Program unavailable
+205,1322 : SD
+207,1428 : 1+1 Ukraina (1080p)
+207,1482 : Program unavailable
+205,1520 : SD
+207,1625 : 111 IV(720p)
+207,1678 : Program unavailable
+205,1716 : SD
+207,1822 : 123 Go Spanish (AR)
+207,1876 : Program unavailable
+205,1914 : SD
+207,2019 : 123 Go Spanish (CL)
+207,2072 : Program unavailable
+205,2110 : SD

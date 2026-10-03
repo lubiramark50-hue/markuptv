@@ -1,0 +1,39 @@
+
+
+=== TEST: soak ===
+MarkUpTV self-check
+started (UTC): 2026-10-03T16:47:27.8087414Z
+app data: C:\Users\hp\AppData\Local\User Name\com.markup.markuptv\Data
+
+-- packaged catalogue --
+PASS  catalogue asset is packaged and readable - 30 sources, 12 league notes
+PASS  world channels available - 28 entries
+
+-- live probing (real network) --
+    diagnostic-apple-hls: verified=True latency=1543 ms reason=ok
+    diagnostic-mux-hls: verified=True latency=703 ms reason=ok
+PASS  self-test streams resolve and probe live - 2 verified
+
+-- fixture resolution --
+PASS  fixture resolves to a plan - 2 playable sources
+    fifa-plus-youtube: mode=embed region=Worldwide
+    citizen-tv-kenya: mode=embed region=Kenya / East Africa (free live news and sport channel)
+    fifa-plus: mode=browse region=Worldwide (a small number of fixtures are region-limited)
+    uefa-tv: mode=browse region=Worldwide for free content
+    livescore-free-epg: mode=browse region=Worldwide
+
+-- failover behaviour --
+PASS  dead source flagged with a reason - reason=unreachable
+PASS  a working source is played instead - first=diagnostic-apple-hls
+
+RESULT: 6 passed, 0 failed
+
+
+=== TEST: community ===
+NO REPORT GENERATED
+
+=== TEST: assistant ===
+NO REPORT GENERATED
+
+=== TEST: soaknav ===
+NO REPORT GENERATED

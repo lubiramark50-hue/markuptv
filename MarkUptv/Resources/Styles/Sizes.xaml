@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Adaptive size tokens.
+
+    One place that answers "how big should this be?", so pages stop hard-coding
+    pixels that only fit the screen they were designed on. Values are per device
+    class and scale up as the viewport grows:
+
+        Phone < Tablet < Desktop < TV
+
+    Pages should reference these instead of literals:
+        FontSize="{StaticResource FontTitle}"
+        Padding="{StaticResource SpaceLg}"
+        StrokeShape="RoundRectangle {StaticResource CardRadius}"
+
+    For values that must react to the *live* window (not just the device class),
+    use MarkUptv.Services.AdaptiveMetrics from code-behind.
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- ─── Spacing rhythm ─────────────────────────────────────────────── -->
+    <OnIdiom x:Key="SpaceXs" x:TypeArguments="x:Double" Phone="6" Tablet="8" Desktop="8" TV="10" />
+    <OnIdiom x:Key="SpaceSm" x:TypeArguments="x:Double" Phone="10" Tablet="12" Desktop="14" TV="18" />
+    <OnIdiom x:Key="SpaceMd" x:TypeArguments="x:Double" Phone="16" Tablet="20" Desktop="22" TV="26" />
+    <OnIdiom x:Key="SpaceLg" x:TypeArguments="x:Double" Phone="22" Tablet="28" Desktop="32" TV="38" />
+    <OnIdiom x:Key="SpaceXl" x:TypeArguments="x:Double" Phone="30" Tablet="38" Desktop="44" TV="52" />
+
+    <!-- Gap between cards in a rail or grid -->
+    <OnIdiom x:Key="Gutter" x:TypeArguments="x:Double" Phone="12" Tablet="16" Desktop="18" TV="22" />
+
+    <!-- Horizontal page gutter -->
+    <OnIdiom x:Key="PagePadding" x:TypeArguments="x:Double" Phone="16" Tablet="24" Desktop="28" TV="36" />
+    <OnIdiom x:Key="PagePaddingVertical" x:TypeArguments="x:Double" Phone="14" Tablet="18" Desktop="22" TV="26" />
+
+    <!-- Widest a readable column should get before it centres -->
+    <OnIdiom x:Key="ContentMaxWidth" x:TypeArguments="x:Double" Phone="4000" Tablet="720" Desktop="980" TV="1200" />
+
+    <!-- ─── Shape ──────────────────────────────────────────────────────── -->
+    <OnIdiom x:Key="CardRadius" x:TypeArguments="x:Double" Phone="16" Tablet="18" Desktop="20" TV="24" />
+    <OnIdiom x:Key="PanelRadius" x:TypeArguments="x:Double" Phone="20" Tablet="24" Desktop="26" TV="30" />
+    <OnIdiom x:Key="PillRadius" x:TypeArguments="x:Double" Phone="12" Tablet="14" Desktop="14" TV="16" />
+
+    <!-- Minimum touch/DPAD target -->
+    <OnIdiom x:Key="TouchTarget" x:TypeArguments="x:Double" Phone="44" Tablet="46" Desktop="44" TV="52" />
+
+    <!-- ─── Type ramp (modern, fluid) ──────────────────────────────────── -->
+    <OnIdiom x:Key="FontCaption" x:TypeArguments="x:Double" Phone="11" Tablet="12" Desktop="12" TV="14" />
+    <OnIdiom x:Key="FontBody" x:TypeArguments="x:Double" Phone="13" Tablet="14" Desktop="15" TV="17" />
+    <OnIdiom x:Key="FontSubtitle" x:TypeArguments="x:Double" Phone="15" Tablet="17" Desktop="18" TV="21" />
+    <OnIdiom x:Key="FontTitle" x:TypeArguments="x:Double" Phone="19" Tablet="21" Desktop="23" TV="27" />
+    <OnIdiom x:Key="FontDisplay" x:TypeArguments="x:Double" Phone="26" Tablet="30" Desktop="34" TV="40" />
+
+    <!-- ─── Media and card geometry ────────────────────────────────────── -->
+    <OnIdiom x:Key="PosterWidth" x:TypeArguments="x:Double" Phone="132" Tablet="152" Desktop="176" TV="208" />
+    <OnIdiom x:Key="PosterHeight" x:TypeArguments="x:Double" Phone="196" Tablet="226" Desktop="262" TV="310" />
+    <OnIdiom x:Key="ThumbSize" x:TypeArguments="x:Double" Phone="56" Tablet="62" Desktop="68" TV="80" />
+    <OnIdiom x:Key="HeroHeight" x:TypeArguments="x:Double" Phone="200" Tablet="240" Desktop="280" TV="330" />
+    <OnIdiom x:Key="CardMinWidth" x:TypeArguments="x:Double" Phone="148" Tablet="168" Desktop="188" TV="220" />
+
+</ResourceDictionary>

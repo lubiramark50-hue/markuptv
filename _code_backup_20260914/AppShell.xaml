@@ -1,0 +1,919 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Shell
+    x:Class="MarkUptv.AppShell"
+    x:Name="ShellRoot"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:MarkUptv.Pages"
+    xmlns:root="clr-namespace:MarkUptv"
+    xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+    x:DataType="vm:AppShellViewModel"
+    Title="MarkUpTV"
+    Shell.NavBarIsVisible="True"
+    Shell.TabBarIsVisible="True"
+    Shell.FlyoutBehavior="Flyout"
+    FlyoutIsPresented="{Binding IsFlyoutOpen, Mode=TwoWay}"
+    FlyoutBackgroundColor="{StaticResource DeepSpace}"
+    Shell.BackgroundColor="{StaticResource DeepSpace}"
+    Shell.ForegroundColor="{StaticResource DiamondWhite}"
+    Shell.TitleColor="{StaticResource DiamondGold}"
+    Shell.DisabledColor="{StaticResource TextMuted}"
+    Shell.TabBarBackgroundColor="{StaticResource DeepSpace}"
+    Shell.TabBarTitleColor="{StaticResource DiamondGold}"
+    Shell.TabBarUnselectedColor="{StaticResource TextMuted}">
+
+    <!-- =========================================================
+         RESOURCES
+         ========================================================= -->
+
+    <Shell.Resources>
+
+        <ResourceDictionary>
+
+            <!-- Galaxy palette -->
+
+            <Color x:Key="DeepSpace">#0B0E1A</Color>
+            <Color x:Key="MidnightBlue">#121728</Color>
+            <Color x:Key="RoyalGalaxy">#1A2138</Color>
+            <Color x:Key="NebulaPurple">#2BD9FF</Color>
+            <Color x:Key="AuroraBlue">#2BD9FF</Color>
+            <Color x:Key="CosmicPink">#FF4D8D</Color>
+            <Color x:Key="DiamondGold">#E8B54A</Color>
+            <Color x:Key="DiamondWhite">#EEF3FB</Color>
+            <Color x:Key="TextMuted">#8992B1</Color>
+            <Color x:Key="GlassBorder">#35FFFFFF</Color>
+            <Color x:Key="GlassSurface">#14FFFFFF</Color>
+
+            <!-- Sky gradients -->
+
+            <LinearGradientBrush
+                x:Key="DiamondSkyBrush"
+                StartPoint="0,0"
+                EndPoint="1,1">
+
+                <GradientStop
+                    Color="#101726"
+                    Offset="0" />
+
+                <GradientStop
+                    Color="#0F1D2E"
+                    Offset="0.46" />
+
+                <GradientStop
+                    Color="#0C2230"
+                    Offset="1" />
+
+            </LinearGradientBrush>
+
+            <LinearGradientBrush
+                x:Key="DiamondBrandBrush"
+                StartPoint="0,0"
+                EndPoint="1,1">
+
+                <GradientStop
+                    Color="#2BD9FF"
+                    Offset="0" />
+
+                <GradientStop
+                    Color="#2BD9FF"
+                    Offset="0.50" />
+
+                <GradientStop
+                    Color="#FF4D8D"
+                    Offset="1" />
+
+            </LinearGradientBrush>
+
+            <LinearGradientBrush
+                x:Key="DiamondGoldBrush"
+                StartPoint="0,0"
+                EndPoint="1,1">
+
+                <GradientStop
+                    Color="#F7D98C"
+                    Offset="0" />
+
+                <GradientStop
+                    Color="#E8B54A"
+                    Offset="0.52" />
+
+                <GradientStop
+                    Color="#C99230"
+                    Offset="1" />
+
+            </LinearGradientBrush>
+
+            <!-- Built-in Shell flyout item appearance -->
+
+            <Style
+                TargetType="Label"
+                Class="FlyoutItemLabelStyle">
+
+                <Setter
+                    Property="TextColor"
+                    Value="{StaticResource TextMuted}" />
+
+                <Setter
+                    Property="FontAttributes"
+                    Value="Bold" />
+
+                <Setter
+                    Property="FontSize"
+                    Value="15" />
+
+                <Setter
+                    Property="VerticalTextAlignment"
+                    Value="Center" />
+
+                <Setter
+                    Property="VisualStateManager.VisualStateGroups">
+
+                    <VisualStateGroupList>
+
+                        <VisualStateGroup
+                            x:Name="CommonStates">
+
+                            <VisualState
+                                x:Name="Normal" />
+
+                            <VisualState
+                                x:Name="Selected">
+
+                                <VisualState.Setters>
+
+                                    <Setter
+                                        Property="TextColor"
+                                        Value="{StaticResource DiamondGold}" />
+
+                                </VisualState.Setters>
+
+                            </VisualState>
+
+                            <VisualState
+                                x:Name="Focused">
+
+                                <VisualState.Setters>
+
+                                    <Setter
+                                        Property="TextColor"
+                                        Value="{StaticResource AuroraBlue}" />
+
+                                </VisualState.Setters>
+
+                            </VisualState>
+
+                        </VisualStateGroup>
+
+                    </VisualStateGroupList>
+
+                </Setter>
+
+            </Style>
+
+            <Style
+                TargetType="Image"
+                Class="FlyoutItemImageStyle">
+
+                <Setter
+                    Property="HeightRequest"
+                    Value="24" />
+
+                <Setter
+                    Property="WidthRequest"
+                    Value="24" />
+
+                <Setter
+                    Property="Aspect"
+                    Value="AspectFit" />
+
+                <Setter
+                    Property="HorizontalOptions"
+                    Value="Center" />
+
+                <Setter
+                    Property="VerticalOptions"
+                    Value="Center" />
+
+            </Style>
+
+            <Style
+                TargetType="Label"
+                Class="MenuItemLabelStyle">
+
+                <Setter
+                    Property="TextColor"
+                    Value="{StaticResource TextMuted}" />
+
+                <Setter
+                    Property="FontAttributes"
+                    Value="Bold" />
+
+                <Setter
+                    Property="FontSize"
+                    Value="14" />
+
+            </Style>
+
+            <Style
+                TargetType="Image"
+                Class="MenuItemImageStyle">
+
+                <Setter
+                    Property="HeightRequest"
+                    Value="22" />
+
+                <Setter
+                    Property="WidthRequest"
+                    Value="22" />
+
+            </Style>
+
+        </ResourceDictionary>
+
+    </Shell.Resources>
+
+    <!-- =========================================================
+         DIAMONDS-IN-THE-SKY HEADER
+         ========================================================= -->
+
+    <Shell.FlyoutHeader>
+
+        <Border
+            Margin="13,14,13,10"
+            Padding="0"
+            Background="{StaticResource DiamondSkyBrush}"
+            Stroke="{StaticResource GlassBorder}"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 28">
+
+            <Border.Shadow>
+
+                <Shadow
+                    Brush="#A0000000"
+                    Offset="0,10"
+                    Radius="22"
+                    Opacity="0.75" />
+
+            </Border.Shadow>
+
+            <Grid
+                Padding="19,18"
+                RowDefinitions="Auto,Auto,Auto"
+                RowSpacing="16"
+                IsClippedToBounds="True">
+
+                <!-- Galaxy glow -->
+
+                <Border
+                    x:Name="GalaxyHalo"
+                    Grid.RowSpan="3"
+                    WidthRequest="210"
+                    HeightRequest="210"
+                    Margin="-100,-110,0,0"
+                    BackgroundColor="#242BD9FF"
+                    Stroke="Transparent"
+                    StrokeShape="RoundRectangle 105"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Start"
+                    InputTransparent="True" />
+
+                <Border
+                    Grid.RowSpan="3"
+                    WidthRequest="170"
+                    HeightRequest="170"
+                    Margin="0,0,-90,-95"
+                    BackgroundColor="#20FF4D8D"
+                    Stroke="Transparent"
+                    StrokeShape="RoundRectangle 85"
+                    HorizontalOptions="End"
+                    VerticalOptions="End"
+                    InputTransparent="True" />
+
+                <!-- Animated sky diamonds -->
+
+                <Label
+                    x:Name="DiamondOne"
+                    Grid.RowSpan="3"
+                    Text="◆"
+                    FontSize="30"
+                    TextColor="{StaticResource AuroraBlue}"
+                    Opacity="0.82"
+                    Margin="0,4,11,0"
+                    HorizontalOptions="End"
+                    VerticalOptions="Start"
+                    InputTransparent="True" />
+
+                <Label
+                    x:Name="DiamondTwo"
+                    Grid.RowSpan="3"
+                    Text="◇"
+                    FontSize="21"
+                    TextColor="{StaticResource DiamondGold}"
+                    Opacity="0.84"
+                    Margin="12,90,0,0"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Start"
+                    InputTransparent="True" />
+
+                <Label
+                    x:Name="DiamondThree"
+                    Grid.RowSpan="3"
+                    Text="✦"
+                    FontSize="25"
+                    TextColor="{StaticResource DiamondWhite}"
+                    Opacity="0.66"
+                    Margin="0,0,18,12"
+                    HorizontalOptions="End"
+                    VerticalOptions="End"
+                    InputTransparent="True" />
+
+                <!-- Brand -->
+
+                <Grid
+                    Grid.Row="0"
+                    ColumnDefinitions="Auto,*"
+                    ColumnSpacing="12">
+
+                    <Border
+                        x:Name="BrandDiamond"
+                        Grid.Column="0"
+                        WidthRequest="58"
+                        HeightRequest="58"
+                        Padding="5"
+                        Background="{StaticResource DiamondBrandBrush}"
+                        Stroke="#70FFFFFF"
+                        StrokeThickness="2"
+                        StrokeShape="RoundRectangle 19">
+
+                        <Border.Shadow>
+
+                            <Shadow
+                                Brush="#802BD9FF"
+                                Offset="0,5"
+                                Radius="13"
+                                Opacity="0.70" />
+
+                        </Border.Shadow>
+
+                        <Grid>
+
+                            <Label
+                                Text="◆"
+                                FontSize="32"
+                                TextColor="White"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                Text="TV"
+                                FontSize="10"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource DeepSpace}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+
+                        </Grid>
+
+                    </Border>
+
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        Spacing="1"
+                        VerticalOptions="Center">
+
+                        <HorizontalStackLayout
+                            Spacing="5">
+
+                            <Label
+                                Text="MARKUP"
+                                FontSize="24"
+                                FontAttributes="Bold"
+                                CharacterSpacing="0.8"
+                                TextColor="White" />
+
+                            <Label
+                                Text="TV"
+                                FontSize="24"
+                                FontAttributes="Bold"
+                                CharacterSpacing="0.8"
+                                TextColor="{StaticResource DiamondGold}" />
+
+                        </HorizontalStackLayout>
+
+                        <Label
+                            Text="DIAMONDS IN THE STREAMING SKY"
+                            FontSize="9"
+                            FontAttributes="Bold"
+                            CharacterSpacing="1.4"
+                            TextColor="{StaticResource AuroraBlue}" />
+
+                        <Label
+                            Text="Global entertainment universe"
+                            FontSize="11"
+                            TextColor="#C7CDE5" />
+
+                    </VerticalStackLayout>
+
+                </Grid>
+
+                <!-- Search -->
+
+                <Border
+                    x:Name="SearchPanel"
+                    Grid.Row="1"
+                    HeightRequest="48"
+                    Padding="5,0,3,0"
+                    BackgroundColor="#D9151931"
+                    Stroke="#50FFFFFF"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 16">
+
+                    <Grid
+                        ColumnDefinitions="Auto,*,Auto"
+                        ColumnSpacing="2">
+
+                        <Label
+                            Grid.Column="0"
+                            Text="⌕"
+                            WidthRequest="38"
+                            FontSize="27"
+                            TextColor="{StaticResource AuroraBlue}"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center" />
+
+                        <Entry
+                            Grid.Column="1"
+                            Text="{Binding FlyoutSearchText}"
+                            Placeholder="Search the streaming universe..."
+                            PlaceholderColor="#76809F"
+                            TextColor="White"
+                            BackgroundColor="Transparent"
+                            FontSize="13"
+                            ReturnType="Search"
+                            ReturnCommand="{Binding ExecuteFlyoutSearchCommand}"
+                            ClearButtonVisibility="WhileEditing"
+                            VerticalOptions="Center" />
+
+                        <Button
+                            Grid.Column="2"
+                            Text="◆"
+                            Command="{Binding ExecuteFlyoutSearchCommand}"
+                            WidthRequest="39"
+                            HeightRequest="39"
+                            Padding="0"
+                            CornerRadius="13"
+                            FontSize="16"
+                            BackgroundColor="{StaticResource NebulaPurple}"
+                            TextColor="White"
+                            VerticalOptions="Center"
+                            SemanticProperties.Description="Search MarkUpTV" />
+
+                    </Grid>
+
+                </Border>
+
+                <!-- Status strip -->
+
+                <Grid
+                    Grid.Row="2"
+                    ColumnDefinitions="*,Auto"
+                    ColumnSpacing="10">
+
+                    <HorizontalStackLayout
+                        Grid.Column="0"
+                        Spacing="7">
+
+                        <Border
+                            x:Name="LiveStatusDot"
+                            WidthRequest="8"
+                            HeightRequest="8"
+                            BackgroundColor="#5CFF88"
+                            Stroke="White"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 4"
+                            VerticalOptions="Center" />
+
+                        <Label
+                            Text="LIVE NETWORK ONLINE"
+                            FontSize="9"
+                            FontAttributes="Bold"
+                            CharacterSpacing="1"
+                            TextColor="#BFC7E5"
+                            VerticalOptions="Center" />
+
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout
+                        Grid.Column="1"
+                        Spacing="6">
+
+                        <ActivityIndicator
+                            WidthRequest="18"
+                            HeightRequest="18"
+                            IsVisible="{Binding IsLoading}"
+                            IsRunning="{Binding IsLoading}"
+                            Color="{StaticResource DiamondGold}" />
+
+                        <Label
+                            Text="{Binding CurrentSectionTitle}"
+                            FontSize="10"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource DiamondGold}"
+                            VerticalOptions="Center" />
+
+                    </HorizontalStackLayout>
+
+                </Grid>
+
+            </Grid>
+
+        </Border>
+
+    </Shell.FlyoutHeader>
+
+    <!-- Footer -->
+
+    <Shell.FlyoutFooter>
+
+        <Border
+            Margin="13,8,13,16"
+            Padding="14,11"
+            BackgroundColor="#0FFFFFFF"
+            Stroke="#25FFFFFF"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 16">
+
+            <Grid
+                ColumnDefinitions="Auto,*,Auto"
+                ColumnSpacing="9">
+
+                <Label
+                    Grid.Column="0"
+                    Text="✦"
+                    FontSize="18"
+                    TextColor="{StaticResource DiamondGold}"
+                    VerticalOptions="Center" />
+
+                <VerticalStackLayout
+                    Grid.Column="1"
+                    Spacing="0">
+
+                    <Label
+                        Text="MarkUpTV Premium"
+                        FontSize="11"
+                        FontAttributes="Bold"
+                        TextColor="White" />
+
+                    <Label
+                        Text="Watch beyond the horizon"
+                        FontSize="9"
+                        TextColor="{StaticResource TextMuted}" />
+
+                </VerticalStackLayout>
+
+                <Label
+                    Grid.Column="2"
+                    Text="◆"
+                    FontSize="15"
+                    TextColor="{StaticResource AuroraBlue}"
+                    VerticalOptions="Center" />
+
+            </Grid>
+
+        </Border>
+
+    </Shell.FlyoutFooter>
+
+    <!-- =========================================================
+         HIDDEN ROOT PAGES
+         ========================================================= -->
+
+    <ShellContent
+        Route="LoadingPage"
+        ContentTemplate="{DataTemplate pages:LoadingPage}"
+        FlyoutItemIsVisible="False" />
+
+    <ShellContent
+        Route="PaymentRequiredPage"
+        ContentTemplate="{DataTemplate pages:PaymentRequiredPage}"
+        FlyoutItemIsVisible="False" />
+
+    <ShellContent
+        Route="SearchPage"
+        ContentTemplate="{DataTemplate pages:SearchPage}"
+        FlyoutItemIsVisible="False" />
+
+    <ShellContent
+        Route="PlayerPage"
+        ContentTemplate="{DataTemplate pages:PlayerPage}"
+        FlyoutItemIsVisible="False" />
+
+    <!-- =========================================================
+         MAIN TAB UNIVERSE
+         ========================================================= -->
+
+    <FlyoutItem
+        Title="Dashboard"
+        Icon="home.png"
+        FlyoutDisplayOptions="AsSingleItem">
+
+        <Tab
+            Title="Home"
+            Icon="home.png">
+
+            <ShellContent
+                Route="MainPage"
+                ContentTemplate="{DataTemplate root:MainPage}" />
+
+        </Tab>
+
+        <Tab
+            Title="Sports"
+            Icon="sports.png">
+
+            <ShellContent
+                Route="SportsPage"
+                ContentTemplate="{DataTemplate pages:Sports}" />
+
+        </Tab>
+
+        <Tab
+            Title="News"
+            Icon="news.png">
+
+            <ShellContent
+                Route="NewsPage"
+                ContentTemplate="{DataTemplate pages:News}" />
+
+        </Tab>
+
+        <Tab
+            Title="Movies"
+            Icon="movies.png">
+
+            <ShellContent
+                Route="MoviesPage"
+                ContentTemplate="{DataTemplate pages:MoviesPage}" />
+
+        </Tab>
+
+        <Tab
+            Title="Music"
+            Icon="music.png">
+
+            <ShellContent
+                Route="MusicPage"
+                ContentTemplate="{DataTemplate pages:MusicPage}" />
+
+        </Tab>
+
+    </FlyoutItem>
+
+    <!-- =========================================================
+         FEATURED FLYOUT DESTINATIONS
+         ========================================================= -->
+
+    <FlyoutItem
+        Title="Football"
+        Icon="football.png">
+
+        <ShellContent
+            Route="FootballPage"
+            ContentTemplate="{DataTemplate pages:FootballPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Community"
+        Icon="community.png">
+
+        <ShellContent
+            Route="SocialPage"
+            ContentTemplate="{DataTemplate pages:SocialPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Recently Watched"
+        Icon="recent.png">
+
+        <ShellContent
+            Route="RecentlyWatchedPage"
+            ContentTemplate="{DataTemplate pages:RecentlyWatchedPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Support"
+        Icon="support.png">
+
+        <ShellContent
+            Route="DonationPage"
+            ContentTemplate="{DataTemplate pages:DonationPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Cartoons"
+        Icon="cartoons.png">
+
+        <ShellContent
+            Route="CartoonPage"
+            ContentTemplate="{DataTemplate pages:Cartoonspage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Discovery"
+        Icon="discovery.png">
+
+        <ShellContent
+            Route="DiscoveryPage"
+            ContentTemplate="{DataTemplate pages:DiscoveryPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Fashion"
+        Icon="fashion.png">
+
+        <ShellContent
+            Route="FashionPage"
+            ContentTemplate="{DataTemplate pages:FashionPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Gospel"
+        Icon="gospel.png">
+
+        <ShellContent
+            Route="GospelPage"
+            ContentTemplate="{DataTemplate pages:GospelPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Lifestyle"
+        Icon="lifestyle.png">
+
+        <ShellContent
+            Route="Lifestyle"
+            ContentTemplate="{DataTemplate pages:Lifestyle}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Religious"
+        Icon="religious.png">
+
+        <ShellContent
+            Route="ReligiousTvPage"
+            ContentTemplate="{DataTemplate pages:ReligiousTvPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Local TV"
+        Icon="local.png">
+
+        <ShellContent
+            Route="LocalPage"
+            ContentTemplate="{DataTemplate pages:LocalPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="European Sports"
+        Icon="euro.png">
+
+        <ShellContent
+            Route="EuropeanSportsPage"
+            ContentTemplate="{DataTemplate pages:EuropeanSportsPage}" />
+
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Wildlife"
+        Icon="wildlife.png">
+
+        <ShellContent
+            Route="WildlifePage"
+            ContentTemplate="{DataTemplate pages:WildlifePage}" />
+
+    </FlyoutItem>
+
+    <!-- =========================================================
+         UNIVERSAL CATEGORY MENU
+         ========================================================= -->
+
+    <MenuItem
+        Text="Business"
+        IconImageSource="business.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="business|Business|#1897B8" />
+
+    <MenuItem
+        Text="Classic"
+        IconImageSource="classic.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="classic|Classic TV|#E8B54A" />
+
+    <MenuItem
+        Text="Comedy"
+        IconImageSource="comedy.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="comedy|Comedy|#2BD9FF" />
+
+    <MenuItem
+        Text="Cooking"
+        IconImageSource="cooking.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="cooking|Cooking|#0E7A99" />
+
+    <MenuItem
+        Text="Culture"
+        IconImageSource="culture.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="culture|Culture|#7FE9FF" />
+
+    <MenuItem
+        Text="Documentary"
+        IconImageSource="documentary.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="documentary|Documentary|#7FE9FF" />
+
+    <MenuItem
+        Text="Education"
+        IconImageSource="education.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="education|Education|#1897B8" />
+
+    <MenuItem
+        Text="Entertainment"
+        IconImageSource="entertainment.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="entertainment|Entertainment|#2BD9FF" />
+
+    <MenuItem
+        Text="Family"
+        IconImageSource="family.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="family|Family|#6DFF8F" />
+
+    <MenuItem
+        Text="General"
+        IconImageSource="general.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="general|General TV|#7FE9FF" />
+
+    <MenuItem
+        Text="Legislative"
+        IconImageSource="legislative.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="legislative|Legislative|#1897B8" />
+
+    <MenuItem
+        Text="Public"
+        IconImageSource="publictv.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="public|Public TV|#1897B8" />
+
+    <MenuItem
+        Text="Relax"
+        IconImageSource="relax.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="relax|Relax|#6DFF8F" />
+
+    <MenuItem
+        Text="Science"
+        IconImageSource="science.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="science|Science|#7FE9FF" />
+
+    <MenuItem
+        Text="Series"
+        IconImageSource="series.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="series|Series|#2BD9FF" />
+
+    <MenuItem
+        Text="Shop"
+        IconImageSource="shop.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="shop|Shop|#E8B54A" />
+
+    <MenuItem
+        Text="Travel"
+        IconImageSource="travel.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="travel|Travel|#6DFF8F" />
+
+    <MenuItem
+        Text="Weather"
+        IconImageSource="weather.png"
+        Command="{Binding OpenCategoryCommand}"
+        CommandParameter="weather|Weather|#1897B8" />
+
+</Shell>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    ChannelTileCard
+    ═══════════════
+    The single channel tile used by every dense (2-up) channel listing in the
+    app. It replaces the per-page "logo | text | WATCH button" rows that only
+    fitted 3-5 channels on a phone screen.
+
+    Contract with the hosting page:
+      • its BindingContext is the TvChannel from the page's DataTemplate, so
+        pages only have to write <views:ChannelTileCard WatchClicked="…" />
+      • WatchClicked is raised with the play chip as sender, LogoClicked with
+        the logo frame as sender, CardTapped with the tile itself — the host
+        pages read the channel from sender.BindingContext, exactly as they did
+        for their own rows.
+      • CardTapped is OPT-IN: a page either drives its list through
+        CollectionView selection (leave it unwired — the tile then stays
+        gesture-free so the item tap still reaches the CollectionView) or
+        through a whole-row tap (wire it, e.g. Sports/News/Movies/Music).
+      • IsPlaying is read off the bound channel and shows the page's
+        now-playing state: gold frame plus a "NOW PLAYING" pill.
+      • every decorative child is InputTransparent (the app's own convention
+        for tappable rows) — without it the labels swallow the tap and the row
+        gesture never fires.
+-->
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MarkUptv.Models"
+             xmlns:helper="clr-namespace:MarkUptv.Converters"
+             xmlns:helpers="clr-namespace:MarkUptv.Helpers"
+             x:Class="MarkUptv.Views.ChannelTileCard"
+             x:DataType="models:TvChannel">
+
+    <ContentView.Resources>
+        <Color x:Key="TilePanel">#101528</Color>
+        <Color x:Key="TilePanelPlaying">#171F38</Color>
+        <Color x:Key="TileStroke">#222C46</Color>
+        <Color x:Key="TileLogoCanvas">#070B16</Color>
+        <Color x:Key="TileInk">#F2F5FA</Color>
+        <Color x:Key="TileMuted">#8C97AD</Color>
+        <Color x:Key="TileGold">#E8B54A</Color>
+        <Color x:Key="TileChip">#192033</Color>
+        <helpers:StringNullOrEmptyConverter x:Key="StringNullOrEmptyConverter" />
+        <helper:IsNotNullConverter x:Key="IsNotNullConverter" />
+    </ContentView.Resources>
+
+    <Border x:Name="TileRoot"
+            BackgroundColor="{StaticResource TilePanel}"
+            Stroke="{StaticResource TileStroke}"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 16"
+            Padding="8">
+
+        <Border.Triggers>
+            <DataTrigger TargetType="Border"
+                         Binding="{Binding IsPlaying}"
+                         Value="True">
+                <Setter Property="BackgroundColor" Value="{StaticResource TilePanelPlaying}" />
+                <Setter Property="Stroke" Value="{StaticResource TileGold}" />
+                <Setter Property="StrokeThickness" Value="1.5" />
+            </DataTrigger>
+        </Border.Triggers>
+
+        <Grid RowDefinitions="Auto,Auto" RowSpacing="6">
+
+            <!-- ═══ Logo canvas + inline play chip ═══ -->
+            <Border Grid.Row="0"
+                    HeightRequest="56"
+                    BackgroundColor="{StaticResource TileLogoCanvas}"
+                    Stroke="#1B2438"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12">
+                <Border.Behaviors>
+                    <helpers:TapScaleBehavior />
+                </Border.Behaviors>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLogoTapped" />
+                </Border.GestureRecognizers>
+
+                <Grid>
+                    <!-- Artwork: decorative, so the band's own gesture still fires. -->
+                    <Grid InputTransparent="True">
+                        <Image Source="{Binding Logo}" Aspect="AspectFit" Margin="10" />
+
+                        <Label Text="{Binding Initials}"
+                               HorizontalOptions="Center" VerticalOptions="Center"
+                               TextColor="{StaticResource TileMuted}"
+                               FontSize="17" FontAttributes="Bold"
+                               IsVisible="{Binding Logo, Converter={StaticResource StringNullOrEmptyConverter}}" />
+                    </Grid>
+
+                    <!-- Live-on-air flag, only while this channel is the one playing. -->
+                    <Border HorizontalOptions="Start" VerticalOptions="Start"
+                            Margin="4,4,0,0"
+                            Padding="5,1"
+                            BackgroundColor="{StaticResource TileGold}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 6"
+                            InputTransparent="True"
+                            IsVisible="{Binding IsPlaying}">
+                        <Label Text="NOW PLAYING"
+                               FontSize="7.5"
+                               FontAttributes="Bold"
+                               CharacterSpacing="0.8"
+                               TextColor="#12161F" />
+                    </Border>
+
+                    <!-- Play chip: the page's existing tune-in behaviour. -->
+                    <Border HorizontalOptions="End" VerticalOptions="End"
+                            Margin="0,0,4,4"
+                            WidthRequest="28" HeightRequest="28"
+                            Padding="0"
+                            BackgroundColor="{StaticResource TileGold}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 14">
+                        <Border.Behaviors>
+                            <helpers:TapScaleBehavior />
+                        </Border.Behaviors>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnWatchTapped" />
+                        </Border.GestureRecognizers>
+                        <Label Text="▶"
+                               FontSize="11"
+                               TextColor="#12161F"
+                               InputTransparent="True"
+                               HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- ═══ Identity + guide line (decorative) ═══ -->
+            <VerticalStackLayout Grid.Row="1"
+                                 Spacing="3"
+                                 InputTransparent="True">
+
+                <Label Text="{Binding Name}"
+                       FontSize="13.5"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TileInk}"
+                       LineBreakMode="TailTruncation"
+                       MaxLines="2" />
+
+                <Label Text="{Binding CurrentProgrammeTitle}"
+                       FontSize="11.5"
+                       TextColor="{StaticResource TileMuted}"
+                       LineBreakMode="TailTruncation"
+                       MaxLines="1"
+                       IsVisible="{Binding CurrentProgrammeTitle, Converter={StaticResource IsNotNullConverter}}" />
+
+                <Border BackgroundColor="{StaticResource TileChip}"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 7"
+                        Padding="6,2"
+                        HorizontalOptions="Start"
+                        IsVisible="{Binding QualityLabel, Converter={StaticResource IsNotNullConverter}}">
+                    <Label Text="{Binding QualityLabel}"
+                           FontSize="10"
+                           FontAttributes="Bold"
+                           CharacterSpacing="0.5"
+                           TextColor="{StaticResource TileGold}" />
+                </Border>
+
+            </VerticalStackLayout>
+        </Grid>
+    </Border>
+</ContentView>

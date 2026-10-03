@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MarkUptv.Pages.LoadingPage"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="#0B0E1A">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#0B0E1A" Offset="0.0"/>
+            <GradientStop Color="#101726" Offset="0.55"/>
+            <GradientStop Color="#0D1424" Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
+    <Grid>
+        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="6">
+            <!-- Real brand mark (Resources/Images/brandmark.svg -> brandmark.png) -->
+            <Image Source="brandmark.png"
+                   HeightRequest="104"
+                   WidthRequest="104"
+                   Aspect="AspectFit"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,14"/>
+            <Label Text="MarkUpTV" FontSize="30" FontAttributes="Bold" TextColor="#EEF3FB" HorizontalOptions="Center" CharacterSpacing="1"/>
+            <Label Text="The studio in your pocket" FontSize="12.5" TextColor="#93A0BF" HorizontalOptions="Center" CharacterSpacing="1.5" Margin="0,2,0,28"/>
+            <ActivityIndicator IsRunning="True" Color="#E8B54A" HorizontalOptions="Center"/>
+            <Label Text="AUTHENTICATING YOUR DEVICE" FontSize="9.5" TextColor="#5E6A87" HorizontalOptions="Center" CharacterSpacing="2" Margin="0,24,0,0"/>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

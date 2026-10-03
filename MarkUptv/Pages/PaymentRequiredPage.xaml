@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:MarkUptv.Helpers"
+             xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+             x:Class="MarkUptv.Pages.PaymentRequiredPage"
+             x:DataType="vm:PaymentRequiredViewModel"
+             Title="Unlock Markup TV"
+             BackgroundColor="#05060F"
+             Shell.NavBarIsVisible="False">
+
+    <Grid>
+
+        <!-- Ambient glow behind the hero so the screen never looks flat -->
+        <Border StrokeThickness="0"
+                WidthRequest="360"
+                HeightRequest="360"
+                HorizontalOptions="Center"
+                VerticalOptions="Start"
+                TranslationY="-140"
+                Opacity="0.55">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="180" />
+            </Border.StrokeShape>
+            <Border.Background>
+                <RadialGradientBrush Center="0.5,0.5" Radius="0.5">
+                    <GradientStop Color="#FF4D8D" Offset="0.0" />
+                    <GradientStop Color="#0005060F" Offset="1.0" />
+                </RadialGradientBrush>
+            </Border.Background>
+        </Border>
+
+        <!-- No max width here on purpose. A MaximumWidthRequest inside a
+             ScrollView is measured against an unbounded width, so the column
+             took the full 460px and clipped on anything narrower (reproduced at
+             a 400px window). Letting the column fill the viewport makes text
+             wrap on a phone, and the app-wide adaptive host supplies the
+             centred maximum width on tablet/desktop/TV instead. -->
+        <ScrollView VerticalOptions="Fill"
+                    HorizontalOptions="Fill">
+            <VerticalStackLayout Spacing="20"
+                                 Padding="22,44,22,36"
+                                 HorizontalOptions="Fill">
+
+                <!-- ============ HERO ============ -->
+                <VerticalStackLayout Spacing="14">
+                    <Border WidthRequest="86"
+                            HeightRequest="86"
+                            HorizontalOptions="Center"
+                            StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="26" />
+                        </Border.StrokeShape>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#2A1B4D" Offset="0.0" />
+                                <GradientStop Color="#5A2A63" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Label Text="&#x1F48E;"
+                               FontSize="40"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+
+                    <Label Text="MARKUP TV PREMIUM"
+                           FontSize="11"
+                           CharacterSpacing="4"
+                           FontAttributes="Bold"
+                           TextColor="#FF8FB8"
+                           HorizontalOptions="Center" />
+
+                    <Label Text="{Binding TitleText}"
+                           FontSize="26"
+                           FontAttributes="Bold"
+                           TextColor="#FFFFFF"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           MaxLines="2"
+                           LineBreakMode="WordWrap" />
+
+                    <Label Text="{Binding MessageText}"
+                           FontSize="14"
+                           TextColor="#A9A9C8"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           MaxLines="3"
+                           LineBreakMode="WordWrap"
+                           LineHeight="1.35" />
+
+                    <Border IsVisible="{Binding HasDaysLeftText}"
+                            BackgroundColor="#1E1A0A"
+                            Stroke="#66FFD700"
+                            StrokeThickness="1"
+                            Padding="14,8"
+                            HorizontalOptions="Center">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20" />
+                        </Border.StrokeShape>
+                        <Label Text="{Binding DaysLeftText}"
+                               FontSize="12.5"
+                               TextColor="#FFD700"
+                               HorizontalTextAlignment="Center"
+                               MaxLines="2"
+                               LineBreakMode="WordWrap" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- ============ PRICE ============ -->
+                <Border StrokeThickness="1"
+                        Stroke="#33FFFFFF"
+                        Padding="20,18">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#1A1235" Offset="0.0" />
+                            <GradientStop Color="#12132A" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="ONE-TIME PAYMENT"
+                               FontSize="10"
+                               CharacterSpacing="3"
+                               FontAttributes="Bold"
+                               TextColor="#8F8FB0"
+                               HorizontalOptions="Center" />
+                        <Label Text="{Binding PriceText}"
+                               FontSize="34"
+                               FontAttributes="Bold"
+                               TextColor="#FFFFFF"
+                               HorizontalOptions="Center" />
+                        <Label Text="Lifetime access - no renewals - this device"
+                               FontSize="11.5"
+                               TextColor="#8F8FB0"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               LineBreakMode="WordWrap" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- ============ BENEFITS ============ -->
+                <VerticalStackLayout Spacing="10">
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="&#x2705;" FontSize="14" VerticalOptions="Center" />
+                        <Label Text="Unlimited live TV, football and movies"
+                               FontSize="13"
+                               TextColor="#D8D8EC"
+                               VerticalOptions="Center"
+                               LineBreakMode="WordWrap" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="&#x2705;" FontSize="14" VerticalOptions="Center" />
+                        <Label Text="No ads interrupting your streams"
+                               FontSize="13"
+                               TextColor="#D8D8EC"
+                               VerticalOptions="Center"
+                               LineBreakMode="WordWrap" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="&#x2705;" FontSize="14" VerticalOptions="Center" />
+                        <Label Text="Works on this device forever - pay once"
+                               FontSize="13"
+                               TextColor="#D8D8EC"
+                               VerticalOptions="Center"
+                               LineBreakMode="WordWrap" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- ============ CHECKOUT FORM ============ -->
+                <Border BackgroundColor="#12132A"
+                        Stroke="#252647"
+                        StrokeThickness="1"
+                        Padding="18,20">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="16">
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="EMAIL ADDRESS"
+                                   FontSize="10.5"
+                                   CharacterSpacing="2"
+                                   FontAttributes="Bold"
+                                   TextColor="#8F8FB0"
+                                   Margin="4,0" />
+                            <Border Stroke="#2C2D52"
+                                    StrokeThickness="1.5"
+                                    BackgroundColor="#1B1C38"
+                                    Padding="12,2">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Entry Text="{Binding Email, Mode=TwoWay}"
+                                       Placeholder="name@example.com"
+                                       PlaceholderColor="#5E5F80"
+                                       Keyboard="Email"
+                                       FontSize="14"
+                                       TextColor="White"
+                                       BackgroundColor="Transparent" />
+                            </Border>
+                            <Label Text="Your receipt is sent here."
+                                   FontSize="10.5"
+                                   TextColor="#6E6F92"
+                                   Margin="6,0,0,0" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="MOBILE MONEY NUMBER (OPTIONAL)"
+                                   FontSize="10.5"
+                                   CharacterSpacing="2"
+                                   FontAttributes="Bold"
+                                   TextColor="#8F8FB0"
+                                   Margin="4,0" />
+                            <Border Stroke="#2C2D52"
+                                    StrokeThickness="1.5"
+                                    BackgroundColor="#1B1C38"
+                                    Padding="12,2">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Entry Text="{Binding PhoneNumber, Mode=TwoWay}"
+                                       Placeholder="e.g. 0700000000"
+                                       PlaceholderColor="#5E5F80"
+                                       Keyboard="Telephone"
+                                       FontSize="14"
+                                       TextColor="White"
+                                       BackgroundColor="Transparent" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <Button Text="{Binding PayButtonText}"
+                                Command="{Binding PaymentCommand}"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                CornerRadius="14"
+                                HeightRequest="54"
+                                Padding="10,0"
+                                Margin="0,4,0,0"
+                                IsEnabled="{Binding IsNotLoading}">
+                            <Button.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="#FF4D8D" Offset="0.0" />
+                                    <GradientStop Color="#FF7A45" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Button.Background>
+                            <Button.Triggers>
+                                <EventTrigger Event="Clicked">
+                                    <helpers:BounceAnimation />
+                                </EventTrigger>
+                            </Button.Triggers>
+                        </Button>
+
+                        <HorizontalStackLayout Spacing="8"
+                                               HorizontalOptions="Center"
+                                               IsVisible="{Binding IsLoading}">
+                            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                               Color="#FF8FB8"
+                                               WidthRequest="16"
+                                               HeightRequest="16"
+                                               VerticalOptions="Center" />
+                            <Label Text="Opening the secure payment page..."
+                                   FontSize="11.5"
+                                   TextColor="#A9A9C8"
+                                   VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- ============ ERROR ============ -->
+                <Border IsVisible="{Binding HasError}"
+                        BackgroundColor="#2A1219"
+                        Stroke="#66FF6B6B"
+                        StrokeThickness="1"
+                        Padding="14,12">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14" />
+                    </Border.StrokeShape>
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="&#x26A0;&#xFE0F;" FontSize="14" VerticalOptions="Start" Margin="0,1,0,0" />
+                        <Label Text="{Binding ErrorMessage}"
+                               TextColor="#FF9B9B"
+                               FontSize="12.5"
+                               LineBreakMode="WordWrap"
+                               MaxLines="4"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <HorizontalStackLayout Spacing="6" HorizontalOptions="Center" Opacity="0.65">
+                    <Label Text="&#x1F512;" FontSize="11" VerticalOptions="Center" />
+                    <Label Text="Secured by Pesapal - Mobile Money &amp; cards"
+                           FontSize="11"
+                           TextColor="#A9A9C8"
+                           VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

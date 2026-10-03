@@ -1,0 +1,34 @@
+89,237 : SELECT A LIFESTYLE CHANNEL
+406,576 : LIFESTYLE
+194,679 : Select a channel to erio lifest le content.
+93,800 : o SYNC
+87,940 : ALL
+150,1129 : BOLD
+111,1402 : DISCOVEREI
+116,1610 : 366
+159,1840 : nden
+85,2085 : apart ŽN
+463,795 : Search lifestyle channels...
+262,940 : BUSINESS
+531,940 : CULTURE
+290,1079 : 10 Bold (1080p)
+290,1141 : Program unavailable
+288,1184 : SD
+288,1317 : 30A Luxe Life Discovered (...
+290,1379 : Program unavailable
+288,1422 : SD
+288,1555 : 36.6
+290,1617 : Program unavailable
+288,1660 : SD
+287,1793 : Antena Monden (720p)
+290,1855 : Program unavailable
+288,1898 : SD
+288,2036 : apart (1080p)
+290,2093 : Program unavailable
+288,2136 : SD
+792,940 : LIFESTYLE
+861,1128 : WATCH
+861,1366 : WATCH
+861,1604 : WATCH
+861,1842 : WATCH
+861,2080 : WATCH
