@@ -1,0 +1,56 @@
+name: MarkUpTV Android OTA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'MarkUptv/**'
+      - '.github/workflows/android-ota-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Decode signing keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          test -n "$ANDROID_KEYSTORE_BASE64"
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/markuptv.keystore"
+      - name: Publish signed APK
+        run: |
+          dotnet publish MarkUptv/MarkUptv.csproj -c Release -f net10.0-android -p:ApplicationVersion=${{ github.run_number }} -p:ApplicationDisplayVersion=1.1.${{ github.run_number }} -p:AndroidPackageFormat=apk -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="$RUNNER_TEMP/markuptv.keystore" -p:AndroidSigningKeyAlias="${{ secrets.ANDROID_KEY_ALIAS }}" -p:AndroidSigningStorePass="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" -p:AndroidSigningKeyPass="${{ secrets.ANDROID_KEY_PASSWORD }}"
+      - name: Locate APK and hash
+        id: apk
+        run: |
+          APK=$(find MarkUptv/bin/Release/net10.0-android -type f -name '*.apk' | head -n 1)
+          test -n "$APK"
+          cp "$APK" "$RUNNER_TEMP/MarkUptv.apk"
+          echo "sha256=$(sha256sum "$RUNNER_TEMP/MarkUptv.apk" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="ota-${{ github.run_number }}"
+          gh release create "$TAG" "$RUNNER_TEMP/MarkUptv.apk" --title "MarkUpTV $TAG" --notes "Signed OTA build ${{ github.sha }}"
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+      - name: Publish OTA manifest
+        run: |
+          python3 - <<'PY'
+          import json,os
+          data={'versionCode':int('${{ github.run_number }}'),'versionName':'1.1.${{ github.run_number }}','apkUrl':f'https://github.com/${{ github.repository }}/releases/download/{os.environ["TAG"]}/MarkUptv.apk','sha256':'${{ steps.apk.outputs.sha256 }}','mandatory':False}
+          open('MarkUptv/update/latest.json','w').write(json.dumps(data,indent=2)+'\n')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add MarkUptv/update/latest.json
+          git diff --cached --quiet || git commit -m 'chore: publish latest MarkUpTV OTA manifest'
+          git push

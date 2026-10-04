@@ -2,6 +2,7 @@
 #pragma warning disable IL3050 
 
 using MarkUptv.Services;
+
 using MarkUptv.Pages;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Networking;
@@ -21,6 +22,7 @@ public partial class App : Application
 
     private readonly PaymentService _paymentService;
     private readonly IServiceProvider _services;
+    private readonly OtaUpdateService _ota;
 
     /// <summary>
     /// Completed once the Shell has been attached to the window. Startup boots
@@ -39,10 +41,12 @@ public partial class App : Application
 
     public App(
         PaymentService paymentService,
-        IServiceProvider services)
+        IServiceProvider services,
+        OtaUpdateService ota)
     {
         _paymentService = paymentService;
         _services = services;
+        _ota = ota;
 
         RegisterGlobalExceptionHandling();
 
@@ -100,6 +104,7 @@ public partial class App : Application
         window.Created += (s, e) =>
         {
             WriteLog("Native Window Created successfully. Running Lifecycle.");
+            _ = _ota.CheckAndOfferAsync();
 
             _ = Task.Run(async () =>
             {
