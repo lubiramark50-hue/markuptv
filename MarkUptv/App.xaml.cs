@@ -101,6 +101,12 @@ public partial class App : Application
         {
             WriteLog("Native Window Created successfully. Running Lifecycle.");
 
+            _ = Task.Run(async () =>
+            {
+                var newer = await _services.GetRequiredService<AppUpdateChecker>().GetNewVersionAsync();
+                if (!string.IsNullOrWhiteSpace(newer)) WriteLog($"A newer MarkUptv build is available: {newer}");
+            });
+
             try
             {
                 double elapsedMs = (DateTime.UtcNow - ResolveProcessStartUtc()).TotalMilliseconds;

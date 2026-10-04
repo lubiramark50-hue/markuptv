@@ -1,0 +1,27 @@
+name: Automatic app version
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'MarkUptv/update/version.json'
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stamp version
+        run: |
+          python3 - <<'PY'
+          import json,datetime,subprocess
+          sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          with open('MarkUptv/update/version.json','w') as f: json.dump({'version':sha,'updatedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'channel':'stable'},f,indent=2)
+          PY
+      - name: Commit version manifest
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add MarkUptv/update/version.json
+          git diff --cached --quiet || git commit -m 'chore: update app version manifest'
+          git push
