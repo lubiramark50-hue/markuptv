@@ -1175,7 +1175,7 @@
                                     CascadeInputTransparent="True">
 
                                     <Path
-                                        Data="M12 1 L14.4 9.6 L23 12 L14.4 14.4 L12 23 L9.6 14.4 L1 12 L9.6 9.6 Z"
+                                        Data="M12 2.5 C8.4 2.5 6 5.2 6 8.8 V13 L4 16.5 V17.5 H20 V16.5 L18 13 V8.8 C18 5.2 15.6 2.5 12 2.5 Z M10 19 A2 2 0 0 0 14 19 Z"
                                         Aspect="Uniform"
                                         WidthRequest="22"
                                         HeightRequest="22"
@@ -1252,7 +1252,7 @@
 
                             <Button
                                 Grid.Column="2"
-                                Text="◆"
+                                Text="→"
                                 Command="{Binding SearchCommand}"
                                 Clicked="OnAnimatedButtonClicked"
                                 WidthRequest="43"
@@ -1277,11 +1277,11 @@
                             <VerticalStackLayout Spacing="1">
 
                                 <Label
-                                    Text="Explore the universe"
+                                    Text="Browse"
                                     Style="{StaticResource SectionTitleStyle}" />
 
                                 <Label
-                                    Text="Jump directly into your favourite section."
+                                    Text="Pick a section to jump in."
                                     Style="{StaticResource SectionCaptionStyle}" />
 
                             </VerticalStackLayout>
@@ -1327,12 +1327,6 @@
 
                                 </Border>
 
-                                <Button
-                                    Text="Search"
-                                    Command="{Binding OpenSearchCommand}"
-                                    Clicked="OnAnimatedButtonClicked"
-                                    Style="{StaticResource GlassButtonStyle}" />
-
                                 <!-- The assistant used to float over the feed, where
                                      it covered the right edge of whatever card was
                                      scrolled behind it. It sits in the section header
@@ -1362,7 +1356,7 @@
                                         VerticalOptions="Center">
 
                                         <Path
-                                            Data="M12 1 L14.4 9.6 L23 12 L14.4 14.4 L12 23 L9.6 14.4 L1 12 L9.6 9.6 Z"
+                                            Data="M4 4 H20 A2 2 0 0 1 22 6 V15 A2 2 0 0 1 20 17 H10 L5 21.5 V17 H4 A2 2 0 0 1 2 15 V6 A2 2 0 0 1 4 4 Z"
                                             Aspect="Uniform"
                                             WidthRequest="14"
                                             HeightRequest="14"
@@ -1385,274 +1379,7 @@
 
                         </Grid>
 
-                        <!-- Wrap rather than scroll: as a horizontal row the
-                             last chip was cut off at phone width, which reads
-                             as a broken layout instead of an affordance. -->
-
-                        <FlexLayout
-                            Wrap="Wrap"
-                            Direction="Row"
-                            AlignItems="Start"
-                            JustifyContent="Start">
-
-                                <!-- Vector chips: the seven PNG badges this row
-                                     used were mismatched stock art (a speaker for
-                                     Live TV, a plain circle for Sports, a blank
-                                     square for News), which read as broken icons. -->
-
-                                <Border
-                                    BackgroundColor="{StaticResource DiamondGold}"
-                                    Stroke="#00FFFFFF"
-                                    StrokeShape="RoundRectangle 22"
-                                    HeightRequest="44"
-                                    Padding="15,0"
-                                    Margin="0,0,9,9">
-
-                                    <Border.Behaviors>
-                                        <helpers:TapScaleBehavior />
-                                    </Border.Behaviors>
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GoToAllCommand}" />
-                                    </Border.GestureRecognizers>
-
-                                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-
-                                        <Path
-                                            Data="F0 M4,6.2 H20 V17.8 H4 Z M9.8,9.4 L15.4,12 L9.8,14.6 Z"
-                                            Fill="#0B1024"
-                                            Aspect="Uniform"
-                                            WidthRequest="17"
-                                            HeightRequest="17"
-                                            VerticalOptions="Center" />
-
-                                        <Label
-                                            Text="Live TV"
-                                            FontSize="12.5"
-                                            FontAttributes="Bold"
-                                            TextColor="#0B1024"
-                                            VerticalOptions="Center" />
-
-                                    </HorizontalStackLayout>
-
-                                </Border>
-
-                                <Border
-                                    BackgroundColor="#1AFFFFFF"
-                                    Stroke="#33FFFFFF"
-                                    StrokeThickness="1"
-                                    StrokeShape="RoundRectangle 22"
-                                    HeightRequest="44"
-                                    Padding="14,0"
-                                    Margin="0,0,9,9">
-
-                                    <Border.Behaviors>
-                                        <helpers:TapScaleBehavior />
-                                    </Border.Behaviors>
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GoToSportsCommand}" />
-                                    </Border.GestureRecognizers>
-
-                                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-
-                                        <Path
-                                            Data="F0 M7,3.6 H17 V9 A5,5 0 0,1 7,9 Z M10.2,14.6 H13.8 V16.6 H16.6 V20 H7.4 V16.6 H10.2 Z"
-                                            Fill="{StaticResource DiamondGold}"
-                                            Aspect="Uniform"
-                                            WidthRequest="17"
-                                            HeightRequest="17"
-                                            VerticalOptions="Center" />
-
-                                        <Label
-                                            Text="Sports"
-                                            FontSize="12.5"
-                                            TextColor="White"
-                                            VerticalOptions="Center" />
-
-                                    </HorizontalStackLayout>
-
-                                </Border>
-
-                                <Border
-                                    BackgroundColor="#1AFFFFFF"
-                                    Stroke="#33FFFFFF"
-                                    StrokeThickness="1"
-                                    StrokeShape="RoundRectangle 22"
-                                    HeightRequest="44"
-                                    Padding="14,0"
-                                    Margin="0,0,9,9">
-
-                                    <Border.Behaviors>
-                                        <helpers:TapScaleBehavior />
-                                    </Border.Behaviors>
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GoToNewsCommand}" />
-                                    </Border.GestureRecognizers>
-
-                                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-
-                                        <Path
-                                            Data="F0 M5.4,3 H13.6 L18.6,8 V21 H5.4 Z M8.4,11.6 H15.6 V13.2 H8.4 Z M8.4,15 H15.6 V16.6 H8.4 Z"
-                                            Fill="{StaticResource DiamondGold}"
-                                            Aspect="Uniform"
-                                            WidthRequest="17"
-                                            HeightRequest="17"
-                                            VerticalOptions="Center" />
-
-                                        <Label
-                                            Text="News"
-                                            FontSize="12.5"
-                                            TextColor="White"
-                                            VerticalOptions="Center" />
-
-                                    </HorizontalStackLayout>
-
-                                </Border>
-
-                                <Border
-                                    BackgroundColor="#1AFFFFFF"
-                                    Stroke="#33FFFFFF"
-                                    StrokeThickness="1"
-                                    StrokeShape="RoundRectangle 22"
-                                    HeightRequest="44"
-                                    Padding="14,0"
-                                    Margin="0,0,9,9">
-
-                                    <Border.Behaviors>
-                                        <helpers:TapScaleBehavior />
-                                    </Border.Behaviors>
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GoToMoviesCommand}" />
-                                    </Border.GestureRecognizers>
-
-                                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-
-                                        <Path
-                                            Data="F0 M3.4,5 H20.6 V19 H3.4 Z M5.6,6.9 H7.6 V8.9 H5.6 Z M5.6,10.6 H7.6 V12.6 H5.6 Z M5.6,14.3 H7.6 V16.3 H5.6 Z M16.4,6.9 H18.4 V8.9 H16.4 Z M16.4,10.6 H18.4 V12.6 H16.4 Z M16.4,14.3 H18.4 V16.3 H16.4 Z M9.4,7.9 H14.6 V16 H9.4 Z"
-                                            Fill="{StaticResource DiamondGold}"
-                                            Aspect="Uniform"
-                                            WidthRequest="17"
-                                            HeightRequest="17"
-                                            VerticalOptions="Center" />
-
-                                        <Label
-                                            Text="Movies"
-                                            FontSize="12.5"
-                                            TextColor="White"
-                                            VerticalOptions="Center" />
-
-                                    </HorizontalStackLayout>
-
-                                </Border>
-
-                                <Border
-                                    BackgroundColor="#1AFFFFFF"
-                                    Stroke="#33FFFFFF"
-                                    StrokeThickness="1"
-                                    StrokeShape="RoundRectangle 22"
-                                    HeightRequest="44"
-                                    Padding="14,0"
-                                    Margin="0,0,9,9">
-
-                                    <Border.Behaviors>
-                                        <helpers:TapScaleBehavior />
-                                    </Border.Behaviors>
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GoToMusicCommand}" />
-                                    </Border.GestureRecognizers>
-
-                                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-
-                                        <Path
-                                            Data="M19,2.6 V15.4 A2.9,2.9 0 1,1 16.9,12.7 V7.3 L10,8.9 V17.4 A2.9,2.9 0 1,1 7.9,14.7 V5 Z"
-                                            Fill="{StaticResource DiamondGold}"
-                                            Aspect="Uniform"
-                                            WidthRequest="17"
-                                            HeightRequest="17"
-                                            VerticalOptions="Center" />
-
-                                        <Label
-                                            Text="Music"
-                                            FontSize="12.5"
-                                            TextColor="White"
-                                            VerticalOptions="Center" />
-
-                                    </HorizontalStackLayout>
-
-                                </Border>
-
-                                <Border
-                                    BackgroundColor="#1AFFFFFF"
-                                    Stroke="#33FFFFFF"
-                                    StrokeThickness="1"
-                                    StrokeShape="RoundRectangle 22"
-                                    HeightRequest="44"
-                                    Padding="14,0"
-                                    Margin="0,0,9,9">
-
-                                    <Border.Behaviors>
-                                        <helpers:TapScaleBehavior />
-                                    </Border.Behaviors>
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GoToSocialCommand}" />
-                                    </Border.GestureRecognizers>
-
-                                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-
-                                        <Path
-                                            Data="M4,4.4 H20 V15.4 H11.4 L6.4,19.6 V15.4 H4 Z"
-                                            Fill="{StaticResource DiamondGold}"
-                                            Aspect="Uniform"
-                                            WidthRequest="17"
-                                            HeightRequest="17"
-                                            VerticalOptions="Center" />
-
-                                        <Label
-                                            Text="Community"
-                                            FontSize="12.5"
-                                            TextColor="White"
-                                            VerticalOptions="Center" />
-
-                                    </HorizontalStackLayout>
-
-                                </Border>
-
-                                <Border
-                                    BackgroundColor="#1AFFFFFF"
-                                    Stroke="#33FFFFFF"
-                                    StrokeThickness="1"
-                                    StrokeShape="RoundRectangle 22"
-                                    HeightRequest="44"
-                                    Padding="14,0"
-                                    Margin="0,0,9,9">
-
-                                    <Border.Behaviors>
-                                        <helpers:TapScaleBehavior />
-                                    </Border.Behaviors>
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GoToDonationCommand}" />
-                                    </Border.GestureRecognizers>
-
-                                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-
-                                        <Path
-                                            Data="M12,20.4 C6.2,15.8 3.2,12.6 3.2,9.2 A4.5,4.5 0 0,1 12,6.8 A4.5,4.5 0 0,1 20.8,9.2 C20.8,12.6 17.8,15.8 12,20.4 Z"
-                                            Fill="{StaticResource DiamondGold}"
-                                            Aspect="Uniform"
-                                            WidthRequest="17"
-                                            HeightRequest="17"
-                                            VerticalOptions="Center" />
-
-                                        <Label
-                                            Text="Support"
-                                            FontSize="12.5"
-                                            TextColor="White"
-                                            VerticalOptions="Center" />
-
-                                    </HorizontalStackLayout>
-
-                                </Border>
-
-                        </FlexLayout>
+                        
 
                     </VerticalStackLayout>
 
@@ -1663,7 +1390,7 @@
                         Wrap="Wrap"
                         Direction="Row"
                         AlignItems="Start"
-                        JustifyContent="Start">
+                        JustifyContent="SpaceBetween">
 
                         <BindableLayout.ItemTemplate>
 
@@ -1671,15 +1398,12 @@
                                 x:DataType="models:DashboardFeature">
 
                                 <Border
-                                    WidthRequest="{OnIdiom Phone=158,
-                                                           Tablet=184,
-                                                           Desktop=205,
-                                                           TV=245}"
+                                    FlexLayout.Basis="48%"
                                     HeightRequest="{OnIdiom Phone=122,
                                                             Tablet=127,
                                                             Desktop=132,
                                                             TV=151}"
-                                    Margin="0,0,11,11"
+                                    Margin="0,0,0,11"
                                     Padding="13"
                                     Style="{StaticResource DiamondCardStyle}">
 
