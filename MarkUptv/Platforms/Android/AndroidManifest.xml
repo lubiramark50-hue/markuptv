@@ -21,6 +21,7 @@
 
 	<application android:allowBackup="true"
 	             android:icon="@mipmap/markuptv_appicon"
+	             android:banner="@drawable/tv_banner"
 	             android:roundIcon="@mipmap/markuptv_appicon_round"
 	             android:usesCleartextTraffic="true"
                  android:supportsRtl="true">
