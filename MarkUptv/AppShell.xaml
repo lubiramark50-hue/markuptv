@@ -33,7 +33,7 @@
 
             <!-- Galaxy palette -->
 
-            <Color x:Key="DeepSpace">#0B0E1A</Color>
+            <Color x:Key="DeepSpace">{StaticResource DeepVoid}</Color>
             <Color x:Key="MidnightBlue">#121728</Color>
             <Color x:Key="RoyalGalaxy">#1A2138</Color>
             <!-- Accent for the flyout's glyphs and buttons. It used to be a
@@ -41,7 +41,7 @@
                  the navy/gold dashboard, so it is brand gold now; the key
                  name is kept because it is referenced throughout the shell. -->
             <Color x:Key="AuroraBlue">#E8B54A</Color>
-            <Color x:Key="CosmicPink">#FF4D8D</Color>
+            <Color x:Key="CosmicPink">{StaticResource AccentPink}</Color>
             <Color x:Key="DiamondGold">#E8B54A</Color>
             <Color x:Key="DiamondWhite">#EEF3FB</Color>
             <Color x:Key="TextMuted">#8992B1</Color>
@@ -531,7 +531,7 @@
                                 Aspect="Uniform"
                                 WidthRequest="19"
                                 HeightRequest="19"
-                                Stroke="#0B0E1A"
+                                Stroke="{StaticResource DeepVoid}"
                                 StrokeThickness="2.4"
                                 StrokeLineCap="Round"
                                 StrokeLineJoin="Round"

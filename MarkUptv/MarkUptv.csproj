@@ -53,21 +53,11 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0-android|AnyCPU'">
-		<SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
-	  <ApplicationId>com.markup.markuptv</ApplicationId>
-	  <AndroidPackageFormat>apk</AndroidPackageFormat>
-	  <AndroidKeyStore>True</AndroidKeyStore>
-	  <!-- Local release builds are signed with the SDK's debug keystore.
-	       AndroidKeyStore=True without an explicit key path fails the build
-	       with XA4314 ("$(AndroidSigningKeyPass) is empty"), which is why a
-	       Release/AOT build could not be produced for device testing.
-	       Replace these four properties with the real upload key before
-	       publishing to a store. -->
-	  <AndroidSigningKeyStore>$(LocalAppData)\Xamarin\Mono for Android\debug.keystore</AndroidSigningKeyStore>
-	  <AndroidSigningKeyAlias>androiddebugkey</AndroidSigningKeyAlias>
-	  <AndroidSigningStorePass>android</AndroidSigningStorePass>
-	  <AndroidSigningKeyPass>android</AndroidSigningKeyPass>
-	  <DebugType>portable</DebugType>
+  <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+  <ApplicationId>com.markup.markuptv</ApplicationId>
+  <AndroidPackageFormat>apk</AndroidPackageFormat>
+  <AndroidKeyStore Condition="'$(AndroidSigningKeyStore)' != ''">True</AndroidKeyStore>
+  <DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0-android|AnyCPU'">

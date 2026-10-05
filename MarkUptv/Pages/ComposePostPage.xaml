@@ -14,13 +14,13 @@
 
         <!-- Colours -->
 
-        <Color x:Key="DeepSky">#0B0E1A</Color>
+        <Color x:Key="DeepSky">{StaticResource DeepVoid}</Color>
         <Color x:Key="MidnightPanel">#11162E</Color>
         <Color x:Key="DiamondWhite">#EEF3FB</Color>
         <Color x:Key="DiamondGold">#E8B54A</Color>
         <Color x:Key="DiamondBlue">#E8B54A</Color>
         <Color x:Key="DiamondPurple">#E8B54A</Color>
-        <Color x:Key="DiamondPink">#FF4D8D</Color>
+        <Color x:Key="DiamondPink">{StaticResource AccentPink}</Color>
         <Color x:Key="MutedText">#93A0BF</Color>
 
         <!-- Background -->
@@ -31,7 +31,7 @@
             EndPoint="1,1">
 
             <GradientStop
-                Color="#0B0E1A"
+                Color="{StaticResource DeepVoid}"
                 Offset="0" />
 
             <GradientStop
@@ -79,7 +79,7 @@
                 Offset="0.5" />
 
             <GradientStop
-                Color="#FF4D8D"
+                Color="{StaticResource AccentPink}"
                 Offset="1" />
 
         </LinearGradientBrush>

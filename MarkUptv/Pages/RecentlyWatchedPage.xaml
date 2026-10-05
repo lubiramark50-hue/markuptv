@@ -15,7 +15,7 @@
 
     <ContentPage.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#0B0E1A" Offset="0.0"/>
+            <GradientStop Color="{StaticResource DeepVoid}" Offset="0.0"/>
             <GradientStop Color="#121728" Offset="0.5"/>
             <GradientStop Color="#050812" Offset="1.0"/>
         </LinearGradientBrush>
@@ -76,7 +76,7 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Row="1" BackgroundColor="#0B0E1A" StrokeShape="RoundRectangle 12"
+            <Border Grid.Row="1" BackgroundColor="{StaticResource DeepVoid}" StrokeShape="RoundRectangle 12"
                     Padding="0" Stroke="#E8B54A" StrokeThickness="1">
                 <Grid>
                     <Toolkit:MediaElement x:Name="Player"
@@ -116,7 +116,7 @@
             <Grid Grid.Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="12" Margin="0,0,0,12">
                 <Button Grid.Column="0" Text="⟳ REFRESH" 
                         Command="{Binding RefreshStreamCommand}"
-                        BackgroundColor="#E8B54A" TextColor="#0B0E1A"
+                        BackgroundColor="#E8B54A" TextColor="{StaticResource DeepVoid}"
                         CornerRadius="8" HeightRequest="44" WidthRequest="95"
                         FontSize="13" FontAttributes="Bold" CharacterSpacing="1" />
 

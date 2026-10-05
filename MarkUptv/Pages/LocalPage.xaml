@@ -14,7 +14,7 @@
 
     <ContentPage.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#0B0E1A" Offset="0.0"/>
+            <GradientStop Color="{StaticResource DeepVoid}" Offset="0.0"/>
             <GradientStop Color="#141B33" Offset="0.5"/>
             <GradientStop Color="#070A12" Offset="1.0"/>
             <!-- bold blue -->

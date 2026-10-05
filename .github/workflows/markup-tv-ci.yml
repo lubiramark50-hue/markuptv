@@ -27,5 +27,5 @@ jobs:
         run: dotnet workload restore MarkUptv/MarkUptv.csproj
       - name: Restore
         run: dotnet restore MarkUptv/MarkUptv.csproj -p:TargetFramework=net10.0-android
-      - name: Build Android
-        run: dotnet build MarkUptv/MarkUptv.csproj -c Release -f net10.0-android --no-restore -p:AndroidPackageFormat=apk -p:AndroidKeyStore=false
+      - name: Build Android (warnings are errors)
+        run: dotnet build MarkUptv/MarkUptv.csproj -c Release -f net10.0-android --no-restore -p:AndroidPackageFormat=apk -p:AndroidKeyStore=false -warnaserror

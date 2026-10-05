@@ -39,7 +39,7 @@
             <Border Grid.Column="0"
                     WidthRequest="42" HeightRequest="42"
                     StrokeShape="RoundRectangle 21"
-                    Stroke="#1E1E38" BackgroundColor="#0D0D22">
+                    Stroke="#1E1E38" BackgroundColor="{StaticResource DeepVoid}">
                 <Label Text="←" FontSize="20" TextColor="White"
                        HorizontalOptions="Center" VerticalOptions="Center" />
                 <Border.GestureRecognizers>
@@ -59,8 +59,8 @@
             <Border Grid.Column="2"
                     WidthRequest="42" HeightRequest="42"
                     StrokeShape="RoundRectangle 21"
-                    Stroke="#FF006E" BackgroundColor="#1AFF4D8D">
-                <Label Text="⤓" FontSize="18" TextColor="#FF006E"
+                    Stroke="{StaticResource AccentPink}" BackgroundColor="#1AFF4D8D">
+                <Label Text="⤓" FontSize="18" TextColor="{StaticResource AccentPink}"
                        HorizontalOptions="Center" VerticalOptions="Center" />
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding OpenDownloadsCommand}" />
@@ -92,7 +92,7 @@
                                VerticalOptions="Fill" />
                         <ActivityIndicator IsRunning="{Binding IsLoading}"
                                            IsVisible="{Binding IsLoading}"
-                                           Color="#FF006E"
+                                           Color="{StaticResource AccentPink}"
                                            HorizontalOptions="Center" />
                     </VerticalStackLayout>
                 </Grid>
@@ -125,7 +125,7 @@
                       IsVisible="{Binding ActionsVisible}">
 
                     <Border Grid.Column="0" Style="{StaticResource ActionButton}"
-                            BackgroundColor="#FF006E">
+                            BackgroundColor="{StaticResource AccentPink}">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding PlayCommand}" />
                         </Border.GestureRecognizers>
@@ -149,9 +149,9 @@
                 <Border IsVisible="{Binding IsPlayerVisible}"
                         Margin="16,0"
                         StrokeShape="RoundRectangle 12"
-                        Stroke="#1E1E38" BackgroundColor="#0D0D22"
+                        Stroke="#1E1E38" BackgroundColor="{StaticResource DeepVoid}"
                         Padding="14,10">
-                    <Label Text="Stop playback" FontSize="13" TextColor="#FF006E"
+                    <Label Text="Stop playback" FontSize="13" TextColor="{StaticResource AccentPink}"
                            HorizontalOptions="Center" />
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding StopPlaybackCommand}" />
@@ -210,7 +210,7 @@
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="models:MovieSubtitle">
                                 <Border StrokeShape="RoundRectangle 10"
-                                        Stroke="#1E1E38" BackgroundColor="#0D0D22"
+                                        Stroke="#1E1E38" BackgroundColor="{StaticResource DeepVoid}"
                                         Padding="12,8">
                                     <Label Text="{Binding Label}" FontSize="12"
                                            TextColor="#C8D0E0" />
@@ -223,13 +223,13 @@
                 <!-- ═══ SOURCE / ATTRIBUTION ═══ -->
                 <Border Margin="16,0"
                         StrokeShape="RoundRectangle 12"
-                        Stroke="#1E1E38" BackgroundColor="#0D0D22"
+                        Stroke="#1E1E38" BackgroundColor="{StaticResource DeepVoid}"
                         Padding="14,12">
                     <VerticalStackLayout Spacing="4">
                         <Label Text="Source" FontSize="11" TextColor="#6E7A9A" />
                         <Label Text="{Binding SourceText}" FontSize="12" TextColor="#C8D0E0" />
                         <Label Text="Open source page" FontSize="12"
-                               TextColor="#FF006E" FontAttributes="Bold">
+                               TextColor="{StaticResource AccentPink}" FontAttributes="Bold">
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding OpenSourcePageCommand}"
                                                       CommandParameter="{Binding Movie.SourcePageUrl}" />
@@ -241,7 +241,7 @@
                 <Label Text="{Binding ErrorText}"
                        IsVisible="{Binding HasErrorText}"
                        Margin="16,0"
-                       FontSize="12" TextColor="#FF006E" />
+                       FontSize="12" TextColor="{StaticResource AccentPink}" />
 
             </VerticalStackLayout>
         </ScrollView>

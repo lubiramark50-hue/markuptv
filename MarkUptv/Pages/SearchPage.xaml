@@ -15,11 +15,11 @@
 
     <ContentPage.Resources>
 
-        <Color x:Key="DeepSky">#0B0E1A</Color>
+        <Color x:Key="DeepSky">{StaticResource DeepVoid}</Color>
         <Color x:Key="DiamondGold">#E8B54A</Color>
         <Color x:Key="DiamondBlue">#E8B54A</Color>
         <Color x:Key="DiamondPurple">#E8B54A</Color>
-        <Color x:Key="DiamondPink">#FF4D8D</Color>
+        <Color x:Key="DiamondPink">{StaticResource AccentPink}</Color>
         <Color x:Key="MutedText">#9BA5C6</Color>
 
         <LinearGradientBrush
@@ -27,7 +27,7 @@
             StartPoint="0,0"
             EndPoint="1,1">
 
-            <GradientStop Color="#0B0E1A" Offset="0" />
+            <GradientStop Color="{StaticResource DeepVoid}" Offset="0" />
             <GradientStop Color="#11153A" Offset="0.48" />
             <GradientStop Color="#28113C" Offset="1" />
 
@@ -51,7 +51,7 @@
 
             <GradientStop Color="#E8B54A" Offset="0" />
             <GradientStop Color="#E8B54A" Offset="0.5" />
-            <GradientStop Color="#FF4D8D" Offset="1" />
+            <GradientStop Color="{StaticResource AccentPink}" Offset="1" />
 
         </LinearGradientBrush>
 

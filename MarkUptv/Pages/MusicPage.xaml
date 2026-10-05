@@ -51,7 +51,7 @@
             x:Key="MusicHasExtraTagsConverter" />
 
         <Color x:Key="MusicPurple">#A63CFF</Color>
-        <Color x:Key="MusicPink">#FF4D8D</Color>
+        <Color x:Key="MusicPink">{StaticResource AccentPink}</Color>
         <Color x:Key="MusicBlue">#E8B54A</Color>
         <Color x:Key="MusicGold">#E8B54A</Color>
         <Color x:Key="MusicMuted">#A49BB9</Color>

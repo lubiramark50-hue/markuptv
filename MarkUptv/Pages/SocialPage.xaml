@@ -17,7 +17,7 @@
             <Setter Property="StrokeShape" Value="RoundRectangle 16" />
             <Setter Property="StrokeThickness" Value="1" />
             <Setter Property="Stroke" Value="#1A1A38" />
-            <Setter Property="BackgroundColor" Value="#0D0D22" />
+            <Setter Property="BackgroundColor" Value="{StaticResource DeepVoid}" />
             <Setter Property="Margin" Value="0,0,0,12" />
         </Style>
     </ContentPage.Resources>
@@ -34,11 +34,11 @@
             </VerticalStackLayout>
             <Border Grid.Column="1" WidthRequest="42" HeightRequest="42"
                     StrokeShape="RoundRectangle 21" Stroke="#1E1E38"
-                    BackgroundColor="#0D0D22">
+                    BackgroundColor="{StaticResource DeepVoid}">
                 <Label Text="🔔" FontSize="17" HorizontalOptions="Center" VerticalOptions="Center" />
             </Border>
             <Border Grid.Column="2" WidthRequest="42" HeightRequest="42"
-                    StrokeShape="RoundRectangle 21" Stroke="#FF006E"
+                    StrokeShape="RoundRectangle 21" Stroke="{StaticResource AccentPink}"
                     BackgroundColor="#1AFF4D8D">
                 <Label Text="✏️" FontSize="17" HorizontalOptions="Center" VerticalOptions="Center" />
                 <Border.Behaviors>
@@ -55,7 +55,7 @@
                     HorizontalScrollBarVisibility="Never" Margin="0,0,0,8">
             <HorizontalStackLayout Spacing="10" Padding="20,0">
                 <Border StrokeShape="RoundRectangle 20" StrokeThickness="0"
-                        BackgroundColor="#FF006E" Padding="18,9">
+                        BackgroundColor="{StaticResource AccentPink}" Padding="18,9">
                     <Border.Behaviors>
                         <helpers:TapScaleBehavior/>
                     </Border.Behaviors>
@@ -66,7 +66,7 @@
                     <Label Text="🌐  All" FontSize="13" FontAttributes="Bold" TextColor="White" />
                 </Border>
                 <Border StrokeShape="RoundRectangle 20" StrokeThickness="1"
-                        Stroke="#1E1E38" BackgroundColor="#0D0D22" Padding="18,9">
+                        Stroke="#1E1E38" BackgroundColor="{StaticResource DeepVoid}" Padding="18,9">
                     <Border.Behaviors>
                         <helpers:TapScaleBehavior/>
                     </Border.Behaviors>
@@ -77,7 +77,7 @@
                     <Label Text="🔥  Trending" FontSize="13" TextColor="#8A8A9E" />
                 </Border>
                 <Border StrokeShape="RoundRectangle 20" StrokeThickness="1"
-                        Stroke="#1E1E38" BackgroundColor="#0D0D22" Padding="18,9">
+                        Stroke="#1E1E38" BackgroundColor="{StaticResource DeepVoid}" Padding="18,9">
                     <Border.Behaviors>
                         <helpers:TapScaleBehavior/>
                     </Border.Behaviors>
@@ -88,7 +88,7 @@
                     <Label Text="⚽  Sports" FontSize="13" TextColor="#8A8A9E" />
                 </Border>
                 <Border StrokeShape="RoundRectangle 20" StrokeThickness="1"
-                        Stroke="#1E1E38" BackgroundColor="#0D0D22" Padding="18,9">
+                        Stroke="#1E1E38" BackgroundColor="{StaticResource DeepVoid}" Padding="18,9">
                     <Border.Behaviors>
                         <helpers:TapScaleBehavior/>
                     </Border.Behaviors>
@@ -99,7 +99,7 @@
                     <Label Text="📰  News" FontSize="13" TextColor="#8A8A9E" />
                 </Border>
                 <Border StrokeShape="RoundRectangle 20" StrokeThickness="1"
-                        Stroke="#1E1E38" BackgroundColor="#0D0D22" Padding="18,9">
+                        Stroke="#1E1E38" BackgroundColor="{StaticResource DeepVoid}" Padding="18,9">
                     <Border.Behaviors>
                         <helpers:TapScaleBehavior/>
                     </Border.Behaviors>
@@ -110,7 +110,7 @@
                     <Label Text="🎬  Movies" FontSize="13" TextColor="#8A8A9E" />
                 </Border>
                 <Border StrokeShape="RoundRectangle 20" StrokeThickness="1"
-                        Stroke="#1E1E38" BackgroundColor="#0D0D22" Padding="18,9">
+                        Stroke="#1E1E38" BackgroundColor="{StaticResource DeepVoid}" Padding="18,9">
                     <Border.Behaviors>
                         <helpers:TapScaleBehavior/>
                     </Border.Behaviors>
@@ -127,7 +127,7 @@
         <RefreshView Grid.Row="2"
                      Command="{Binding RefreshFeedCommand}"
                      IsRefreshing="{Binding IsRefreshing}"
-                     RefreshColor="#FF006E">
+                     RefreshColor="{StaticResource AccentPink}">
             <CollectionView ItemsSource="{Binding Posts}"
                             SelectionMode="None"
                             RemainingItemsThreshold="3"
@@ -138,7 +138,7 @@
                     <VerticalStackLayout Spacing="12" Padding="0,60" HorizontalOptions="Center">
                         <ActivityIndicator IsRunning="{Binding IsLoading}"
                                            IsVisible="{Binding IsLoading}"
-                                           Color="#FF006E" Scale="1.4" />
+                                           Color="{StaticResource AccentPink}" Scale="1.4" />
                         <Label IsVisible="{Binding IsLoading}"
                                Text="Loading community posts…"
                                TextColor="#6E7A9A" FontSize="14"
@@ -148,7 +148,7 @@
                             Icon="{StaticResource IconChat}"
                             Title="No posts yet"
                             Hint="Be the first to share something with the community."
-                            Accent="#FF006E"
+                            Accent="{StaticResource AccentPink}"
                             Margin="20,0" />
                     </VerticalStackLayout>
                 </CollectionView.EmptyView>
@@ -281,7 +281,7 @@
                 <CollectionView.Footer>
                     <VerticalStackLayout IsVisible="{Binding IsLoadingMore}"
                                          Spacing="8" Padding="0,14" HorizontalOptions="Center">
-                        <ActivityIndicator IsRunning="True" Color="#FF006E" />
+                        <ActivityIndicator IsRunning="True" Color="{StaticResource AccentPink}" />
                         <Label Text="Loading more…" TextColor="#6E7A9A"
                                FontSize="12" HorizontalOptions="Center" />
                     </VerticalStackLayout>
