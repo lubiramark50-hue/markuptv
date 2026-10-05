@@ -48,7 +48,7 @@
             x:Key="ChannelSubtitleConverter" />
 
         <Color x:Key="MovieGold">#E8B54A</Color>
-        <Color x:Key="MoviePink">{StaticResource AccentPink}</Color>
+        <Color x:Key="MoviePink">#FF4D8D</Color>
         <Color x:Key="MoviePurple">#E8B54A</Color>
         <Color x:Key="MovieMuted">#A29BBE</Color>
         <Color x:Key="LiveRed">#E8254D</Color>
