@@ -2,6 +2,8 @@ name: Branch APK (artifact only)
 
 on:
   workflow_dispatch:
+  push:
+    branches: ['ui/**']
 
 permissions:
   contents: read
