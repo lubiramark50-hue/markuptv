@@ -36,6 +36,11 @@ namespace MarkUptv
         },
         DataScheme = "markuptv",
         DataHost = "payment-failed")]
+    // Android TV home screen entry. Without the leanback launcher category the
+    // app never shows up in the TV launcher row.
+    [IntentFilter(
+        new[] { Intent.ActionMain },
+        Categories = new[] { Intent.CategoryLeanbackLauncher })]
 #if DEBUG
     // UI-audit deep link host (see App.HandleAndroidIntent).
     [IntentFilter(
