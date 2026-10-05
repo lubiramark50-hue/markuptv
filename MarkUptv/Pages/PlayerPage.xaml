@@ -1,1 +1,228 @@
-<FILE_FROM_WORKBENCH:player.new>
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:MarkUptv.ViewModels"
+             xmlns:models="clr-namespace:MarkUptv.Models"
+             x:Class="MarkUptv.Pages.PlayerPage"
+             x:DataType="vm:PlayerViewModel"
+             Title="{Binding Title}"
+             BackgroundColor="{StaticResource DeepVoid}">
+
+    <Grid Padding="16" RowDefinitions="Auto,*,Auto" RowSpacing="12">
+
+        <!-- ══════════ HEADER ══════════ -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+
+            <VerticalStackLayout Spacing="5" VerticalOptions="Center">
+
+                <Label Text="{Binding Title}"
+                       FontSize="21"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextLight}"
+                       LineBreakMode="TailTruncation"
+                       MaxLines="1" />
+
+                <HorizontalStackLayout Spacing="9">
+
+                    <Border Padding="9,4"
+                            BackgroundColor="#2AFF4D8D"
+                            Stroke="#66FF4D8D"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 9">
+                        <Label Text="{Binding ModeBadge}"
+                               FontSize="9.5"
+                               FontAttributes="Bold"
+                               CharacterSpacing="1.2"
+                               TextColor="#FF8AB4"
+                               VerticalOptions="Center" />
+                    </Border>
+
+                    <Label Text="{Binding StatusText}"
+                           FontSize="12.5"
+                           TextColor="{StaticResource TextMuted}"
+                           VerticalOptions="Center"
+                           LineBreakMode="TailTruncation" />
+
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="1"
+                                 Spacing="3"
+                                 HorizontalOptions="End"
+                                 VerticalOptions="Center">
+
+                <Label Text="{Binding SourceLabel}"
+                       FontSize="13"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Primary}"
+                       HorizontalTextAlignment="End" />
+
+                <Label Text="{Binding PositionText}"
+                       FontSize="11"
+                       TextColor="{StaticResource TextMuted}"
+                       HorizontalTextAlignment="End" />
+
+                <Button Text="Match thread"
+                        Command="{Binding OpenMatchThreadCommand}"
+                        BackgroundColor="Transparent"
+                        BorderColor="{StaticResource GlassStroke}"
+                        BorderWidth="1"
+                        TextColor="{StaticResource TextLight}"
+                        FontSize="11.5"
+                        HeightRequest="36"
+                        Padding="10,0" />
+
+            </VerticalStackLayout>
+
+        </Grid>
+
+        <!-- ══════════ STAGE ══════════ -->
+        <Border Grid.Row="1"
+                Stroke="{StaticResource Primary}"
+                StrokeThickness="1"
+                BackgroundColor="#05070D"
+                StrokeShape="RoundRectangle 16"
+                Padding="0">
+
+            <Grid>
+
+                <toolkit:MediaElement x:Name="ChannelPlayer"
+                                      ShouldAutoPlay="True"
+                                      ShouldShowPlaybackControls="True"
+                                      ShouldKeepScreenOn="True"
+                                      Aspect="AspectFill"
+                                      IsVisible="{Binding IsVideoVisible}" />
+
+                <WebView x:Name="OfficialView"
+                         IsVisible="{Binding IsWebVisible}" />
+
+                <!-- connecting / buffering overlay -->
+                <VerticalStackLayout IsVisible="{Binding IsConnecting}"
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="Center"
+                                     Spacing="12"
+                                     Padding="28">
+
+                    <ActivityIndicator IsRunning="{Binding IsConnecting}"
+                                       Color="{StaticResource Primary}"
+                                       HeightRequest="46"
+                                       WidthRequest="46"
+                                       HorizontalOptions="Center" />
+
+                    <Label Text="{Binding StatusText}"
+                           FontSize="15"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextLight}"
+                           HorizontalTextAlignment="Center" />
+
+                    <Label Text="{Binding StatusDetail}"
+                           FontSize="12"
+                           TextColor="{StaticResource TextMuted}"
+                           HorizontalTextAlignment="Center" />
+
+                </VerticalStackLayout>
+
+                <!-- error / unavailable overlay -->
+                <VerticalStackLayout IsVisible="{Binding HasError}"
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="Center"
+                                     Spacing="12"
+                                     Padding="28"
+                                     MaximumWidthRequest="520">
+
+                    <Label Text="{Binding ErrorTitle}"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextLight}"
+                           HorizontalTextAlignment="Center" />
+
+                    <Label Text="{Binding ErrorHint}"
+                           FontSize="13"
+                           TextColor="{StaticResource TextMuted}"
+                           HorizontalTextAlignment="Center" />
+
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Button Text="Retry"
+                                Command="{Binding RetryCommand}"
+                                BackgroundColor="{StaticResource Primary}"
+                                TextColor="{StaticResource PrimaryDarkText}" />
+                        <Button Text="Next source"
+                                Command="{Binding NextSourceCommand}"
+                                IsVisible="{Binding CanGoNext}"
+                                BackgroundColor="Transparent"
+                                BorderColor="{StaticResource Primary}"
+                                BorderWidth="1"
+                                TextColor="{StaticResource Primary}" />
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+
+            </Grid>
+
+        </Border>
+
+        <!-- ══════════ PLAN / SOURCES ══════════ -->
+        <VerticalStackLayout Grid.Row="2" Spacing="10">
+
+            <Label Text="{Binding StatusDetail}"
+                   FontSize="12"
+                   TextColor="{StaticResource TextMuted}"
+                   LineBreakMode="TailTruncation" />
+
+            <CollectionView ItemsSource="{Binding Sources}"
+                            SelectionMode="None"
+                            HeightRequest="74"
+                            HorizontalScrollBarVisibility="Never">
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:StreamCandidate">
+
+                        <Border Padding="12,9"
+                                BackgroundColor="{StaticResource NightPanel}"
+                                Stroke="{StaticResource GlassStroke}"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 12"
+                                WidthRequest="168">
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnSourceTapped" />
+                            </Border.GestureRecognizers>
+
+                            <VerticalStackLayout Spacing="3">
+
+                                <Label Text="{Binding Source.Label}"
+                                       FontSize="12.5"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource TextLight}"
+                                       LineBreakMode="TailTruncation" />
+
+                                <Label Text="{Binding ModeLabel}"
+                                       FontSize="10.5"
+                                       TextColor="{StaticResource TextMuted}" />
+
+                                <Label Text="{Binding Source.Region}"
+                                       FontSize="10"
+                                       TextColor="{StaticResource Primary}"
+                                       LineBreakMode="TailTruncation" />
+
+                            </VerticalStackLayout>
+
+                        </Border>
+
+                    </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+        </VerticalStackLayout>
+
+    </Grid>
+
+</ContentPage>
