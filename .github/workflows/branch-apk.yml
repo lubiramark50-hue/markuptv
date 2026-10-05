@@ -1,0 +1,78 @@
+name: Branch APK (artifact only)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android
+
+      - name: Prepare signing key
+        env:
+          KS_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KS_ALIAS_IN: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KS_STORE_IN: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KS_KEY_IN: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -n "$KS_B64" ] && [ -n "$KS_ALIAS_IN" ]; then
+            echo "$KS_B64" | base64 --decode > "$RUNNER_TEMP/markuptv.keystore"
+            echo "KS_ALIAS=$KS_ALIAS_IN" >> "$GITHUB_ENV"
+            echo "KS_STORE=$KS_STORE_IN" >> "$GITHUB_ENV"
+            echo "KS_KEY=$KS_KEY_IN" >> "$GITHUB_ENV"
+            echo "SIGNER=repo-release-key" >> "$GITHUB_ENV"
+          else
+            keytool -genkeypair -keystore "$RUNNER_TEMP/markuptv.keystore" -storetype PKCS12 \
+              -alias markuptv-ci -keyalg RSA -keysize 2048 -validity 10000 \
+              -storepass markuptv-ci-pass -keypass markuptv-ci-pass \
+              -dname "CN=MarkUpTV CI"
+            echo "KS_ALIAS=markuptv-ci" >> "$GITHUB_ENV"
+            echo "KS_STORE=markuptv-ci-pass" >> "$GITHUB_ENV"
+            echo "KS_KEY=markuptv-ci-pass" >> "$GITHUB_ENV"
+            echo "SIGNER=throwaway-ci-key" >> "$GITHUB_ENV"
+          fi
+
+      - name: Publish APK
+        run: |
+          dotnet publish MarkUptv/MarkUptv.csproj -c Release -f net10.0-android \
+            -p:ApplicationVersion=${{ github.run_number }} \
+            -p:ApplicationDisplayVersion=1.1.${{ github.run_number }} \
+            -p:AndroidPackageFormat=apk \
+            -p:AndroidKeyStore=true \
+            -p:AndroidSigningKeyStore="$RUNNER_TEMP/markuptv.keystore" \
+            -p:AndroidSigningKeyAlias="$KS_ALIAS" \
+            -p:AndroidSigningStorePass="$KS_STORE" \
+            -p:AndroidSigningKeyPass="$KS_KEY"
+
+      - name: Verify APK manifest
+        run: |
+          APK=$(find MarkUptv/bin/Release/net10.0-android -type f -name '*Signed.apk' | head -n 1)
+          [ -n "$APK" ] || APK=$(find MarkUptv/bin/Release/net10.0-android -type f -name '*.apk' | head -n 1)
+          test -n "$APK"
+          mkdir -p out && cp "$APK" out/MarkUpTV.apk
+          AAPT=$(find "$ANDROID_HOME/build-tools" -type f -name aapt2 | sort -V | tail -n 1)
+          "$AAPT" dump badging out/MarkUpTV.apk | grep -E "^package|sdkVersion|leanback|banner|launchable|touchscreen" || true
+          "$AAPT" dump badging out/MarkUpTV.apk | grep -q "android.intent.category.LEANBACK_LAUNCHER" && echo "LEANBACK_LAUNCHER present" || echo "WARNING: no leanback launcher"
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)
+          "$APKSIGNER" verify --print-certs out/MarkUpTV.apk | head -5
+          sha256sum out/MarkUpTV.apk
+          echo "Signed with: $SIGNER"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MarkUpTV-apk-${{ github.run_number }}
+          path: out/MarkUpTV.apk
+          if-no-files-found: error
+          retention-days: 14
