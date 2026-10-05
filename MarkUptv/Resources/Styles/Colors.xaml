@@ -18,7 +18,7 @@
     <Color x:Key="MidnightBlue">#10162B</Color>
     <Color x:Key="OffBlack">#1f1f1f</Color>
 
-    <Color x:Key="DeepVoid">{StaticResource DeepVoid}</Color>
+    <Color x:Key="DeepVoid">#0B0E1A</Color>
     <Color x:Key="NightPanel">#111827</Color>
     <Color x:Key="NightPanelRaised">#172033</Color>
     <Color x:Key="GlassPanel">#1AFFFFFF</Color>
@@ -45,7 +45,7 @@
         instead of inventing another near-identical hex.
     -->
     <Color x:Key="TextDim">#A0A0B0</Color>
-    <Color x:Key="AccentPink">{StaticResource AccentPink}</Color>
+    <Color x:Key="AccentPink">#FF4D8D</Color>
 
     <Color x:Key="Gray100">#E1E1E1</Color>
     <Color x:Key="Gray200">#C8C8C8</Color>
