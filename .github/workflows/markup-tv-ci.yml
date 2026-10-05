@@ -6,6 +6,7 @@ on:
     paths:
       - "MarkUptv/**"
       - ".github/workflows/**"
+  workflow_dispatch:
   pull_request:
     paths:
       - "MarkUptv/**"
