@@ -32,7 +32,7 @@ public sealed class OtaUpdateService
     private static int CurrentVersionCode()
     {
 #pragma warning disable CA1422
-        var info = Application.Context.PackageManager?.GetPackageInfo(Application.Context.PackageName!, PackageInfoFlags.MetaData);
+        var info = Android.App.Application.Context.PackageManager?.GetPackageInfo(Android.App.Application.Context.PackageName!, PackageInfoFlags.MetaData);
 #pragma warning restore CA1422
         return (int)(info?.LongVersionCode ?? 0);
     }
@@ -55,7 +55,7 @@ public sealed class OtaUpdateService
 
     private static void Install(string apkPath)
     {
-        var context = Application.Context;
+        var context = Android.App.Application.Context;
         var installer = context.PackageManager!.PackageInstaller;
         var parameters = new PackageInstaller.SessionParams(PackageInstallMode.FullInstall);
         parameters.SetAppPackageName(context.PackageName);
