@@ -32,7 +32,7 @@
         primary accent instead. These values match the brand ramp the pages
         already use for their pink accents ({StaticResource AccentPink}).
     -->
-    <Color x:Key="NeonPink">{StaticResource AccentPink}</Color>
+    <Color x:Key="NeonPink">#FF4D8D</Color>
     <Color x:Key="NeonBlue">#8FD8D0</Color>
     <Color x:Key="NeonCyan">#B8E6DF</Color>
     <Color x:Key="NeonAmber">#E8B54A</Color>

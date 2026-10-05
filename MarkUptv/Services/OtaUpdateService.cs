@@ -70,7 +70,7 @@ public sealed class OtaUpdateService
         using (var output = session.OpenWrite("base.apk", 0, input.Length)) input.CopyTo(output);
         var intent = new Intent(context, typeof(OtaInstallReceiver));
         var pending = PendingIntent.GetBroadcast(context, sessionId, intent, PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable);
-        var sender = pending.IntentSender
+        var sender = pending?.IntentSender
             ?? throw new InvalidOperationException("Android OTA install PendingIntent did not provide an IntentSender.");
         session.Commit(sender);
     }
