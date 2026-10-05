@@ -102,6 +102,10 @@ public static class MauiProgram
 
         RegisterMediaElementHandlerMapping();
 
+#if ANDROID
+        MarkUptv.Platforms.AndroidTv.TvFocus.Register();
+#endif
+
         Services.StartupTrace.Mark("service graph registered");
 
         MauiApp app = builder.Build();
