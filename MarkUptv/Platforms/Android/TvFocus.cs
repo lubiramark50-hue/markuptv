@@ -3,7 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Content.Res;
-using Android.Graphics;
+using System.Runtime.CompilerServices;
 using Android.Graphics.Drawables;
 using Android.Views;
 using Microsoft.Maui.Handlers;
@@ -23,6 +23,8 @@ namespace MarkUptv.Platforms.AndroidTv;
 internal static class TvFocus
 {
     private static bool _registered;
+
+    private static readonly ConditionalWeakTable<AView, MauiBorder> Borders = new();
 
     public static bool IsTelevision { get; } = DetectTelevision();
 
@@ -44,7 +46,7 @@ internal static class TvFocus
     {
         try
         {
-            Context context = Application.Context;
+            Context context = Android.App.Application.Context;
 
             UiModeManager? uiMode =
                 context.GetSystemService(Context.UiModeService) as UiModeManager;
@@ -85,14 +87,7 @@ internal static class TvFocus
         native.KeyPress -= OnKeyPress;
         native.KeyPress += OnKeyPress;
 
-        native.Tag = new BorderRef(border);
-    }
-
-    private sealed class BorderRef
-    {
-        public BorderRef(MauiBorder border) => Border = new WeakReference<MauiBorder>(border);
-
-        public WeakReference<MauiBorder> Border { get; }
+        Borders.AddOrUpdate(native, border);
     }
 
     private static void OnFocusChange(object? sender, AView.FocusChangeEventArgs e)
@@ -107,8 +102,8 @@ internal static class TvFocus
             float density = view.Resources?.DisplayMetrics?.Density ?? 1f;
 
             GradientDrawable ring = new();
-            ring.SetColor(Color.Transparent);
-            ring.SetStroke((int)(3 * density), Color.ParseColor("#F2C879"));
+            ring.SetColor(Android.Graphics.Color.Transparent);
+            ring.SetStroke((int)(3 * density), Android.Graphics.Color.ParseColor("#F2C879"));
             ring.SetCornerRadius(16 * density);
 
             view.Foreground = ring;
@@ -139,8 +134,7 @@ internal static class TvFocus
 
         if (!select ||
             sender is not AView view ||
-            view.Tag is not BorderRef reference ||
-            !reference.Border.TryGetTarget(out MauiBorder? border))
+            !Borders.TryGetValue(view, out MauiBorder? border))
         {
             return;
         }
