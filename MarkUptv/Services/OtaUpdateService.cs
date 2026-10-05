@@ -32,9 +32,14 @@ public sealed class OtaUpdateService
     private static int CurrentVersionCode()
     {
 #pragma warning disable CA1422
-        var info = Application.Context.PackageManager?.GetPackageInfo(Application.Context.PackageName!, PackageInfoFlags.MetaData);
+        var info = Android.App.Application.Context.PackageManager?.GetPackageInfo(Android.App.Application.Context.PackageName!, PackageInfoFlags.MetaData);
 #pragma warning restore CA1422
-        return (int)(info?.LongVersionCode ?? 0);
+        if (info is null)
+            return 0;
+
+        return OperatingSystem.IsAndroidVersionAtLeast(28)
+            ? checked((int)info.LongVersionCode)
+            : info.VersionCode;
     }
 
     private static async Task<string?> DownloadAndVerifyAsync(OtaManifest manifest, CancellationToken ct)
@@ -55,7 +60,7 @@ public sealed class OtaUpdateService
 
     private static void Install(string apkPath)
     {
-        var context = Application.Context;
+        var context = Android.App.Application.Context;
         var installer = context.PackageManager!.PackageInstaller;
         var parameters = new PackageInstaller.SessionParams(PackageInstallMode.FullInstall);
         parameters.SetAppPackageName(context.PackageName);
@@ -65,7 +70,9 @@ public sealed class OtaUpdateService
         using (var output = session.OpenWrite("base.apk", 0, input.Length)) input.CopyTo(output);
         var intent = new Intent(context, typeof(OtaInstallReceiver));
         var pending = PendingIntent.GetBroadcast(context, sessionId, intent, PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable);
-        session.Commit(pending.IntentSender);
+        var sender = pending?.IntentSender
+            ?? throw new InvalidOperationException("Android OTA install PendingIntent did not provide an IntentSender.");
+        session.Commit(sender);
     }
 #endif
 

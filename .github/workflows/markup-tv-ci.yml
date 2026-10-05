@@ -1,0 +1,31 @@
+name: MarkUpTV CI
+
+on:
+  push:
+    branches: [ main, "feature/**" ]
+    paths:
+      - "MarkUptv/**"
+      - ".github/workflows/**"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "MarkUptv/**"
+      - ".github/workflows/**"
+
+permissions:
+  contents: read
+
+jobs:
+  android-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Restore MAUI workload
+        run: dotnet workload restore MarkUptv/MarkUptv.csproj
+      - name: Restore
+        run: dotnet restore MarkUptv/MarkUptv.csproj -p:TargetFramework=net10.0-android
+      - name: Build Android (warnings are errors)
+        run: dotnet build MarkUptv/MarkUptv.csproj -c Release -f net10.0-android --no-restore -p:AndroidPackageFormat=apk -p:AndroidKeyStore=false -warnaserror

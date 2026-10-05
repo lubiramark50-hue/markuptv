@@ -31,7 +31,7 @@
 
             <Border Grid.Column="0" WidthRequest="42" HeightRequest="42"
                     StrokeShape="RoundRectangle 21"
-                    Stroke="#1E1E38" BackgroundColor="#0D0D22">
+                    Stroke="#1E1E38" BackgroundColor="{StaticResource DeepVoid}">
                 <Label Text="←" FontSize="20" TextColor="White"
                        HorizontalOptions="Center" VerticalOptions="Center" />
                 <Border.GestureRecognizers>
@@ -47,7 +47,7 @@
 
             <Border Grid.Column="2" WidthRequest="42" HeightRequest="42"
                     StrokeShape="RoundRectangle 21"
-                    Stroke="#1E1E38" BackgroundColor="#0D0D22">
+                    Stroke="#1E1E38" BackgroundColor="{StaticResource DeepVoid}">
                 <Label Text="↻" FontSize="18" TextColor="#8A8A9E"
                        HorizontalOptions="Center" VerticalOptions="Center" />
                 <Border.GestureRecognizers>
@@ -74,7 +74,7 @@
                    VerticalOptions="Center" LineBreakMode="TailTruncation" />
             <Border Grid.Column="1" StrokeShape="RoundRectangle 10"
                     StrokeThickness="0" BackgroundColor="#1A1A38" Padding="12,8">
-                <Label Text="Stop" FontSize="12" TextColor="#FF006E" FontAttributes="Bold" />
+                <Label Text="Stop" FontSize="12" TextColor="{StaticResource AccentPink}" FontAttributes="Bold" />
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding StopPlaybackCommand}" />
                 </Border.GestureRecognizers>
@@ -108,7 +108,7 @@
                     <Border Margin="16,0,16,10"
                             StrokeShape="RoundRectangle 16"
                             StrokeThickness="1" Stroke="#1A1A38"
-                            BackgroundColor="#0D0D22"
+                            BackgroundColor="{StaticResource DeepVoid}"
                             Padding="12">
                         <Grid ColumnDefinitions="74,*,Auto" ColumnSpacing="12">
 
@@ -132,7 +132,7 @@
                             <VerticalStackLayout Grid.Column="2" Spacing="8" VerticalOptions="Center">
                                 <Border StrokeShape="RoundRectangle 10"
                                         StrokeThickness="0"
-                                        BackgroundColor="#FF006E" Padding="12,8">
+                                        BackgroundColor="{StaticResource AccentPink}" Padding="12,8">
                                     <Label Text="▶ Play" FontSize="12"
                                            FontAttributes="Bold" TextColor="White" />
                                     <Border.GestureRecognizers>

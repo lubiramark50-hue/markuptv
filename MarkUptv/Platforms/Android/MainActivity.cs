@@ -11,13 +11,20 @@ namespace MarkUptv
     // the navy flyout. See Platforms/Android/Resources/values/styles.xml.
     [Activity(
         Theme = "@style/MarkUpTV.Theme",
-        MainLauncher = true,
+        Exported = true,
         LaunchMode = LaunchMode.SingleTop,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
     // Deep links (markuptv://payment-success / markuptv://payment-failed) used by
     // the payment flow. Declared here so the merged manifest only ever contains
     // REAL activity classes — hand-written <activity> entries in the manifest with
     // relative ".MainActivity" names expand to a phantom class that breaks launch.
+    [IntentFilter(
+        new[] { Intent.ActionMain },
+        Categories = new[]
+        {
+            Intent.CategoryLauncher,
+            "android.intent.category.LEANBACK_LAUNCHER"
+        })]
     [IntentFilter(
         new[] { Intent.ActionView },
         Categories = new[]

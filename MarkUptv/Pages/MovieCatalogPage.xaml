@@ -28,7 +28,7 @@
             <Setter Property="StrokeShape" Value="RoundRectangle 18" />
             <Setter Property="StrokeThickness" Value="1" />
             <Setter Property="Stroke" Value="#1E1E38" />
-            <Setter Property="BackgroundColor" Value="#0D0D22" />
+            <Setter Property="BackgroundColor" Value="{StaticResource DeepVoid}" />
             <Setter Property="Padding" Value="16,8" />
         </Style>
 
@@ -54,7 +54,7 @@
                     WidthRequest="42" HeightRequest="42"
                     StrokeShape="RoundRectangle 21"
                     Stroke="#1E1E38"
-                    BackgroundColor="#0D0D22">
+                    BackgroundColor="{StaticResource DeepVoid}">
                 <Border.Behaviors>
                     <helpers:TapScaleBehavior />
                 </Border.Behaviors>
@@ -76,14 +76,14 @@
             <Border Grid.Column="2"
                     WidthRequest="42" HeightRequest="42"
                     StrokeShape="RoundRectangle 21"
-                    Stroke="#FF006E"
+                    Stroke="{StaticResource AccentPink}"
                     BackgroundColor="#1AFF4D8D">
                 <Border.Behaviors>
                     <helpers:TapScaleBehavior />
                 </Border.Behaviors>
                 <Path Style="{StaticResource IconPath}"
                       Data="{StaticResource IconDownload}"
-                      Stroke="#FF006E" />
+                      Stroke="{StaticResource AccentPink}" />
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding OpenDownloadsCommand}" />
                 </Border.GestureRecognizers>
@@ -93,7 +93,7 @@
                     WidthRequest="42" HeightRequest="42"
                     StrokeShape="RoundRectangle 21"
                     Stroke="#1E1E38"
-                    BackgroundColor="#0D0D22">
+                    BackgroundColor="{StaticResource DeepVoid}">
                 <Border.Behaviors>
                     <helpers:TapScaleBehavior />
                 </Border.Behaviors>
@@ -113,12 +113,12 @@
                 StrokeShape="RoundRectangle 16"
                 Stroke="#1E1E38"
                 StrokeThickness="1"
-                BackgroundColor="#0D0D22">
+                BackgroundColor="{StaticResource DeepVoid}">
 
             <Grid ColumnDefinitions="Auto,*">
                 <Path Style="{StaticResource IconPath}"
                       Data="{StaticResource IconSearch}"
-                      Stroke="#FF006E"
+                      Stroke="{StaticResource AccentPink}"
                       WidthRequest="20" HeightRequest="20"
                       Margin="0,0,4,0" />
                 <Entry Grid.Column="1"
@@ -174,8 +174,8 @@
                                     <DataTrigger TargetType="Border"
                                                  Binding="{Binding IsSelected}"
                                                  Value="True">
-                                        <Setter Property="BackgroundColor" Value="#FF006E" />
-                                        <Setter Property="Stroke" Value="#FF006E" />
+                                        <Setter Property="BackgroundColor" Value="{StaticResource AccentPink}" />
+                                        <Setter Property="Stroke" Value="{StaticResource AccentPink}" />
                                     </DataTrigger>
                                 </Border.Triggers>
                                 <Label Text="{Binding Label}" FontSize="12" TextColor="#C8D0E0">
@@ -209,7 +209,7 @@
                                          Binding="{Binding IsAllLanguages}"
                                          Value="True">
                                 <Setter Property="BackgroundColor" Value="#1AFF4D8D" />
-                                <Setter Property="Stroke" Value="#FF006E" />
+                                <Setter Property="Stroke" Value="{StaticResource AccentPink}" />
                             </DataTrigger>
                         </Border.Triggers>
                         <Label Text="All languages" FontSize="11" TextColor="#9AA6C0">
@@ -235,7 +235,7 @@
                                                  Binding="{Binding IsSelected}"
                                                  Value="True">
                                         <Setter Property="BackgroundColor" Value="#1AFF4D8D" />
-                                        <Setter Property="Stroke" Value="#FF006E" />
+                                        <Setter Property="Stroke" Value="{StaticResource AccentPink}" />
                                     </DataTrigger>
                                 </Border.Triggers>
                                 <Label Text="{Binding Name}" FontSize="11" TextColor="#9AA6C0">
@@ -261,7 +261,7 @@
 
             <Label Text="{Binding StatusText}"
                    IsVisible="{Binding HasStatus}"
-                   TextColor="#FF006E" FontSize="11" Margin="20,0" />
+                   TextColor="{StaticResource AccentPink}" FontSize="11" Margin="20,0" />
 
         </VerticalStackLayout>
 
@@ -269,7 +269,7 @@
         <RefreshView Grid.Row="4"
                      Command="{Binding RefreshCommand}"
                      IsRefreshing="{Binding IsRefreshing}"
-                     RefreshColor="#FF006E">
+                     RefreshColor="{StaticResource AccentPink}">
 
             <CollectionView ItemsSource="{Binding Movies}"
                             SelectionMode="None"
@@ -291,7 +291,7 @@
                     <VerticalStackLayout Padding="0,10,0,24" Spacing="8">
                         <ActivityIndicator IsRunning="{Binding IsLoadingMore}"
                                            IsVisible="{Binding IsLoadingMore}"
-                                           Color="#FF006E" />
+                                           Color="{StaticResource AccentPink}" />
                         <Label Text="{Binding StorageText}"
                                FontSize="11" TextColor="#5A6A8E"
                                HorizontalOptions="Center" />
@@ -302,13 +302,13 @@
                     <VerticalStackLayout Spacing="14" Padding="0,60">
                         <ActivityIndicator IsRunning="{Binding IsLoading}"
                                            IsVisible="{Binding IsLoading}"
-                                           Color="#FF006E" Scale="1.3" />
+                                           Color="{StaticResource AccentPink}" Scale="1.3" />
                         <controls:EmptyState
                             IsVisible="{Binding ShowEmptyState}"
                             Icon="{StaticResource IconFilm}"
                             Title="No films found"
                             Hint="Try another title, or pick a language shelf above."
-                            Accent="#FF006E"
+                            Accent="{StaticResource AccentPink}"
                             Margin="20,0" />
                     </VerticalStackLayout>
                 </CollectionView.EmptyView>
@@ -318,7 +318,7 @@
                         <Border StrokeShape="RoundRectangle 16"
                                 StrokeThickness="1"
                                 Stroke="#1A1A38"
-                                BackgroundColor="#0D0D22">
+                                BackgroundColor="{StaticResource DeepVoid}">
                             <Border.Behaviors>
                                 <helpers:TapScaleBehavior />
                             </Border.Behaviors>

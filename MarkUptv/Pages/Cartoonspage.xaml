@@ -94,7 +94,7 @@
                 Offset="0.48" />
 
             <GradientStop
-                Color="#FF4D8D"
+                Color="{StaticResource AccentPink}"
                 Offset="1" />
 
         </LinearGradientBrush>

@@ -400,14 +400,15 @@ public partial class MovieCatalogViewModel : BaseViewModel
     [RelayCommand]
     private async Task SelectShelfAsync(string? shelf)
     {
-        if (string.IsNullOrWhiteSpace(shelf) ||
-            string.Equals(SelectedShelf, shelf, StringComparison.Ordinal))
+        if (string.IsNullOrWhiteSpace(shelf))
         {
-            // Re-tapping the active shelf refreshes it.
-            if (!string.Equals(SelectedShelf, shelf, StringComparison.Ordinal))
-            {
-                return;
-            }
+            return;
+        }
+
+        if (string.Equals(SelectedShelf, shelf, StringComparison.Ordinal))
+        {
+            await LoadShelfAsync(reset: true).ConfigureAwait(true);
+            return;
         }
 
         SelectedShelf = shelf;
@@ -418,7 +419,6 @@ public partial class MovieCatalogViewModel : BaseViewModel
         await LoadShelfAsync(reset: true).ConfigureAwait(true);
     }
 
-    /// <summary>Moves the highlight to the active shelf chip.</summary>
     private void SyncShelfSelection()
     {
         foreach (ShelfOption option in Shelves)

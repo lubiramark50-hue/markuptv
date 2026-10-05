@@ -178,7 +178,6 @@ public partial class MainPageViewModel
 
         if (!string.IsNullOrWhiteSpace(item.TargetCategory))
         {
-            string route;
             string accent = "#E8B54A";
             string title = item.Title;
             string cat = item.TargetCategory;
@@ -252,7 +251,7 @@ public partial class MainPageViewModel
                 }
 
                 List<AiChatMessage> responses = _aiTvService.RespondToUser(
-                    userMessage,
+                    userMessage ?? string.Empty,
                     allAvailable,
                     TrendingChannels,
                     RecentlyWatchedChannels,

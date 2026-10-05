@@ -20,7 +20,8 @@ namespace MarkUptv.ViewModels;
 /// </summary>
 public partial class PostDetailViewModel :
     SocialBaseViewModel,
-    IQueryAttributable
+    IQueryAttributable,
+    IDisposable
 {
     private const string WindowsLocalBaseUrl =
         "http://localhost:5293";
@@ -809,7 +810,7 @@ public partial class PostDetailViewModel :
     // ============================================================
 
     partial void OnCommentsChanged(
-        ObservableCollection<UserComment> oldValue,
+        ObservableCollection<UserComment>? oldValue,
         ObservableCollection<UserComment> newValue)
     {
         if (oldValue is not null)
@@ -1174,5 +1175,20 @@ public partial class PostDetailViewModel :
         {
             cancellation.Dispose();
         }
+    }
+
+    public void Dispose()
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        _disposed = true;
+        CancelPendingQueryLoad();
+        Comments.CollectionChanged -= OnCommentsCollectionChanged;
+        PropertyChanged -= OnViewModelPropertyChanged;
+        _commentGate.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

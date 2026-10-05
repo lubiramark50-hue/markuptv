@@ -92,7 +92,7 @@
                                       ShouldAutoPlay="True"
                                       ShouldShowPlaybackControls="True"
                                       ShouldKeepScreenOn="True"
-                                      Aspect="AspectFit"
+                                      Aspect="AspectFill"
                                       IsVisible="{Binding IsVideoVisible}" />
 
                 <WebView x:Name="OfficialView"

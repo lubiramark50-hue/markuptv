@@ -38,7 +38,7 @@
             EndPoint="1,1">
 
             <GradientStop
-                Color="#0B0E1A"
+                Color="{StaticResource DeepVoid}"
                 Offset="0" />
 
             <GradientStop
@@ -130,7 +130,7 @@
             EndPoint="1,1">
 
             <GradientStop
-                Color="#FF4D8D"
+                Color="{StaticResource AccentPink}"
                 Offset="0" />
 
             <GradientStop
@@ -357,7 +357,7 @@
 
         <!-- AI chat modal: inflated on demand (see EnsureAiChatModal in the
              code-behind). Kept out of the eager InitializeComponent pass. -->
-        <DataTemplate x:Key="AiChatModalTemplate">
+        <DataTemplate x:Key="AiChatModalTemplate" x:DataType="vm:MainPageViewModel">
 
         <Border
             x:Name="AiChatModal"
@@ -989,7 +989,9 @@
             RefreshColor="{StaticResource DiamondPink}">
 
             <ScrollView
-                VerticalScrollBarVisibility="Never">
+                VerticalScrollBarVisibility="Never"
+                HorizontalScrollBarVisibility="Never"
+                InputTransparent="False">
 
                 <VerticalStackLayout
                     x:Name="ContentStack"
@@ -3005,7 +3007,7 @@
                                                 Opacity="0.50" />
 
                                             <BoxView
-                                                Color="#0B0E1A"
+                                                Color="{StaticResource DeepVoid}"
                                                 Opacity="0.52" />
 
                                             <VerticalStackLayout

@@ -46,7 +46,7 @@
                         Padding="10,5">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                            <GradientStop Color="#FF006E" Offset="0.0" />
+                            <GradientStop Color="{StaticResource AccentPink}" Offset="0.0" />
                             <GradientStop Color="#8A2BE2" Offset="1.0" />
                         </LinearGradientBrush>
                     </Border.Background>
@@ -134,7 +134,7 @@
                 <Button Text="{Binding PayButtonText, Source={x:Reference Root}}"
                         Command="{Binding PayCommand, Source={x:Reference Root}}"
                         IsEnabled="{Binding IsNotBusy, Source={x:Reference Root}}"
-                        BackgroundColor="#FF006E"
+                        BackgroundColor="{StaticResource AccentPink}"
                         TextColor="White"
                         FontAttributes="Bold"
                         FontSize="15"
@@ -143,7 +143,7 @@
 
                 <ActivityIndicator IsRunning="{Binding IsBusy, Source={x:Reference Root}}"
                                    IsVisible="{Binding IsBusy, Source={x:Reference Root}}"
-                                   Color="#FF006E" />
+                                   Color="{StaticResource AccentPink}" />
 
                 <Label Text="{Binding Message, Source={x:Reference Root}}"
                        IsVisible="{Binding HasMessage, Source={x:Reference Root}}"

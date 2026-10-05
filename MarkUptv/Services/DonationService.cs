@@ -7,14 +7,13 @@ namespace MarkUptv.Services;
 public class DonationService
 {
     private readonly HttpClient _httpClient;
-    private static string BaseUrl => "https://4b2n3k16-7099.usw2.devtunnels.ms/";
 
     public DonationService(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
 
-    public async Task<string?> InitiateDonationAsync(DonationRequest request)
+    public async Task<string?> InitiateDonationAsync(DonationRequest request, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -28,12 +27,12 @@ public class DonationService
                 lastName = request.LastName
             };
 
-            var response = await _httpClient.PostAsJsonAsync($"{BaseUrl}/initiate", payload);
+            var response = await _httpClient.PostAsJsonAsync("initiate", payload, cancellationToken);
             if (!response.IsSuccessStatusCode) return null;
 
-            var json = await response.Content.ReadAsStringAsync();
+            var json = await response.Content.ReadAsStringAsync(cancellationToken);
             using var doc = JsonDocument.Parse(json);
-            return doc.RootElement.GetProperty("redirectUrl").GetString();
+            return doc.RootElement.TryGetProperty("redirectUrl", out var redirect) ? redirect.GetString() : null;
         }
         catch
         {

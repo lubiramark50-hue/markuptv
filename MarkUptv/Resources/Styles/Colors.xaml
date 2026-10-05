@@ -19,22 +19,22 @@
     <Color x:Key="OffBlack">#1f1f1f</Color>
 
     <Color x:Key="DeepVoid">#0B0E1A</Color>
-    <Color x:Key="NightPanel">#121728</Color>
-    <Color x:Key="NightPanelRaised">#1A2138</Color>
+    <Color x:Key="NightPanel">#111827</Color>
+    <Color x:Key="NightPanelRaised">#172033</Color>
     <Color x:Key="GlassPanel">#1AFFFFFF</Color>
-    <Color x:Key="GlassStroke">#2A3450</Color>
+    <Color x:Key="GlassStroke">#3A465F</Color>
     <Color x:Key="TextLight">#EEF3FB</Color>
-    <Color x:Key="TextMuted">#93A0BF</Color>
+    <Color x:Key="TextMuted">#9AA7C2</Color>
     <!--
         Accent ramp. The names must describe the hue they hold: NeonPink used
         to be declared as "the same value as Primary" and NeonBlue as a teal,
         so any screen that asked for a pink accent silently rendered the
         primary accent instead. These values match the brand ramp the pages
-        already use for their pink accents (#FF4D8D).
+        already use for their pink accents ({StaticResource AccentPink}).
     -->
     <Color x:Key="NeonPink">#FF4D8D</Color>
-    <Color x:Key="NeonBlue">#E8B54A</Color>
-    <Color x:Key="NeonCyan">#F2C879</Color>
+    <Color x:Key="NeonBlue">#8FD8D0</Color>
+    <Color x:Key="NeonCyan">#B8E6DF</Color>
     <Color x:Key="NeonAmber">#E8B54A</Color>
     <Color x:Key="SignalGreen">#6DFF8F</Color>
 

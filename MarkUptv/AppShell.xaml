@@ -531,7 +531,7 @@
                                 Aspect="Uniform"
                                 WidthRequest="19"
                                 HeightRequest="19"
-                                Stroke="#0B0E1A"
+                                Stroke="{StaticResource DeepVoid}"
                                 StrokeThickness="2.4"
                                 StrokeLineCap="Round"
                                 StrokeLineJoin="Round"

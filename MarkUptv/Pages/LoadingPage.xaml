@@ -4,10 +4,10 @@
              x:Class="MarkUptv.Pages.LoadingPage"
              Shell.NavBarIsVisible="False"
              Shell.TabBarIsVisible="False"
-             BackgroundColor="#0B0E1A">
+             BackgroundColor="{StaticResource DeepVoid}">
     <ContentPage.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#0B0E1A" Offset="0.0"/>
+            <GradientStop Color="{StaticResource DeepVoid}" Offset="0.0"/>
             <GradientStop Color="#101726" Offset="0.55"/>
             <GradientStop Color="#0D1424" Offset="1.0"/>
         </LinearGradientBrush>
