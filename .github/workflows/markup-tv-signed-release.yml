@@ -10,7 +10,7 @@ on:
       version_code:
         description: Android version code
         required: true
-        default: "3"
+        default: "4"
 
 permissions:
   contents: write
@@ -20,13 +20,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.0.x
-      - name: Restore MAUI workload
-        run: dotnet workload restore MarkUptv/MarkUptv.csproj
+
       - name: Restore
         run: dotnet restore MarkUptv/MarkUptv.csproj -p:TargetFramework=net10.0-android
+
       - name: Decode release keystore
         shell: bash
         env:
@@ -35,14 +36,17 @@ jobs:
           test -n "$KEYSTORE_B64"
           echo "$KEYSTORE_B64" | base64 --decode > "$RUNNER_TEMP/markuptv-release.keystore"
           test -s "$RUNNER_TEMP/markuptv-release.keystore"
+
       - name: Publish unsigned release APK
-        run: >-
-          dotnet publish MarkUptv/MarkUptv.csproj
-          -c Release -f net10.0-android --no-restore
-          -p:AndroidPackageFormat=apk -p:AndroidKeyStore=false
-          -p:ApplicationDisplayVersion=${{ inputs.version_name }}
-          -p:ApplicationVersion=${{ inputs.version_code }}
-          -warnaserror
+        run: |
+          dotnet publish MarkUptv/MarkUptv.csproj \
+            -c Release -f net10.0-android --no-restore \
+            -p:AndroidPackageFormat=apk \
+            -p:AndroidKeyStore=false \
+            -p:ApplicationDisplayVersion=${{ inputs.version_name }} \
+            -p:ApplicationVersion=${{ inputs.version_code }} \
+            -warnaserror
+
       - name: Locate APK
         id: apk
         shell: bash
@@ -50,13 +54,15 @@ jobs:
           APK=$(find MarkUptv/bin/Release/net10.0-android -type f -name '*.apk' | head -n 1)
           test -n "$APK"
           echo "path=$APK" >> "$GITHUB_OUTPUT"
+
       - name: Zipalign
         shell: bash
         run: |
           ZIPALIGN=$(find "$ANDROID_HOME/build-tools" -type f -name zipalign | sort -V | tail -n 1)
           test -x "$ZIPALIGN"
           "$ZIPALIGN" -p -f 4 "${{ steps.apk.outputs.path }}" "$RUNNER_TEMP/MarkUpTV-aligned.apk"
-      - name: Sign APK with release key
+
+      - name: Sign APK
         shell: bash
         env:
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
@@ -66,16 +72,31 @@ jobs:
           test -n "$KEY_ALIAS" && test -n "$STORE_PASSWORD" && test -n "$KEY_PASSWORD"
           APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)
           test -x "$APKSIGNER"
-          "$APKSIGNER" sign --ks "$RUNNER_TEMP/markuptv-release.keystore" --ks-type PKCS12 --ks-key-alias "$KEY_ALIAS" --ks-pass "pass:$STORE_PASSWORD" --key-pass "pass:$KEY_PASSWORD" --out "$RUNNER_TEMP/MarkUpTV-release.apk" "$RUNNER_TEMP/MarkUpTV-aligned.apk"
+          "$APKSIGNER" sign \
+            --ks "$RUNNER_TEMP/markuptv-release.keystore" \
+            --ks-type PKCS12 \
+            --ks-key-alias "$KEY_ALIAS" \
+            --ks-pass "pass:$STORE_PASSWORD" \
+            --key-pass "pass:$KEY_PASSWORD" \
+            --out "$RUNNER_TEMP/MarkUpTV-release.apk" \
+            "$RUNNER_TEMP/MarkUpTV-aligned.apk"
           "$APKSIGNER" verify --verbose "$RUNNER_TEMP/MarkUpTV-release.apk"
+
       - name: Publish signed APK to GitHub Release
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          TAG="v${{ inputs.version_name }}-${{ inputs.version_code }}"
-          gh release create "$TAG" "$RUNNER_TEMP/MarkUpTV-release.apk#MarkUpTV-${{ inputs.version_name }}-${{ inputs.version_code }}.apk" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "MarkUpTV ${{ inputs.version_name }} (${{ inputs.version_code }})" --notes "Signed MarkUpTV Android release." || gh release upload "$TAG" "$RUNNER_TEMP/MarkUpTV-release.apk#MarkUpTV-${{ inputs.version_name }}-${{ inputs.version_code }}.apk" --repo "$GITHUB_REPOSITORY" --clobber
-      - name: Upload signed APK
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version_name }}-${{ inputs.version_code }}
+          name: MarkUpTV ${{ inputs.version_name }} build ${{ inputs.version_code }}
+          target_commitish: ${{ github.sha }}
+          make_latest: true
+          generate_release_notes: false
+          body: |
+            Signed MarkUpTV Android APK.
+            Build: ${{ inputs.version_name }} (${{ inputs.version_code }})
+            Commit: ${{ github.sha }}
+          files: ${{ runner.temp }}/MarkUpTV-release.apk
+
+      - name: Upload signed APK as workflow artifact
         uses: actions/upload-artifact@v4
         with:
           name: MarkUpTV-signed-${{ inputs.version_name }}-${{ inputs.version_code }}
