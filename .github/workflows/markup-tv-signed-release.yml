@@ -10,11 +10,9 @@ on:
       version_code:
         description: Android version code
         required: true
-        default: "5"
-
+        default: "6"
 permissions:
   contents: write
-
 jobs:
   signed-apk:
     runs-on: ubuntu-latest
@@ -41,29 +39,20 @@ jobs:
           STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
-          dotnet publish MarkUptv/MarkUptv.csproj \
-            -c Release -f net10.0-android \
-            -p:AndroidPackageFormat=apk \
-            -p:AndroidKeyStore=true \
-            -p:AndroidSigningKeyStore="$RUNNER_TEMP/markuptv-release.p12" \
-            -p:AndroidSigningStorePass="$STORE_PASSWORD" \
-            -p:AndroidSigningKeyAlias="$KEY_ALIAS" \
-            -p:AndroidSigningKeyPass="$KEY_PASSWORD" \
-            -p:ApplicationDisplayVersion=${{ inputs.version_name }} \
-            -p:ApplicationVersion=${{ inputs.version_code }} \
-            -warnaserror
+          dotnet publish MarkUptv/MarkUptv.csproj             -c Release -f net10.0-android             -p:AndroidPackageFormat=apk             -p:AndroidKeyStore=true             -p:AndroidSigningKeyStore="$RUNNER_TEMP/markuptv-release.p12"             -p:AndroidSigningStorePass="$STORE_PASSWORD"             -p:AndroidSigningKeyAlias="$KEY_ALIAS"             -p:AndroidSigningKeyPass="$KEY_PASSWORD"             -p:ApplicationDisplayVersion=${{ inputs.version_name }}             -p:ApplicationVersion=${{ inputs.version_code }}             -warnaserror
       - name: Locate final APK
-        shell: bash
         run: |
           APK=$(find MarkUptv/bin/Release/net10.0-android -type f -name '*.apk' | head -n 1)
           test -n "$APK"
           cp "$APK" "$RUNNER_TEMP/MarkUpTV-release.apk"
+          test -s "$RUNNER_TEMP/MarkUpTV-release.apk"
       - name: Verify resources.arsc packaging
         shell: bash
         run: |
           python3 - <<'PY'
+          import os
           import zipfile
-          apk = "$RUNNER_TEMP/MarkUpTV-release.apk"
+          apk = os.path.join(os.environ["RUNNER_TEMP"], "MarkUpTV-release.apk")
           with zipfile.ZipFile(apk) as z:
               info = z.getinfo("resources.arsc")
               print("resources.arsc compression:", info.compress_type)
