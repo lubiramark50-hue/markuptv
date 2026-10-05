@@ -66,7 +66,7 @@ jobs:
           test -n "$KEY_ALIAS" && test -n "$STORE_PASSWORD" && test -n "$KEY_PASSWORD"
           APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)
           test -x "$APKSIGNER"
-          "$APKSIGNER" sign --ks "$RUNNER_TEMP/markuptv-release.keystore" --ks-key-alias "$KEY_ALIAS" --ks-pass "pass:$STORE_PASSWORD" --key-pass "pass:$KEY_PASSWORD" --out "$RUNNER_TEMP/MarkUpTV-release.apk" "$RUNNER_TEMP/MarkUpTV-aligned.apk"
+          "$APKSIGNER" sign --ks "$RUNNER_TEMP/markuptv-release.keystore" --ks-type PKCS12 --ks-key-alias "$KEY_ALIAS" --ks-pass "pass:$STORE_PASSWORD" --key-pass "pass:$KEY_PASSWORD" --out "$RUNNER_TEMP/MarkUpTV-release.apk" "$RUNNER_TEMP/MarkUpTV-aligned.apk"
           "$APKSIGNER" verify --verbose "$RUNNER_TEMP/MarkUpTV-release.apk"
       - name: Upload signed APK
         uses: actions/upload-artifact@v4
