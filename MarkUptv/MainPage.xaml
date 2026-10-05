@@ -357,7 +357,7 @@
 
         <!-- AI chat modal: inflated on demand (see EnsureAiChatModal in the
              code-behind). Kept out of the eager InitializeComponent pass. -->
-        <DataTemplate x:Key="AiChatModalTemplate">
+        <DataTemplate x:Key="AiChatModalTemplate" x:DataType="vm:MainPageViewModel">
 
         <Border
             x:Name="AiChatModal"

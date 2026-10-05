@@ -11,6 +11,7 @@ namespace MarkUptv
     // the navy flyout. See Platforms/Android/Resources/values/styles.xml.
     [Activity(
         Theme = "@style/MarkUpTV.Theme",
+        Exported = true,
         LaunchMode = LaunchMode.SingleTop,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
     // Deep links (markuptv://payment-success / markuptv://payment-failed) used by
