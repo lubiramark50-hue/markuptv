@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches: ['ui/**']
+    paths-ignore:
+      - '.ui-shots-trigger'
+      - 'tools/ui-shots.sh'
+      - '.github/workflows/ui-shots.yml'
 
 concurrency:
   group: apk-${{ github.ref }}
