@@ -26,23 +26,37 @@ public partial class Sports : ContentPage
 
     private async void OnAnimatedButtonClicked(object? sender, EventArgs e)
     {
-        if (sender is VisualElement element)
+        try
         {
-            await AnimateElementAsync(element);
+            if (sender is VisualElement element)
+            {
+                await AnimateElementAsync(element);
+            }
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAnimatedButtonClicked: " + exception.Message);
         }
     }
 
     private async void OnChannelCardTapped(object? sender, TappedEventArgs e)
     {
-        if (sender is not VisualElement element ||
-            element.BindingContext is not TvChannel channel)
+        try
         {
-            return;
+            if (sender is not VisualElement element ||
+                element.BindingContext is not TvChannel channel)
+            {
+                return;
+            }
+
+            await AnimateElementAsync(element);
+
+            _viewModel.PlayChannelCommand.Execute(channel);
         }
-
-        await AnimateElementAsync(element);
-
-        _viewModel.PlayChannelCommand.Execute(channel);
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnChannelCardTapped: " + exception.Message);
+        }
     }
 
     private static async Task AnimateElementAsync(VisualElement element)
@@ -69,9 +83,16 @@ public partial class Sports : ContentPage
 
     protected override async void OnAppearing()
     {
-        base.OnAppearing();
-        if (_viewModel.Channels.Count == 0 && !_viewModel.IsLoading)
-            await _viewModel.LoadChannelsCommand.ExecuteAsync(null);
+        try
+        {
+            base.OnAppearing();
+            if (_viewModel.Channels.Count == 0 && !_viewModel.IsLoading)
+                await _viewModel.LoadChannelsCommand.ExecuteAsync(null);
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAppearing: " + exception.Message);
+        }
     }
 
     protected override void OnDisappearing()
@@ -111,10 +132,17 @@ public partial class Sports : ContentPage
 
     private async void OnLogoClicked(object? sender, EventArgs e)
     {
-        if (sender is View view)
+        try
         {
-            await view.ScaleToAsync(1.2, 100, Easing.CubicOut);
-            await view.ScaleToAsync(1.0, 100, Easing.CubicIn);
+            if (sender is View view)
+            {
+                await view.ScaleToAsync(1.2, 100, Easing.CubicOut);
+                await view.ScaleToAsync(1.0, 100, Easing.CubicIn);
+            }
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnLogoClicked: " + exception.Message);
         }
     }
 }
