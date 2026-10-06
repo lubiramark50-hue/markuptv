@@ -289,7 +289,7 @@ public partial class MainPageViewModel
         AiChatMessages.Add(new AiChatMessage
         {
             Role = AiChatMessageRole.Assistant,
-            Text = "Hey there! I'm your MarkUpTV AI assistant ✨\n\nI'll help you find the best stuff to watch. Try asking \"What's on now?\" or tap one of the quick chips below!"
+            Text = "Hi, I'm the MarkUpTV assistant.\n\nI can help you find something to watch. Try asking \"What's on now?\" or tap one of the quick chips below."
         });
     }
 
