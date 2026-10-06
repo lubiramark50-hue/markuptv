@@ -8,14 +8,21 @@
     {
         protected override async void Invoke(VisualElement sender)
         {
-            sender.Scale = 0;
-            sender.Opacity = 0;
-            sender.IsVisible = true;
+            try
+            {
+                sender.Scale = 0;
+                sender.Opacity = 0;
+                sender.IsVisible = true;
 
-            await Task.WhenAll(
-                sender.ScaleToAsync(1.0, 500, Easing.CubicOut),
-                sender.FadeToAsync(1, 400)
-            );
+                await Task.WhenAll(
+                    sender.ScaleToAsync(1.0, 500, Easing.CubicOut),
+                    sender.FadeToAsync(1, 400)
+                );
+            }
+            catch (System.Exception exception)
+            {
+                System.Diagnostics.Debug.WriteLine("MarkUpTV Invoke: " + exception.Message);
+            }
         }
     }
 }
