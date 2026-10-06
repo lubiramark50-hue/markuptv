@@ -23,6 +23,17 @@ public partial class MatchThreadPage : ContentPage
         _viewModel.ReloadCommand.Execute(null);
     }
 
+    private async void OnBackClicked(object? sender, EventArgs e)
+    {
+        try
+        {
+            await Shell.Current.GoToAsync("..");
+        }
+        catch (Exception)
+        {
+        }
+    }
+
     private void OnReactClicked(object? sender, EventArgs e)
     {
         if (sender is BindableObject bindable && bindable.BindingContext is ThreadPost post)
