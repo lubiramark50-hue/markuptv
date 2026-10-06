@@ -30,6 +30,19 @@ for r in $ROUTES; do
   alive || echo "CRASHED on $r" >> "$OUT/_events.txt"
 done
 
+# Real bottom-tab taps (not deep links) plus the flyout drawer
+adb shell am start -a android.intent.action.VIEW -d "markuptv://goto/MainPage" "$PKG" >/dev/null 2>&1
+sleep 9
+for pair in "tab_Sports:324" "tab_News:540" "tab_Movies:756" "tab_Music:972" "tab_Home:108"; do
+  name=${pair%%:*}; x=${pair##*:}
+  adb shell input tap "$x" 2236
+  sleep 6; shot "$name"
+done
+adb shell input swipe 4 1200 760 1200 300
+sleep 3; shot "flyout_open"
+adb shell input keyevent 4
+sleep 2
+
 # Television-sized viewport pass (landscape 1080p)
 adb shell wm size 1920x1080
 adb shell wm density 240
