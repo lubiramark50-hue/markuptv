@@ -47,51 +47,79 @@ public partial class AdultsPage : ContentPage
 
     private async void OnAcceptClicked(object? sender, EventArgs e)
     {
-        if (sender is VisualElement button)
+        try
         {
-            await AnimateTapAsync(button);
-        }
+            if (sender is VisualElement button)
+            {
+                await AnimateTapAsync(button);
+            }
 
-        AdultsAccess.Grant();
-        RefreshGateState();
+            AdultsAccess.Grant();
+            RefreshGateState();
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAcceptClicked: " + exception.Message);
+        }
     }
 
     private async void OnBrowseClicked(object? sender, EventArgs e)
     {
-        if (sender is VisualElement button)
+        try
         {
-            await AnimateTapAsync(button);
-        }
+            if (sender is VisualElement button)
+            {
+                await AnimateTapAsync(button);
+            }
 
-        if (!AdultsAccess.IsGranted)
+            if (!AdultsAccess.IsGranted)
+            {
+                RefreshGateState();
+                return;
+            }
+
+            await Shell.Current.GoToAsync(
+                "CategoryChannelPage?category=adult&title=Adults%2018%2B&accent=%23B31847");
+        }
+        catch (System.Exception exception)
         {
-            RefreshGateState();
-            return;
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnBrowseClicked: " + exception.Message);
         }
-
-        await Shell.Current.GoToAsync(
-            "CategoryChannelPage?category=adult&title=Adults%2018%2B&accent=%23B31847");
     }
 
     private async void OnLockClicked(object? sender, EventArgs e)
     {
-        if (sender is VisualElement button)
+        try
         {
-            await AnimateTapAsync(button);
-        }
+            if (sender is VisualElement button)
+            {
+                await AnimateTapAsync(button);
+            }
 
-        AdultsAccess.Revoke();
-        RefreshGateState();
+            AdultsAccess.Revoke();
+            RefreshGateState();
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnLockClicked: " + exception.Message);
+        }
     }
 
     private async void OnBackClicked(object? sender, EventArgs e)
     {
-        if (sender is VisualElement button)
+        try
         {
-            await AnimateTapAsync(button);
-        }
+            if (sender is VisualElement button)
+            {
+                await AnimateTapAsync(button);
+            }
 
-        await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync("..");
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnBackClicked: " + exception.Message);
+        }
     }
 
     private static async Task AnimateTapAsync(VisualElement element)
