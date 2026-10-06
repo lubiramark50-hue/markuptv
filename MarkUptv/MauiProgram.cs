@@ -262,6 +262,7 @@ public static class MauiProgram
         services.AddSingleton<StatusCacheService>();
         services.AddSingleton<NewsCacheService>();
         services.AddSingleton<ConnectivityService>();
+        services.AddSingleton<OtaUpdateService>();
         services.AddSingleton<AdMobService>();
         services.AddSingleton<RecentlyWatchedService>();
         services.AddSingleton<ChannelCacheService>();
