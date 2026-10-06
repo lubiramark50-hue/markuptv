@@ -51,33 +51,54 @@ public partial class FootballPage : ContentPage
 
     private async void OnFeaturedHeroTapped(object? sender, TappedEventArgs e)
     {
-        if (sender is VisualElement element)
+        try
         {
-            await AnimateElementAsync(element);
-        }
+            if (sender is VisualElement element)
+            {
+                await AnimateElementAsync(element);
+            }
 
-        OnFeaturedWatchClicked(sender, e);
+            OnFeaturedWatchClicked(sender, e);
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnFeaturedHeroTapped: " + exception.Message);
+        }
     }
 
     private async void OnAnimatedButtonClicked(object? sender, EventArgs e)
     {
-        if (sender is VisualElement element)
+        try
         {
-            await AnimateElementAsync(element);
+            if (sender is VisualElement element)
+            {
+                await AnimateElementAsync(element);
+            }
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAnimatedButtonClicked: " + exception.Message);
         }
     }
 
     private async void OnChannelCardTapped(object? sender, TappedEventArgs e)
     {
-        if (sender is not VisualElement element ||
-            element.BindingContext is not TvChannel channel)
+        try
         {
-            return;
+            if (sender is not VisualElement element ||
+                element.BindingContext is not TvChannel channel)
+            {
+                return;
+            }
+
+            await AnimateElementAsync(element);
+
+            _viewModel.PlayChannelCommand.Execute(channel);
         }
-
-        await AnimateElementAsync(element);
-
-        _viewModel.PlayChannelCommand.Execute(channel);
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnChannelCardTapped: " + exception.Message);
+        }
     }
 
     private static async Task AnimateElementAsync(VisualElement element)
@@ -104,18 +125,25 @@ public partial class FootballPage : ContentPage
 
     protected override async void OnAppearing()
     {
-        base.OnAppearing();
-        _viewModel.StartAutoRefresh();
-        if (_viewModel.Channels.Count == 0 && !_viewModel.IsLoading)
+        try
         {
-            await _viewModel.LoadChannelsCommand.ExecuteAsync(null);
+            base.OnAppearing();
+            _viewModel.StartAutoRefresh();
+            if (_viewModel.Channels.Count == 0 && !_viewModel.IsLoading)
+            {
+                await _viewModel.LoadChannelsCommand.ExecuteAsync(null);
+            }
+            else if (_viewModel.LiveMatches.Count == 0)
+            {
+                // Channels came from cache but the live-match board is empty —
+                // pull it right away instead of waiting for the first
+                // auto-refresh tick.
+                await _viewModel.LoadLiveMatchesCommand.ExecuteAsync(null);
+            }
         }
-        else if (_viewModel.LiveMatches.Count == 0)
+        catch (System.Exception exception)
         {
-            // Channels came from cache but the live-match board is empty —
-            // pull it right away instead of waiting for the first
-            // auto-refresh tick.
-            await _viewModel.LoadLiveMatchesCommand.ExecuteAsync(null);
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAppearing: " + exception.Message);
         }
     }
 
@@ -152,10 +180,17 @@ public partial class FootballPage : ContentPage
 
     private async void OnLogoClicked(object? sender, EventArgs e)
     {
-        if (sender is View view)
+        try
         {
-            await view.ScaleToAsync(1.2, 100, Easing.CubicOut);
-            await view.ScaleToAsync(1.0, 100, Easing.CubicIn);
+            if (sender is View view)
+            {
+                await view.ScaleToAsync(1.2, 100, Easing.CubicOut);
+                await view.ScaleToAsync(1.0, 100, Easing.CubicIn);
+            }
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnLogoClicked: " + exception.Message);
         }
     }
 }
