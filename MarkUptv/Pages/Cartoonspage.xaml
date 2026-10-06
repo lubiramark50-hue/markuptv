@@ -684,7 +684,7 @@
                                     Converter={StaticResource InvertBoolConverter}}">
 
                                 <Label
-                                    Text="✦"
+                                    Text="◆"
                                     FontSize="48"
                                     TextColor="#55FFFFFF"
                                     HorizontalOptions="Start"
