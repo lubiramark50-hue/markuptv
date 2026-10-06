@@ -5,6 +5,10 @@ on:
   push:
     branches: ['ui/**']
 
+concurrency:
+  group: apk-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
