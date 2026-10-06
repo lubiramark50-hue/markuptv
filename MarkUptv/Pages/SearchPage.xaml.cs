@@ -194,16 +194,23 @@ public partial class SearchPage :
         object? sender,
         TappedEventArgs e)
     {
-        if (sender is not MauiVisualElement resultCard ||
-            resultCard.BindingContext is not Models.SearchResult result)
+        try
         {
-            return;
+            if (sender is not MauiVisualElement resultCard ||
+                resultCard.BindingContext is not Models.SearchResult result)
+            {
+                return;
+            }
+
+            await AnimateResultCardAsync(
+                resultCard);
+
+            _viewModel.OpenResultCommand.Execute(result);
         }
-
-        await AnimateResultCardAsync(
-            resultCard);
-
-        _viewModel.OpenResultCommand.Execute(result);
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnResultTapped: " + exception.Message);
+        }
     }
 
     private static async Task AnimateResultCardAsync(
