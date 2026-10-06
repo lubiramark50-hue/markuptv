@@ -42,6 +42,10 @@ adb shell input swipe 4 1200 760 1200 300
 sleep 3; shot "flyout_open"
 adb shell input keyevent 4
 sleep 2
+adb shell input keyevent 4
+sleep 4
+shot "after_back_at_root"
+if alive; then echo "BACK_AT_ROOT: process survived" >> "$OUT/_events.txt"; else echo "BACK_AT_ROOT: process died" >> "$OUT/_events.txt"; fi
 
 # Television-sized viewport pass (landscape 1080p)
 adb shell wm size 1920x1080
