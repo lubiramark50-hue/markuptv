@@ -843,7 +843,7 @@
                                             <HorizontalStackLayout Spacing="6">
 
                                                 <Label
-                                                    Text="✦"
+                                                    Text="•"
                                                     FontSize="9"
                                                     TextColor="{StaticResource DiamondGold}"
                                                     VerticalOptions="Center"
@@ -1095,7 +1095,7 @@
                                  notch so most devices still fit on one. -->
 
                             <Label
-                                Text="Welcome to MarkUpTV"
+                                Text="What to watch"
                                 FontSize="{OnIdiom Phone=20,
                                                    Tablet=27,
                                                    Desktop=29,
@@ -1768,7 +1768,7 @@
                                     VerticalOptions="Start" />
 
                                 <Button
-                                    Text="Chat ✦"
+                                    Text="Assistant"
                                     Command="{Binding ToggleChatCommand}"
                                     Clicked="OnAnimatedButtonClicked"
                                     Style="{StaticResource DiamondButtonStyle}" />
@@ -3063,7 +3063,7 @@
                                         TextColor="White" />
 
                                     <Label
-                                        Text="Searching the news universe..."
+                                        Text="Loading news..."
                                         FontSize="10"
                                         TextColor="{StaticResource MutedText}" />
 
