@@ -52,9 +52,16 @@ public partial class MatchThreadPage : ContentPage
 
     private async void OnReportClicked(object? sender, EventArgs e)
     {
-        if (sender is BindableObject bindable && bindable.BindingContext is ThreadPost post)
+        try
         {
-            await _viewModel.ReportCommand.ExecuteAsync(post);
+            if (sender is BindableObject bindable && bindable.BindingContext is ThreadPost post)
+            {
+                await _viewModel.ReportCommand.ExecuteAsync(post);
+            }
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnReportClicked: " + exception.Message);
         }
     }
 }
