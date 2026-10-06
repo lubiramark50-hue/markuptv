@@ -6,7 +6,7 @@ on:
     branches: ['ui/**']
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   apk:
@@ -71,6 +71,18 @@ jobs:
           "$APKSIGNER" verify --print-certs out/MarkUpTV.apk | head -5
           sha256sum out/MarkUpTV.apk
           echo "Signed with: $SIGNER"
+
+      - name: Publish raw APK as prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="apk-test-${{ github.run_number }}"
+          gh release create "$TAG" out/MarkUpTV.apk \
+            --target "${{ github.sha }}" \
+            --prerelease \
+            --title "MarkUpTV test build ${{ github.run_number }}" \
+            --notes "Test build from branch ${{ github.ref_name }}. Signed with: $SIGNER. Not published through OTA."
+          echo "https://github.com/${{ github.repository }}/releases/download/$TAG/MarkUpTV.apk"
 
       - uses: actions/upload-artifact@v4
         with:
