@@ -31,8 +31,15 @@ namespace MarkUptv.Pages
 
         protected override async void OnAppearing()
         {
-            base.OnAppearing();
-            await _viewModel.EnsureLoadedAsync();
+            try
+            {
+                base.OnAppearing();
+                await _viewModel.EnsureLoadedAsync();
+            }
+            catch (System.Exception exception)
+            {
+                System.Diagnostics.Debug.WriteLine("MarkUpTV OnAppearing: " + exception.Message);
+            }
         }
 
         private void OnStreamOpened(object? sender, EventArgs e)
@@ -49,28 +56,42 @@ namespace MarkUptv.Pages
             object? sender,
             TappedEventArgs e)
         {
-            if (sender is not VisualElement element)
+            try
             {
-                return;
+                if (sender is not VisualElement element)
+                {
+                    return;
+                }
+
+                await AnimateCardAsync(element);
+
+                PlayTappedChannel(element);
             }
-
-            await AnimateCardAsync(element);
-
-            PlayTappedChannel(element);
+            catch (System.Exception exception)
+            {
+                System.Diagnostics.Debug.WriteLine("MarkUpTV OnChannelCardTapped: " + exception.Message);
+            }
         }
 
         private async void OnWatchClicked(
             object? sender,
             EventArgs e)
         {
-            if (sender is not VisualElement element)
+            try
             {
-                return;
+                if (sender is not VisualElement element)
+                {
+                    return;
+                }
+
+                await AnimateCardAsync(element);
+
+                PlayTappedChannel(element);
             }
-
-            await AnimateCardAsync(element);
-
-            PlayTappedChannel(element);
+            catch (System.Exception exception)
+            {
+                System.Diagnostics.Debug.WriteLine("MarkUpTV OnWatchClicked: " + exception.Message);
+            }
         }
 
         private void PlayTappedChannel(
