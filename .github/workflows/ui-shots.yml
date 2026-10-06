@@ -1,0 +1,71 @@
+name: UI screenshots (emulator)
+
+on:
+  push:
+    branches: ['ui/**']
+    paths:
+      - '.ui-shots-trigger'
+  workflow_dispatch:
+
+concurrency:
+  group: ui-shots-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  shots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android
+
+      - name: Build debug APK (x86_64 for the emulator)
+        run: |
+          dotnet build MarkUptv/MarkUptv.csproj -c Debug -f net10.0-android \
+            -p:RuntimeIdentifier=android-x64 \
+            -p:EmbedAssembliesIntoApk=true \
+            -p:AndroidPackageFormat=apk
+          APK=$(find MarkUptv/bin/Debug -type f -name '*Signed.apk' | head -n 1)
+          [ -n "$APK" ] || APK=$(find MarkUptv/bin/Debug -type f -name '*.apk' | head -n 1)
+          test -n "$APK"
+          echo "APK_PATH=$GITHUB_WORKSPACE/$APK" >> "$GITHUB_ENV"
+          ls -l "$APK"
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run emulator and capture screenshots
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: default
+          profile: pixel_6
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: bash tools/ui-shots.sh shots
+
+      - name: Publish screenshots as a prerelease
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ls -l shots || true
+          TAG="ui-shots-${{ github.run_number }}"
+          FILES=$(ls shots/* 2>/dev/null | tr '\n' ' ')
+          [ -n "$FILES" ] || { echo "no files"; exit 0; }
+          gh release create "$TAG" $FILES --prerelease --target "${{ github.sha }}" \
+            --title "UI screenshots ${{ github.run_number }}" --notes "Emulator screenshots, debug build."
+          echo "TAG=$TAG"
