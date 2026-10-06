@@ -24,14 +24,21 @@ public partial class MusicPage : ContentPage
 
     protected override async void OnAppearing()
     {
-        base.OnAppearing();
-
-        if (!_entranceAnimationCompleted)
+        try
         {
-            await PlayEntranceAnimationAsync();
-        }
+            base.OnAppearing();
 
-        StartBackgroundAnimation();
+            if (!_entranceAnimationCompleted)
+            {
+                await PlayEntranceAnimationAsync();
+            }
+
+            StartBackgroundAnimation();
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAppearing: " + exception.Message);
+        }
     }
 
     protected override void OnDisappearing()
@@ -100,9 +107,16 @@ public partial class MusicPage : ContentPage
         object? sender,
         EventArgs e)
     {
-        if (sender is VisualElement element)
+        try
         {
-            await AnimateElementAsync(element);
+            if (sender is VisualElement element)
+            {
+                await AnimateElementAsync(element);
+            }
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAnimatedButtonClicked: " + exception.Message);
         }
     }
 
@@ -110,16 +124,23 @@ public partial class MusicPage : ContentPage
         object? sender,
         TappedEventArgs e)
     {
-        if (sender is not VisualElement element ||
-            element.BindingContext is not Models.TvChannel channel ||
-            BindingContext is not ViewModels.MusicViewModel viewModel)
+        try
         {
-            return;
+            if (sender is not VisualElement element ||
+                element.BindingContext is not Models.TvChannel channel ||
+                BindingContext is not ViewModels.MusicViewModel viewModel)
+            {
+                return;
+            }
+
+            await AnimateElementAsync(element);
+
+            viewModel.PlayChannelCommand.Execute(channel);
         }
-
-        await AnimateElementAsync(element);
-
-        viewModel.PlayChannelCommand.Execute(channel);
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnChannelCardTapped: " + exception.Message);
+        }
     }
 
     private static async Task AnimateElementAsync(
@@ -162,26 +183,40 @@ public partial class MusicPage : ContentPage
         object? sender,
         FocusEventArgs e)
     {
-        SearchBorder.Stroke =
-            Color.FromArgb("#80A63CFF");
+        try
+        {
+            SearchBorder.Stroke =
+                Color.FromArgb("#80A63CFF");
 
-        await SearchBorder.ScaleToAsync(
-            1.008,
-            130,
-            Easing.CubicOut);
+            await SearchBorder.ScaleToAsync(
+                1.008,
+                130,
+                Easing.CubicOut);
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnSearchFocused: " + exception.Message);
+        }
     }
 
     private async void OnSearchUnfocused(
         object? sender,
         FocusEventArgs e)
     {
-        await SearchBorder.ScaleToAsync(
-            1,
-            120,
-            Easing.CubicOut);
+        try
+        {
+            await SearchBorder.ScaleToAsync(
+                1,
+                120,
+                Easing.CubicOut);
 
-        SearchBorder.Stroke =
-            Color.FromArgb("#35FFFFFF");
+            SearchBorder.Stroke =
+                Color.FromArgb("#35FFFFFF");
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnSearchUnfocused: " + exception.Message);
+        }
     }
 
     private void StartBackgroundAnimation()
