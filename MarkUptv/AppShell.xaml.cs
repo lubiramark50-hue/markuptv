@@ -78,6 +78,13 @@ public partial class AppShell : Shell
             nameof(MainNewsWebViewPage),
             nameof(WebViewPage),
             nameof(AdultsPage),
+
+            // Tab pages that draw their own header with a drawer button.
+            nameof(MarkUptv.Pages.Sports),
+            nameof(MarkUptv.Pages.News),
+            nameof(MarkUptv.Pages.MoviesPage),
+            nameof(MarkUptv.Pages.MusicPage),
+            nameof(MarkUptv.Pages.FootballPage),
         };
 
     /// <summary>
