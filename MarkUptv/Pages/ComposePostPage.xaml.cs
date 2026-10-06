@@ -259,12 +259,19 @@ public partial class ComposePostPage : ContentPage
         object? sender,
         EventArgs e)
     {
-        if (sender is not VisualElement element)
+        try
         {
-            return;
-        }
+            if (sender is not VisualElement element)
+            {
+                return;
+            }
 
-        await AnimateButtonAsync(element);
+            await AnimateButtonAsync(element);
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAnimatedButtonClicked: " + exception.Message);
+        }
     }
 
     private static async Task AnimateButtonAsync(
@@ -311,32 +318,60 @@ public partial class ComposePostPage : ContentPage
         object? sender,
         FocusEventArgs e)
     {
-        await AnimateInputFocusedAsync(
-            AuthorInputBorder);
+        try
+        {
+            await AnimateInputFocusedAsync(
+                AuthorInputBorder);
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAuthorEntryFocused: " + exception.Message);
+        }
     }
 
     private async void OnAuthorEntryUnfocused(
         object? sender,
         FocusEventArgs e)
     {
-        await AnimateInputUnfocusedAsync(
-            AuthorInputBorder);
+        try
+        {
+            await AnimateInputUnfocusedAsync(
+                AuthorInputBorder);
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAuthorEntryUnfocused: " + exception.Message);
+        }
     }
 
     private async void OnContentEditorFocused(
         object? sender,
         FocusEventArgs e)
     {
-        await AnimateInputFocusedAsync(
-            EditorInputBorder);
+        try
+        {
+            await AnimateInputFocusedAsync(
+                EditorInputBorder);
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnContentEditorFocused: " + exception.Message);
+        }
     }
 
     private async void OnContentEditorUnfocused(
         object? sender,
         FocusEventArgs e)
     {
-        await AnimateInputUnfocusedAsync(
-            EditorInputBorder);
+        try
+        {
+            await AnimateInputUnfocusedAsync(
+                EditorInputBorder);
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnContentEditorUnfocused: " + exception.Message);
+        }
     }
 
     private static async Task AnimateInputFocusedAsync(
