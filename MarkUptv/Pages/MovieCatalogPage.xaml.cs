@@ -26,9 +26,16 @@ public partial class MovieCatalogPage : ContentPage
 
     protected override async void OnAppearing()
     {
-        base.OnAppearing();
+        try
+        {
+            base.OnAppearing();
 
-        await _viewModel.InitializeCommand.ExecuteAsync(null);
+            await _viewModel.InitializeCommand.ExecuteAsync(null);
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAppearing: " + exception.Message);
+        }
     }
 
     /// <summary>Opens the tapped film's detail page.</summary>
