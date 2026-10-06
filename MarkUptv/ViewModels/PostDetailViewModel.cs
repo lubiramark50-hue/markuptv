@@ -33,7 +33,7 @@ public partial class PostDetailViewModel :
      * running MarkUpTvServer when testing on a physical device.
      */
     private const string PhysicalDeviceBaseUrl =
-        "http://192.168.1.25:5293";
+        "http://192.168.1.75:5293";
 
     private readonly IDeviceService _deviceService;
 
@@ -1084,10 +1084,21 @@ public partial class PostDetailViewModel :
 
         if (platform == DevicePlatform.Android)
         {
-            return DeviceInfo.Current.DeviceType ==
-                   DeviceType.Virtual
-                ? AndroidEmulatorBaseUrl
-                : PhysicalDeviceBaseUrl;
+            if (DeviceInfo.Current.DeviceType == DeviceType.Virtual)
+            {
+                return AndroidEmulatorBaseUrl;
+            }
+
+            // Use the address the app already probed and remembered at
+            // startup (BackendEndpointProvider) so this screen talks to the
+            // same server as every other screen.
+            string remembered = Microsoft.Maui.Storage.Preferences.Default.Get(
+                BackendEndpointProvider.PreferenceKey,
+                string.Empty);
+
+            return string.IsNullOrWhiteSpace(remembered)
+                ? PhysicalDeviceBaseUrl
+                : remembered;
         }
 
         if (platform == DevicePlatform.WinUI)
