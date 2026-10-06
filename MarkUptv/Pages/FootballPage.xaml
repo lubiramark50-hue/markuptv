@@ -26,7 +26,7 @@
         <helpers:BoolToNumberConverter
             x:Key="PlayerStageHeight"
             TrueValue="232"
-            FalseValue="150" />
+            FalseValue="240" />
 
         <helpers:StringNullOrEmptyConverter
             x:Key="StringNullOrEmptyConverter" />
