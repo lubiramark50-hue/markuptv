@@ -115,10 +115,10 @@
 
         <Grid x:Name="ChannelPanel" RowDefinitions="Auto,Auto,Auto,*" Margin="0">
             <Grid Grid.Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="12" Margin="0,0,0,12">
-                <Button Grid.Column="0" Text="⟳ REFRESH" 
+                <Button Grid.Column="0" Text="Refresh" 
                         Command="{Binding RefreshStreamCommand}"
                         BackgroundColor="#E8B54A" TextColor="#0B0E1A"
-                        CornerRadius="8" HeightRequest="44" WidthRequest="95"
+                        CornerRadius="22" HeightRequest="44" Padding="18,0"
                         FontSize="13" FontAttributes="Bold" CharacterSpacing="1" />
 
                 <Border Grid.Column="1" BackgroundColor="#1AFFFFFF" StrokeShape="RoundRectangle 8" Stroke="Transparent" HeightRequest="44">
@@ -182,7 +182,7 @@
                             Icon="{StaticResource IconHistory}"
                             Title="No history yet"
                             Hint="Channels you watch will appear here so you can jump straight back in."
-                            Accent="{StaticResource AccentPink}"
+                            Accent="{StaticResource Primary}"
                             ActionText="Refresh"
                             ActionCommand="{Binding RefreshStreamCommand}"
                             Margin="16,24" />
