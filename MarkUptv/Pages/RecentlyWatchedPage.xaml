@@ -65,7 +65,8 @@
 
         <Grid x:Name="PlayerPanel" RowDefinitions="Auto,*" Margin="0,0,0,12">
             <Border Grid.Row="0" BackgroundColor="#1AFFFFFF" StrokeShape="RoundRectangle 8"
-                    Padding="16,10" Stroke="Transparent" Margin="0,0,0,12">
+                    Padding="16,10" Stroke="Transparent" Margin="0,0,0,12"
+                    IsVisible="{Binding IsPlayerVisible}">
                 <Grid ColumnDefinitions="Auto,*">
                     <Ellipse Grid.Column="0" Fill="#E8B54A" WidthRequest="8" HeightRequest="8" 
                              VerticalOptions="Center" Margin="0,0,10,0"
