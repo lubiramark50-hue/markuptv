@@ -6,6 +6,9 @@ on:
     branches: ['ui/**']
     paths-ignore:
       - '.ui-shots-trigger'
+      - '.release-smoke-trigger'
+      - 'tools/release-smoke.sh'
+      - '.github/workflows/release-smoke.yml'
       - 'tools/ui-shots.sh'
       - '.github/workflows/ui-shots.yml'
 
