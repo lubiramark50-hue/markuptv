@@ -33,10 +33,17 @@ public partial class WorldChannelsPage : ContentPage
 
     private async void OnChannelTapped(object? sender, TappedEventArgs e)
     {
-        if (sender is BindableObject bindable &&
-            bindable.BindingContext is LiveSource source)
+        try
         {
-            await _viewModel.OpenChannelAsync(source);
+            if (sender is BindableObject bindable &&
+                bindable.BindingContext is LiveSource source)
+            {
+                await _viewModel.OpenChannelAsync(source);
+            }
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnChannelTapped: " + exception.Message);
         }
     }
 }

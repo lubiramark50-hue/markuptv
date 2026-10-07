@@ -891,7 +891,7 @@
                             StrokeShape="RoundRectangle 14">
 
                             <Label
-                                Text="✦"
+                                Text="◆"
                                 FontSize="19"
                                 TextColor="{StaticResource DiamondBlue}"
                                 HorizontalOptions="Center"

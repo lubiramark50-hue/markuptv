@@ -16,8 +16,15 @@ public partial class SocialPage : ContentPage
 
     protected override async void OnAppearing()
     {
-        base.OnAppearing();
-        await _viewModel.InitializeAsync();
+        try
+        {
+            base.OnAppearing();
+            await _viewModel.InitializeAsync();
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAppearing: " + exception.Message);
+        }
     }
 
     // ─── Card gesture handlers ─────────────────────────────────────────

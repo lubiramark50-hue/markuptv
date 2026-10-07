@@ -54,16 +54,30 @@ namespace MarkUptv.Helpers
 
         private async void OnPointerReleased(object? sender, PointerEventArgs e)
         {
-            if (_view is null)
-                return;
-            await _view.ScaleToAsync(1.0, ReleaseDuration, Easing.SpringOut);
+            try
+            {
+                if (_view is null)
+                    return;
+                await _view.ScaleToAsync(1.0, ReleaseDuration, Easing.SpringOut);
+            }
+            catch (System.Exception exception)
+            {
+                System.Diagnostics.Debug.WriteLine("MarkUpTV OnPointerReleased: " + exception.Message);
+            }
         }
 
         private async void OnPointerExited(object? sender, PointerEventArgs e)
         {
-            if (_view is null)
-                return;
-            await _view.ScaleToAsync(1.0, ReleaseDuration, Easing.CubicOut);
+            try
+            {
+                if (_view is null)
+                    return;
+                await _view.ScaleToAsync(1.0, ReleaseDuration, Easing.CubicOut);
+            }
+            catch (System.Exception exception)
+            {
+                System.Diagnostics.Debug.WriteLine("MarkUpTV OnPointerExited: " + exception.Message);
+            }
         }
     }
 }

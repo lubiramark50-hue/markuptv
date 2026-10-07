@@ -102,6 +102,10 @@ public static class MauiProgram
 
         RegisterMediaElementHandlerMapping();
 
+#if ANDROID
+        MarkUptv.Platforms.AndroidTv.TvFocus.Register();
+#endif
+
         Services.StartupTrace.Mark("service graph registered");
 
         MauiApp app = builder.Build();
@@ -258,6 +262,8 @@ public static class MauiProgram
         services.AddSingleton<StatusCacheService>();
         services.AddSingleton<NewsCacheService>();
         services.AddSingleton<ConnectivityService>();
+        services.AddSingleton<OtaUpdateService>();
+        services.AddSingleton<AppUpdateChecker>();
         services.AddSingleton<AdMobService>();
         services.AddSingleton<RecentlyWatchedService>();
         services.AddSingleton<ChannelCacheService>();

@@ -84,7 +84,7 @@
                 <!-- Two sources per row instead of one per screen; every
                      metadata line the row carried is still rendered. -->
                 <GridItemsLayout Orientation="Vertical"
-                                 Span="{OnIdiom Phone=2, Tablet=4, Desktop=6, TV=6}"
+                                 Span="{OnIdiom Phone=1, Tablet=3, Desktop=4, TV=4}"
                                  HorizontalItemSpacing="10"
                                  VerticalItemSpacing="10" />
 

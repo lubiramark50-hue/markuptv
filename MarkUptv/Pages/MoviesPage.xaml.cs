@@ -114,9 +114,16 @@ public partial class MoviesPage : ContentPage
         object? sender,
         EventArgs e)
     {
-        if (sender is Microsoft.Maui.Controls.VisualElement element)
+        try
         {
-            await AnimateElementAsync(element);
+            if (sender is Microsoft.Maui.Controls.VisualElement element)
+            {
+                await AnimateElementAsync(element);
+            }
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAnimatedButtonClicked: " + exception.Message);
         }
     }
 
@@ -124,16 +131,23 @@ public partial class MoviesPage : ContentPage
         object? sender,
         TappedEventArgs e)
     {
-        if (sender is not Microsoft.Maui.Controls.VisualElement element ||
-            element.BindingContext is not Models.TvChannel channel ||
-            BindingContext is not ViewModels.MoviesViewModel viewModel)
+        try
         {
-            return;
+            if (sender is not Microsoft.Maui.Controls.VisualElement element ||
+                element.BindingContext is not Models.TvChannel channel ||
+                BindingContext is not ViewModels.MoviesViewModel viewModel)
+            {
+                return;
+            }
+
+            await AnimateElementAsync(element);
+
+            viewModel.PlayChannelCommand.Execute(channel);
         }
-
-        await AnimateElementAsync(element);
-
-        viewModel.PlayChannelCommand.Execute(channel);
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnChannelCardTapped: " + exception.Message);
+        }
     }
 
     private static async Task AnimateElementAsync(

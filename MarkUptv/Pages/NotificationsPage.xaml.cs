@@ -14,7 +14,14 @@ public partial class NotificationsPage : ContentPage
 
     protected override async void OnAppearing()
     {
-        base.OnAppearing();
-        await _viewModel.LoadAsync();
+        try
+        {
+            base.OnAppearing();
+            await _viewModel.LoadAsync();
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAppearing: " + exception.Message);
+        }
     }
 }

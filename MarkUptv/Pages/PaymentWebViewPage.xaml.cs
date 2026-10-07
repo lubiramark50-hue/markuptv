@@ -12,10 +12,17 @@ public partial class PaymentWebViewPage : ContentPage
 
     private async void OnWebViewNavigating(object sender, WebNavigatingEventArgs e)
     {
-        if (BindingContext is PaymentWebViewViewModel viewModel)
+        try
         {
-            // Forward raw navigation intercept URL safely to processing view model
-            await viewModel.HandleNavigationUrl(e.Url);
+            if (BindingContext is PaymentWebViewViewModel viewModel)
+            {
+                // Forward raw navigation intercept URL safely to processing view model
+                await viewModel.HandleNavigationUrl(e.Url);
+            }
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnWebViewNavigating: " + exception.Message);
         }
     }
 

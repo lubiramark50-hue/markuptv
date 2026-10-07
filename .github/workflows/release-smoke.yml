@@ -1,0 +1,68 @@
+name: Release smoke test (emulator)
+
+on:
+  push:
+    branches: ['ui/**']
+    paths:
+      - '.release-smoke-trigger'
+
+concurrency:
+  group: release-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android
+
+      - name: Build Release APK (x86_64 for the emulator, same settings as the shipped build)
+        run: |
+          keytool -genkeypair -keystore "$RUNNER_TEMP/smoke.keystore" -storetype PKCS12 \
+            -alias smoke -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass smoke-pass -keypass smoke-pass -dname "CN=smoke"
+          dotnet publish MarkUptv/MarkUptv.csproj -c Release -f net10.0-android \
+            -p:RuntimeIdentifier=android-x64 \
+            -p:AndroidPackageFormat=apk \
+            -p:AndroidKeyStore=true \
+            -p:AndroidSigningKeyStore="$RUNNER_TEMP/smoke.keystore" \
+            -p:AndroidSigningKeyAlias=smoke \
+            -p:AndroidSigningStorePass=smoke-pass \
+            -p:AndroidSigningKeyPass=smoke-pass
+          APK=$(find MarkUptv/bin/Release -type f -name '*Signed.apk' | head -n 1)
+          [ -n "$APK" ] || APK=$(find MarkUptv/bin/Release -type f -name '*.apk' | head -n 1)
+          test -n "$APK"
+          echo "APK_PATH=$GITHUB_WORKSPACE/$APK" >> "$GITHUB_ENV"
+          ls -l "$APK"
+          rm -rf MarkUptv/obj
+          sudo rm -rf /usr/local/share/boost /opt/ghc /usr/share/swift || true
+          df -h / | tail -1
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Launch the Release build on an emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: default
+          profile: pixel_6
+          disk-size: 3072M
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: bash tools/release-smoke.sh

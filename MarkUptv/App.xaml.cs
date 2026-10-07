@@ -306,14 +306,21 @@ public partial class App : Application
 
     protected override async void OnAppLinkRequestReceived(Uri uri)
     {
-        base.OnAppLinkRequestReceived(uri);
-        if (uri.Scheme == "markuptv" && uri.Host == "payment-success")
+        try
         {
-            var status = await _paymentService.GetStatusAsync();
-            if (status?.CanWatch == true)
-                await NavigateSafelyAsync("///MainPage");
-            else
-                await RunAppInitializationLifecycleAsync();
+            base.OnAppLinkRequestReceived(uri);
+            if (uri.Scheme == "markuptv" && uri.Host == "payment-success")
+            {
+                var status = await _paymentService.GetStatusAsync();
+                if (status?.CanWatch == true)
+                    await NavigateSafelyAsync("///MainPage");
+                else
+                    await RunAppInitializationLifecycleAsync();
+            }
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAppLinkRequestReceived: " + exception.Message);
         }
     }
 

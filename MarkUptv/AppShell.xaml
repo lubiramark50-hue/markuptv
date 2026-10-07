@@ -453,7 +453,7 @@
                             TextColor="{StaticResource AuroraBlue}" />
 
                         <Label
-                            Text="Global entertainment universe"
+                            Text="Live TV, sports, movies and music"
                             FontSize="11"
                             TextColor="#C7CDE5" />
 
@@ -494,7 +494,7 @@
                         <Entry
                             Grid.Column="1"
                             Text="{Binding FlyoutSearchText}"
-                            Placeholder="Search the streaming universe..."
+                            Placeholder="Search channels, movies, news"
                             PlaceholderColor="#76809F"
                             TextColor="White"
                             BackgroundColor="Transparent"

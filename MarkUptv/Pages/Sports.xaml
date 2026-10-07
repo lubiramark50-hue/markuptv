@@ -29,7 +29,7 @@
         <helpers:BoolToNumberConverter
             x:Key="PlayerStageHeight"
             TrueValue="232"
-            FalseValue="150" />
+            FalseValue="240" />
 
         <helpers:StringNullOrEmptyConverter
             x:Key="StringNullOrEmptyConverter" />
@@ -862,15 +862,9 @@
                             <CollectionView.EmptyView>
 
                                 <VerticalStackLayout
-                                    Spacing="9"
-                                    Margin="0,50"
+                                    Spacing="8"
+                                    Margin="0,62,0,0"
                                     HorizontalOptions="Center">
-
-                                    <Label
-                                        Text="🏆"
-                                        FontSize="64"
-                                        Opacity="0.7"
-                                        HorizontalOptions="Center" />
 
                                     <Label
                                         Text="No sports channels found"
@@ -883,6 +877,25 @@
                                         Text="Try another search or genre, or refresh the list."
                                         FontSize="11.5"
                                         TextColor="{StaticResource SportsMuted}"
+                                        HorizontalOptions="Center">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding HasError}" Value="True">
+                                                    <Setter Property="IsVisible" Value="False" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    <Button
+                                        Text="Try again"
+                                        Command="{Binding RefreshCommand}"
+                                        IsVisible="{Binding HasError}"
+                                        BackgroundColor="#E8B54A"
+                                        TextColor="#0B0E1A"
+                                        FontAttributes="Bold"
+                                        FontSize="13"
+                                        CornerRadius="21"
+                                        HeightRequest="42"
+                                        Padding="22,0"
+                                        Margin="0,8,0,0"
                                         HorizontalOptions="Center" />
 
                                 </VerticalStackLayout>
@@ -898,13 +911,13 @@
                     <Border
                         Grid.Row="2"
                         Padding="13,9"
-                        Margin="8"
+                        Margin="12,8"
                         BackgroundColor="#D0B3123F"
                         Stroke="#FFFFAEC2"
                         StrokeThickness="1"
                         StrokeShape="RoundRectangle 14"
                         HorizontalOptions="Center"
-                        VerticalOptions="End"
+                        VerticalOptions="Start"
                         IsVisible="{Binding HasError}"
                         ZIndex="25">
 

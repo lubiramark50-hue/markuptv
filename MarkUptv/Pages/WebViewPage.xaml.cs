@@ -356,17 +356,24 @@ public partial class WebViewPage :
         object? sender,
         EventArgs e)
     {
-        await AnimateButtonAsync(sender);
-
-        if (Shell.Current is not null)
+        try
         {
-            await Shell.Current.GoToAsync("..");
-            return;
+            await AnimateButtonAsync(sender);
+
+            if (Shell.Current is not null)
+            {
+                await Shell.Current.GoToAsync("..");
+                return;
+            }
+
+            if (Navigation.NavigationStack.Count > 1)
+            {
+                await Navigation.PopAsync();
+            }
         }
-
-        if (Navigation.NavigationStack.Count > 1)
+        catch (System.Exception exception)
         {
-            await Navigation.PopAsync();
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnCloseClicked: " + exception.Message);
         }
     }
 
@@ -374,17 +381,24 @@ public partial class WebViewPage :
         object? sender,
         EventArgs e)
     {
-        await AnimateButtonAsync(sender);
-
-        if (ContentWebView.CanGoBack)
+        try
         {
-            ContentWebView.GoBack();
-            return;
+            await AnimateButtonAsync(sender);
+
+            if (ContentWebView.CanGoBack)
+            {
+                ContentWebView.GoBack();
+                return;
+            }
+
+            if (Shell.Current is not null)
+            {
+                await Shell.Current.GoToAsync("..");
+            }
         }
-
-        if (Shell.Current is not null)
+        catch (System.Exception exception)
         {
-            await Shell.Current.GoToAsync("..");
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnBackClicked: " + exception.Message);
         }
     }
 
@@ -392,11 +406,18 @@ public partial class WebViewPage :
         object? sender,
         EventArgs e)
     {
-        await AnimateButtonAsync(sender);
-
-        if (ContentWebView.CanGoForward)
+        try
         {
-            ContentWebView.GoForward();
+            await AnimateButtonAsync(sender);
+
+            if (ContentWebView.CanGoForward)
+            {
+                ContentWebView.GoForward();
+            }
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnForwardClicked: " + exception.Message);
         }
     }
 
@@ -404,23 +425,37 @@ public partial class WebViewPage :
         object? sender,
         EventArgs e)
     {
-        await AnimateButtonAsync(sender);
+        try
+        {
+            await AnimateButtonAsync(sender);
 
-        HasError = false;
-        ErrorMessage = string.Empty;
+            HasError = false;
+            ErrorMessage = string.Empty;
 
-        ContentWebView.Reload();
+            ContentWebView.Reload();
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnRefreshClicked: " + exception.Message);
+        }
     }
 
     private async void OnRetryClicked(
         object? sender,
         EventArgs e)
     {
-        await AnimateButtonAsync(sender);
-
-        if (_currentUri is not null)
+        try
         {
-            LoadUri(_currentUri);
+            await AnimateButtonAsync(sender);
+
+            if (_currentUri is not null)
+            {
+                LoadUri(_currentUri);
+            }
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnRetryClicked: " + exception.Message);
         }
     }
 

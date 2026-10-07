@@ -334,9 +334,16 @@ public partial class Cartoonspage : ContentPage
         object? sender,
         EventArgs e)
     {
-        if (sender is VisualElement element)
+        try
         {
-            await AnimatePressAsync(element);
+            if (sender is VisualElement element)
+            {
+                await AnimatePressAsync(element);
+            }
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnAnimatedButtonClicked: " + exception.Message);
         }
     }
 
@@ -344,39 +351,67 @@ public partial class Cartoonspage : ContentPage
         object? sender,
         TappedEventArgs e)
     {
-        if (sender is not VisualElement card ||
-            card.BindingContext is not Models.TvChannel channel)
+        try
         {
-            return;
+            if (sender is not VisualElement card ||
+                card.BindingContext is not Models.TvChannel channel)
+            {
+                return;
+            }
+
+            await AnimateCardAsync(card);
+
+            _viewModel.PlayChannelCommand.Execute(channel);
         }
-
-        await AnimateCardAsync(card);
-
-        _viewModel.PlayChannelCommand.Execute(channel);
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnCartoonCardTapped: " + exception.Message);
+        }
     }
 
     private async void OnMascotTapped(
         object? sender,
         TappedEventArgs e)
     {
-        await AnimateBounceAsync(
-            MascotButton);
+        try
+        {
+            await AnimateBounceAsync(
+                MascotButton);
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnMascotTapped: " + exception.Message);
+        }
     }
 
     private async void OnCrownTapped(
         object? sender,
         TappedEventArgs e)
     {
-        await AnimateSpinAsync(
-            CrownButton);
+        try
+        {
+            await AnimateSpinAsync(
+                CrownButton);
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnCrownTapped: " + exception.Message);
+        }
     }
 
     private async void OnEmptyPlayerTapped(
         object? sender,
         TappedEventArgs e)
     {
-        await AnimateBounceAsync(
-            EmptyPlayerPlayButton);
+        try
+        {
+            await AnimateBounceAsync(
+                EmptyPlayerPlayButton);
+        }
+        catch (System.Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine("MarkUpTV OnEmptyPlayerTapped: " + exception.Message);
+        }
     }
 
     private static async Task AnimatePressAsync(

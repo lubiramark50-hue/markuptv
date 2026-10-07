@@ -1689,7 +1689,7 @@ public partial class MainPageViewModel :
         PrimaryFeatures.Add(
             Feature(
                 "Movies",
-                "Cinema universe",
+                "Films and series",
                 "🎬",
                 "#FF3D6E",
                 route: nameof(MoviesPage)));
@@ -1826,7 +1826,7 @@ public partial class MainPageViewModel :
 
         AddCategory(
             "Science",
-            "Discover the universe",
+            "Science and nature",
             "🔬",
             "#00D6C9",
             "science");

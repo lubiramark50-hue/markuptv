@@ -6,9 +6,16 @@ namespace MarkUptv.Helpers
     {
         protected override async void Invoke(VisualElement sender)
         {
-            await sender.ScaleToAsync(0.8, 100);
-            await sender.ScaleToAsync(1.1, 100);
-            await sender.ScaleToAsync(1.0, 100);
+            try
+            {
+                await sender.ScaleToAsync(0.8, 100);
+                await sender.ScaleToAsync(1.1, 100);
+                await sender.ScaleToAsync(1.0, 100);
+            }
+            catch (System.Exception exception)
+            {
+                System.Diagnostics.Debug.WriteLine("MarkUpTV Invoke: " + exception.Message);
+            }
         }
     }
 }

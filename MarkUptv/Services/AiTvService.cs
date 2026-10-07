@@ -75,7 +75,7 @@ public sealed class AiTvService : IAiTvService
         if (recentList.Count > 0 && _recommendationIndex % 3 == 0)
         {
             pick = recentList[_rng.Next(recentList.Count)];
-            reason = "Based on what you've been watching lately ✨";
+            reason = "Based on what you've been watching lately";
         }
         else if (trendList.Count > 0)
         {
@@ -257,7 +257,7 @@ public sealed class AiTvService : IAiTvService
 
         if (string.IsNullOrWhiteSpace(q))
         {
-            replyText = "Hey there! I'm your MarkUpTV AI assistant ✨ Ask me what's on, or try: \"What's on now?\", \"Recommend a movie\", or \"Show me live sports\".";
+            replyText = "Hi, I'm the MarkUpTV assistant. Ask me what's on, or try: \"What's on now?\", \"Recommend a movie\", or \"Show me live sports\".";
         }
         else if (q.Contains("sport") || q.Contains("football") || q.Contains("live match") || q.Contains("soccer") || q.Contains("game"))
         {
@@ -354,7 +354,7 @@ public sealed class AiTvService : IAiTvService
         {
             AiRecommendedChannel top = PickRecommendation(trendList, recentList, liveMatch, forceRefresh: true);
             replyText = $"Based on {DateTime.Now.Hour:00}:{DateTime.Now.Minute:00} and trending picks, I think you'll love:\n\n" +
-                       $"**✨ {top.Name}**\n{top.Reason}";
+                       $"**{top.Name}**\n{top.Reason}";
             if (top.SourceChannel is not null)
             {
                 recommendations.Add(top.SourceChannel);
@@ -365,12 +365,12 @@ public sealed class AiTvService : IAiTvService
         }
         else if (q.Contains("now") || q.Contains("on tv") || q.Contains("on air") || q.Contains("playing"))
         {
-            replyText = "Here's what's trending right now across the MarkUpTV universe 🌌:";
+            replyText = "Here's what's trending right now on MarkUpTV:";
             recommendations.AddRange(trendList.Take(4));
         }
         else if (q.Contains("hello") || q.Contains("hi") || q.Contains("hey"))
         {
-            replyText = $"Hey! Welcome to MarkUpTV ✨\n\nI can help you find:\n" +
+            replyText = $"Welcome to MarkUpTV\n\nI can help you find:\n" +
                        "• What's live right now\n" +
                        "• Sports, movies, music, news\n" +
                        "• Personalised recommendations\n\n" +

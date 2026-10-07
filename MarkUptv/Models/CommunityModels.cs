@@ -45,6 +45,14 @@ public sealed class ThreadPost
     public int Reactions => ReactedBy.Count;
 
     [JsonIgnore]
+    public string Initial => string.IsNullOrWhiteSpace(Author)
+        ? "?"
+        : char.ToUpperInvariant(Author.Trim()[0]).ToString();
+
+    [JsonIgnore]
+    public bool IsOwn => string.Equals(Author, "You", StringComparison.OrdinalIgnoreCase);
+
+    [JsonIgnore]
     public string TimeAgo => Format(DateTime.UtcNow - CreatedAtUtc);
 
     [JsonIgnore]
