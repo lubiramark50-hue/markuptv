@@ -5,74 +5,124 @@
              xmlns:helpers="clr-namespace:MarkUptv.Helpers"
              x:Class="MarkUptv.Pages.DonationPage"
              x:DataType="vm:DonationViewModel"
-             Title="Donate to MarkUp"
+             Title="Support MarkUp"
              Shell.NavBarIsVisible="True"
-             BackgroundColor="#0F0C29">
+             BackgroundColor="{StaticResource DeepVoid}">
+    <ScrollView>
+        <VerticalStackLayout Padding="20,24,20,32"
+                             Spacing="18"
+                             MaximumWidthRequest="520"
+                             HorizontalOptions="Center">
 
-    <ScrollView Padding="20">
-        <VerticalStackLayout Spacing="16" VerticalOptions="Center" MaximumWidthRequest="500">
+            <VerticalStackLayout Spacing="6">
+                <Label Text="Support MarkUp"
+                       FontSize="26"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Primary}" />
+                <Label Text="Your donation helps keep the channels free for everyone."
+                       FontSize="14"
+                       LineHeight="1.25"
+                       TextColor="{StaticResource TextMuted}" />
+            </VerticalStackLayout>
 
-            <!-- Title -->
-            <Label Text="❤️ Support MarkUp" FontSize="28" FontAttributes="Bold"
-                   TextColor="#FFD700" HorizontalOptions="Center" />
-            <Label Text="Your donation helps us keep the channels free for everyone."
-                   FontSize="14" TextColor="White" HorizontalOptions="Center"
-                   HorizontalTextAlignment="Center" Margin="0,0,0,8" />
+            <Border Padding="18"
+                    BackgroundColor="{StaticResource NightPanel}"
+                    Stroke="{StaticResource GlassStroke}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 20">
+                <VerticalStackLayout Spacing="14">
 
-            <!-- Input Fields -->
-            <Entry Placeholder="Amount (UGX)" Text="{Binding Amount}"
-                   Keyboard="Numeric" BackgroundColor="#1E1E2F" TextColor="White"
-                   PlaceholderColor="#888" FontSize="16" />
-            <Entry Placeholder="Email" Text="{Binding Email}"
-                   Keyboard="Email" BackgroundColor="#1E1E2F" TextColor="White"
-                   PlaceholderColor="#888" FontSize="16" />
-            <Entry Placeholder="Phone Number" Text="{Binding PhoneNumber}"
-                   Keyboard="Telephone" BackgroundColor="#1E1E2F" TextColor="White"
-                   PlaceholderColor="#888" FontSize="16" />
-            <Entry Placeholder="First Name" Text="{Binding FirstName}"
-                   BackgroundColor="#1E1E2F" TextColor="White"
-                   PlaceholderColor="#888" FontSize="16" />
-            <Entry Placeholder="Last Name" Text="{Binding LastName}"
-                   BackgroundColor="#1E1E2F" TextColor="White"
-                   PlaceholderColor="#888" FontSize="16" />
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Amount (UGX)" FontSize="12" TextColor="{StaticResource TextMuted}" />
+                        <Border BackgroundColor="#14FFFFFF" Stroke="{StaticResource GlassStroke}" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="14,0">
+                            <Entry Text="{Binding Amount}" Keyboard="Numeric" Placeholder="5000"
+                                   PlaceholderColor="{StaticResource TextMuted}" TextColor="{StaticResource TextLight}"
+                                   BackgroundColor="Transparent" FontSize="16" HeightRequest="48" />
+                        </Border>
+                    </VerticalStackLayout>
 
-            <!-- Status / Errors -->
-            <Label Text="{Binding StatusMessage}" FontSize="14" TextColor="#BB86FC"
-                   HorizontalOptions="Center" />
-            <Label Text="{Binding ErrorMessage}" FontSize="14" TextColor="#FF6B6B"
-                   HorizontalOptions="Center" IsVisible="{Binding HasError}" />
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Email" FontSize="12" TextColor="{StaticResource TextMuted}" />
+                        <Border BackgroundColor="#14FFFFFF" Stroke="{StaticResource GlassStroke}" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="14,0">
+                            <Entry Text="{Binding Email}" Keyboard="Email" Placeholder="name@example.com"
+                                   PlaceholderColor="{StaticResource TextMuted}" TextColor="{StaticResource TextLight}"
+                                   BackgroundColor="Transparent" FontSize="16" HeightRequest="48" />
+                        </Border>
+                    </VerticalStackLayout>
 
-            <!-- Loading Indicator -->
-            <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}"
-                               Color="#FFD700" HeightRequest="40" />
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Phone number" FontSize="12" TextColor="{StaticResource TextMuted}" />
+                        <Border BackgroundColor="#14FFFFFF" Stroke="{StaticResource GlassStroke}" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="14,0">
+                            <Entry Text="{Binding PhoneNumber}" Keyboard="Telephone" Placeholder="0700000000"
+                                   PlaceholderColor="{StaticResource TextMuted}" TextColor="{StaticResource TextLight}"
+                                   BackgroundColor="Transparent" FontSize="16" HeightRequest="48" />
+                        </Border>
+                    </VerticalStackLayout>
 
-            <!-- Donate Button -->
-            <!-- Donate Button -->
-            <Button Text="Donate Now"
-            Clicked="OnDonateClicked"
-            BackgroundColor="#E63946" TextColor="White"
-            CornerRadius="12" HeightRequest="50"
-            FontSize="18" FontAttributes="Bold">
-                <Button.Triggers>
-                    <EventTrigger Event="Clicked">
-                        <helpers:BounceAnimation />
-                    </EventTrigger>
-                </Button.Triggers>
-            </Button>
-            <ActivityIndicator IsRunning="{Binding Donating}"
-                               IsEnabled="{Binding Donating}"
-                                 IsVisible="{Binding Donating}"
-                               >
-                
-            </ActivityIndicator>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="First name" FontSize="12" TextColor="{StaticResource TextMuted}" />
+                            <Border BackgroundColor="#14FFFFFF" Stroke="{StaticResource GlassStroke}" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="14,0">
+                                <Entry Text="{Binding FirstName}" Placeholder="First"
+                                       PlaceholderColor="{StaticResource TextMuted}" TextColor="{StaticResource TextLight}"
+                                       BackgroundColor="Transparent" FontSize="16" HeightRequest="48" />
+                            </Border>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="Last name" FontSize="12" TextColor="{StaticResource TextMuted}" />
+                            <Border BackgroundColor="#14FFFFFF" Stroke="{StaticResource GlassStroke}" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="14,0">
+                                <Entry Text="{Binding LastName}" Placeholder="Last"
+                                       PlaceholderColor="{StaticResource TextMuted}" TextColor="{StaticResource TextLight}"
+                                       BackgroundColor="Transparent" FontSize="16" HeightRequest="48" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
 
-            <!-- Clear Error -->
-            <Button Text="Clear Error"
-                    Command="{Binding ClearErrorCommand}"
-                    BackgroundColor="#2C2C3E" TextColor="White"
-                    CornerRadius="8" HeightRequest="40"
-                    IsVisible="{Binding HasError}"
-                    FontSize="14" />
+                    <Label Text="{Binding StatusMessage}"
+                           FontSize="13"
+                           TextColor="{StaticResource Primary}"
+                           HorizontalTextAlignment="Center" />
+
+                    <Label Text="{Binding ErrorMessage}"
+                           FontSize="13"
+                           TextColor="#FF8A8A"
+                           HorizontalTextAlignment="Center"
+                           IsVisible="{Binding HasError}" />
+
+                    <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                       IsVisible="{Binding IsLoading}"
+                                       Color="{StaticResource Primary}"
+                                       HeightRequest="32" />
+
+                    <Button Text="Donate now"
+                            Clicked="OnDonateClicked"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="{StaticResource PrimaryDarkText}"
+                            CornerRadius="26"
+                            HeightRequest="52"
+                            FontSize="16"
+                            FontAttributes="Bold">
+                        <Button.Triggers>
+                            <EventTrigger Event="Clicked">
+                                <helpers:BounceAnimation />
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <ActivityIndicator IsRunning="{Binding Donating}"
+                                       IsEnabled="{Binding Donating}"
+                                       IsVisible="{Binding Donating}"
+                                       Color="{StaticResource Primary}" />
+
+                    <Button Text="Clear error"
+                            Command="{Binding ClearErrorCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource TextMuted}"
+                            HeightRequest="40"
+                            FontSize="13"
+                            IsVisible="{Binding HasError}" />
+                </VerticalStackLayout>
+            </Border>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
