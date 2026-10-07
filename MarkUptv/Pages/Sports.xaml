@@ -863,7 +863,7 @@
 
                                 <VerticalStackLayout
                                     Spacing="8"
-                                    Margin="0,50,0,0"
+                                    Margin="0,62,0,0"
                                     HorizontalOptions="Center">
 
                                     <Label
