@@ -863,12 +863,12 @@
 
                                 <VerticalStackLayout
                                     Spacing="9"
-                                    Margin="0,50"
+                                    Margin="0,14"
                                     HorizontalOptions="Center">
 
                                     <Label
                                         Text="🏆"
-                                        FontSize="64"
+                                        FontSize="40"
                                         Opacity="0.7"
                                         HorizontalOptions="Center" />
 
