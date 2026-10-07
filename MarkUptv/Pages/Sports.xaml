@@ -862,15 +862,9 @@
                             <CollectionView.EmptyView>
 
                                 <VerticalStackLayout
-                                    Spacing="9"
-                                    Margin="0,14"
+                                    Spacing="8"
+                                    Margin="0,50,0,0"
                                     HorizontalOptions="Center">
-
-                                    <Label
-                                        Text="🏆"
-                                        FontSize="40"
-                                        Opacity="0.7"
-                                        HorizontalOptions="Center" />
 
                                     <Label
                                         Text="No sports channels found"
@@ -883,7 +877,13 @@
                                         Text="Try another search or genre, or refresh the list."
                                         FontSize="11.5"
                                         TextColor="{StaticResource SportsMuted}"
-                                        HorizontalOptions="Center" />
+                                        HorizontalOptions="Center">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding HasError}" Value="True">
+                                                    <Setter Property="IsVisible" Value="False" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
                                     <Button
                                         Text="Try again"
                                         Command="{Binding RefreshCommand}"
