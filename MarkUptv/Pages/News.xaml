@@ -893,8 +893,8 @@
                             <CollectionView.EmptyView>
 
                                 <VerticalStackLayout
-                                    Spacing="14"
-                                    Margin="0,14"
+                                    Spacing="8"
+                                    Margin="0,50,0,0"
                                     HorizontalOptions="Center">
 
                                     <!-- First-load state: a spinner, never a
@@ -916,12 +916,6 @@
                                         HorizontalOptions="Center">
 
                                     <Label
-                                        Text="📰"
-                                        FontSize="40"
-                                        Opacity="0.7"
-                                        HorizontalOptions="Center" />
-
-                                    <Label
                                         Text="No news channels found"
                                         FontSize="16"
                                         FontAttributes="Bold"
@@ -932,7 +926,13 @@
                                         Text="Try another search or genre, or refresh the list."
                                         FontSize="11.5"
                                         TextColor="{StaticResource NewsMuted}"
-                                        HorizontalOptions="Center" />
+                                        HorizontalOptions="Center">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding HasError}" Value="True">
+                                                    <Setter Property="IsVisible" Value="False" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
 
                                     </VerticalStackLayout>
                                     <Button
