@@ -932,6 +932,19 @@
                                         HorizontalOptions="Center" />
 
                                     </VerticalStackLayout>
+                                    <Button
+                                        Text="Try again"
+                                        Command="{Binding RefreshCommand}"
+                                        IsVisible="{Binding HasError}"
+                                        BackgroundColor="#E8B54A"
+                                        TextColor="#0B0E1A"
+                                        FontAttributes="Bold"
+                                        FontSize="13"
+                                        CornerRadius="21"
+                                        HeightRequest="42"
+                                        Padding="22,0"
+                                        Margin="0,8,0,0"
+                                        HorizontalOptions="Center" />
 
                                 </VerticalStackLayout>
 
@@ -946,13 +959,13 @@
                     <Border
                         Grid.Row="2"
                         Padding="13,9"
-                        Margin="8"
+                        Margin="12,8"
                         BackgroundColor="#D0B3123F"
                         Stroke="#FFFFAEC2"
                         StrokeThickness="1"
                         StrokeShape="RoundRectangle 14"
                         HorizontalOptions="Center"
-                        VerticalOptions="End"
+                        VerticalOptions="Start"
                         IsVisible="{Binding HasError}"
                         ZIndex="25">
 
