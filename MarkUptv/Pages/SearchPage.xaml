@@ -312,7 +312,7 @@
 
                             </Grid>
 
-                            <Entry
+                            <Entry MinimumHeightRequest="48"
                                 x:Name="SearchEntry"
                                 Grid.Column="1"
                                 Text="{Binding SearchText, Mode=TwoWay}"
@@ -444,7 +444,7 @@
 
                 <HorizontalStackLayout Spacing="7">
 
-                    <Button
+                    <Button MinimumHeightRequest="48"
                         Text="{Binding AllCount, StringFormat='All  {0}'}"
                         Style="{StaticResource SearchTabButtonStyle}"
                         Command="{Binding SelectTabCommand}"
@@ -470,7 +470,7 @@
 
                     </Button>
 
-                    <Button
+                    <Button MinimumHeightRequest="48"
                         Text="{Binding ImageCount, StringFormat='Images  {0}'}"
                         Style="{StaticResource SearchTabButtonStyle}"
                         Command="{Binding SelectTabCommand}"
@@ -496,7 +496,7 @@
 
                     </Button>
 
-                    <Button
+                    <Button MinimumHeightRequest="48"
                         Text="{Binding VideoCount, StringFormat='Videos  {0}'}"
                         Style="{StaticResource SearchTabButtonStyle}"
                         Command="{Binding SelectTabCommand}"
@@ -522,7 +522,7 @@
 
                     </Button>
 
-                    <Button
+                    <Button MinimumHeightRequest="48"
                         Text="{Binding ArticleCount, StringFormat='Articles  {0}'}"
                         Style="{StaticResource SearchTabButtonStyle}"
                         Command="{Binding SelectTabCommand}"
@@ -548,7 +548,7 @@
 
                     </Button>
 
-                    <Button
+                    <Button MinimumHeightRequest="48"
                         Text="{Binding WebCount, StringFormat='Web  {0}'}"
                         Style="{StaticResource SearchTabButtonStyle}"
                         Command="{Binding SelectTabCommand}"
