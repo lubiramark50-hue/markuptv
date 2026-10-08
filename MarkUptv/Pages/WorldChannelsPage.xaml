@@ -44,7 +44,7 @@
                     BorderWidth="1"
                     TextColor="#E8B54A"
                     FontSize="12.5"
-                    HeightRequest="42"
+                    HeightRequest="48"
                     VerticalOptions="Center" />
 
         </Grid>
