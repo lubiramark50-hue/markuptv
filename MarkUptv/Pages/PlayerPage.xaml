@@ -183,7 +183,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:StreamCandidate">
 
-                        <Border Padding="12,9"
+                        <Border MinimumHeightRequest="48" Padding="12,9"
                                 BackgroundColor="{StaticResource NightPanel}"
                                 Stroke="{StaticResource GlassStroke}"
                                 StrokeThickness="1"
