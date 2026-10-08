@@ -121,7 +121,7 @@
                       Stroke="#FF006E"
                       WidthRequest="20" HeightRequest="20"
                       Margin="0,0,4,0" />
-                <Entry Grid.Column="1"
+                <Entry MinimumHeightRequest="48" Grid.Column="1"
                        Text="{Binding SearchText}"
                        Placeholder="Search films — title, cast, year…"
                        PlaceholderColor="#817995"
