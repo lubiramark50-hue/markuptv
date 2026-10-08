@@ -838,7 +838,7 @@
 
                         <!-- FEATURED LIVE HERO (spotlight match in play) -->
 
-                        <Border
+                        <Border MinimumHeightRequest="48"
                             Grid.Row="1"
                             Padding="13,11"
                             Background="{StaticResource FootballHeroBrush}"
@@ -1052,7 +1052,7 @@
 
                                 <DataTemplate x:DataType="models:LiveMatch">
 
-                                    <Border
+                                    <Border MinimumHeightRequest="48"
                                         WidthRequest="238"
                                         Padding="13,10"
                                         BackgroundColor="#0C1F14"
@@ -1729,7 +1729,7 @@
 
                                 <DataTemplate x:DataType="models:TvChannel">
 
-                                    <Border
+                                    <Border MinimumHeightRequest="48"
                                         Padding="11"
                                         BackgroundColor="#C80A1C11"
                                         Stroke="#28FFFFFF"
