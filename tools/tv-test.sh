@@ -33,4 +33,16 @@ adb shell uiautomator dump /sdcard/f.xml >/dev/null 2>&1
 adb shell cat /sdcard/f.xml | grep -oE 'text="[^"]+"' | head -12
 echo "TV: error and warning lines:"
 adb logcat -d -v time | grep -E "FATAL EXCEPTION|TV select failed|Unhandled|MarkUpTV.*(W|E)/" | head -12
+echo "TV: BACK test at root"
+adb shell am start -a android.intent.action.VIEW -d "markuptv://goto/MainPage" $PKG >/dev/null 2>&1
+sleep 8
+adb logcat -c
+adb shell input keyevent KEYCODE_BACK
+sleep 5
+echo "TV: after back 1: pid=$(adb shell pidof $PKG | tr -d '\r') top=$(adb shell dumpsys activity activities | grep topResumedActivity | head -1 | tr -d '\r' | cut -c1-110)"
+adb shell input keyevent KEYCODE_BACK
+sleep 6
+echo "TV: after back 2: pid=$(adb shell pidof $PKG | tr -d '\r') top=$(adb shell dumpsys activity activities | grep topResumedActivity | head -1 | tr -d '\r' | cut -c1-110)"
+echo "TV: FATAL count after back presses: $(adb logcat -d -v time | grep -c 'FATAL EXCEPTION')"
+adb logcat -d -v time | grep -E "FATAL EXCEPTION|did not call through" | head -3
 echo "TV: done"
