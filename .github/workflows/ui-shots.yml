@@ -39,6 +39,9 @@ jobs:
           test -n "$APK"
           echo "APK_PATH=$GITHUB_WORKSPACE/$APK" >> "$GITHUB_ENV"
           ls -l "$APK"
+          rm -rf MarkUptv/obj
+          sudo rm -rf /usr/local/share/boost /opt/ghc /usr/share/swift || true
+          df -h / | tail -1
 
       - name: Enable KVM
         run: |
@@ -53,6 +56,7 @@ jobs:
           arch: x86_64
           target: default
           profile: pixel_6
+          disk-size: 3072M
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: bash tools/ui-shots.sh shots
