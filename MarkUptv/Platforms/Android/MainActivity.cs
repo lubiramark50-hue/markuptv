@@ -59,6 +59,8 @@ namespace MarkUptv
         {
             base.OnCreate(savedInstanceState);
 
+            ApplyTelevisionSafeArea();
+
 
             // Cold-start deep links: MAUI does not route custom-view intents for
             // us on every version, so deliver once the shell has booted.
@@ -66,6 +68,41 @@ namespace MarkUptv
             new Handler(Looper.MainLooper!).PostDelayed(
                 () => (App.Current as App)?.HandleAndroidIntent(Intent), 6000);
 #endif
+        }
+
+        /// <summary>
+        /// Android TV guidance: some TVs crop the screen edges, so keep the UI
+        /// inside a 48dp (sides) and 27dp (top and bottom) safe margin. Phones
+        /// and tablets are not touched.
+        /// </summary>
+        private void ApplyTelevisionSafeArea()
+        {
+            try
+            {
+                if (!MarkUptv.Platforms.AndroidTv.TvFocus.IsTelevision)
+                {
+                    return;
+                }
+
+                var content = FindViewById(Android.Resource.Id.Content);
+
+                if (content is null)
+                {
+                    return;
+                }
+
+                float density = Resources?.DisplayMetrics?.Density ?? 1f;
+
+                content.SetPadding(
+                    (int)(48 * density),
+                    (int)(27 * density),
+                    (int)(48 * density),
+                    (int)(27 * density));
+            }
+            catch (System.Exception exception)
+            {
+                Android.Util.Log.Warn("MarkUpTV", "TV safe area failed: " + exception.Message);
+            }
         }
 
         protected override void OnNewIntent(Intent? intent)
