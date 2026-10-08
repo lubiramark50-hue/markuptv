@@ -6,6 +6,11 @@ on:
     branches: ['ui/**']
     paths-ignore:
       - '.ui-shots-trigger'
+      - '.tv-test-trigger'
+      - 'tools/tv-test.sh'
+      - 'tools/tv_focus.py'
+      - 'tools/ui_audit.py'
+      - '.github/workflows/tv-test.yml'
       - '.release-smoke-trigger'
       - 'tools/release-smoke.sh'
       - '.github/workflows/release-smoke.yml'
