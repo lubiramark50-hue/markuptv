@@ -37,8 +37,8 @@
                     BackgroundColor="#0D0D22">
                 <Label Text="🔔" FontSize="17" HorizontalOptions="Center" VerticalOptions="Center" />
             </Border>
-            <Border Grid.Column="2" WidthRequest="42" HeightRequest="42"
-                    StrokeShape="RoundRectangle 21" Stroke="#FF006E"
+            <Border Grid.Column="2" WidthRequest="48" HeightRequest="48"
+                    StrokeShape="RoundRectangle 24" Stroke="#FF006E"
                     BackgroundColor="#1AFF4D8D">
                 <Label Text="✏️" FontSize="17" HorizontalOptions="Center" VerticalOptions="Center" />
                 <Border.Behaviors>
