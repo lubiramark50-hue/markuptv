@@ -371,7 +371,7 @@
             StrokeShape="RoundRectangle 0"
             ZIndex="999">
 
-            <Grid
+            <Grid MinimumHeightRequest="48"
                 RowDefinitions="*,Auto"
                 Margin="{OnIdiom Phone='0',
                                        Tablet='30,25,30,25',
@@ -387,7 +387,7 @@
 
                 <!-- Chat Card -->
 
-                <Border
+                <Border MinimumHeightRequest="48"
                     Grid.RowSpan="2"
                     Margin="0"
                     Padding="0"
@@ -693,7 +693,7 @@
 
                                                             <DataTemplate x:DataType="models:AiRecommendedChannel">
 
-                                                                <Border
+                                                                <Border MinimumHeightRequest="48"
                                                                     Padding="10"
                                                                     BackgroundColor="#18FFFFFF"
                                                                     Stroke="#33FFFFFF"
@@ -822,7 +822,7 @@
 
                                     <DataTemplate x:DataType="x:String">
 
-                                        <Border
+                                        <Border MinimumHeightRequest="48"
                                             Padding="15,8"
                                             BackgroundColor="#22FFFFFF"
                                             Stroke="#3DFFFFFF"
@@ -1397,7 +1397,7 @@
                             <DataTemplate
                                 x:DataType="models:DashboardFeature">
 
-                                <Border
+                                <Border MinimumHeightRequest="48"
                                     FlexLayout.Basis="48%"
                                     HeightRequest="{OnIdiom Phone=122,
                                                             Tablet=127,
@@ -1531,7 +1531,7 @@
 
                     <!-- Featured hero -->
 
-                    <Border
+                    <Border MinimumHeightRequest="48"
                         x:Name="HeroPanel"
                         IsVisible="{Binding HasFeaturedContent}"
                         HeightRequest="{OnIdiom Phone=280,
@@ -1791,7 +1791,7 @@
 
                             <!-- Zone 1: AI Recommendation -->
 
-                            <Border
+                            <Border MinimumHeightRequest="48"
                                 x:Name="AiRecommendationZone"
                                 Grid.Column="0"
                                 Grid.Row="0"
@@ -1995,7 +1995,7 @@
 
                             <!-- Zone 2: Ask AI -->
 
-                            <Border
+                            <Border MinimumHeightRequest="48"
                                 x:Name="AiChatZone"
                                 Grid.Column="{OnIdiom Phone=0, Tablet=1, Desktop=1, TV=1}"
                                 Grid.Row="{OnIdiom Phone=1, Tablet=0, Desktop=0, TV=0}"
@@ -2145,7 +2145,7 @@
 
                                             <DataTemplate x:DataType="models:AiHighlightItem">
 
-                                                <Border
+                                                <Border MinimumHeightRequest="48"
                                                     Padding="10,7"
                                                     BackgroundColor="#10FFFFFF"
                                                     Stroke="Transparent"
@@ -2415,7 +2415,7 @@
                                 <DataTemplate
                                     x:DataType="models:TvChannel">
 
-                                    <Border
+                                    <Border MinimumHeightRequest="48"
                                         WidthRequest="{OnIdiom Phone=166,
                                                                Tablet=181,
                                                                Desktop=193,
@@ -2559,7 +2559,7 @@
                                 <DataTemplate
                                     x:DataType="models:DashboardFeature">
 
-                                    <Border
+                                    <Border MinimumHeightRequest="48"
                                         WidthRequest="{OnIdiom Phone=158,
                                                                Tablet=176,
                                                                Desktop=194,
@@ -2705,7 +2705,7 @@
                                 <DataTemplate
                                     x:DataType="models:TvChannel">
 
-                                    <Border
+                                    <Border MinimumHeightRequest="48"
                                         WidthRequest="185"
                                         Style="{StaticResource DiamondCardStyle}">
 
@@ -2842,7 +2842,7 @@
                                 <DataTemplate
                                     x:DataType="models:SocialPost">
 
-                                    <Border
+                                    <Border MinimumHeightRequest="48"
                                         WidthRequest="{OnIdiom Phone=275,
                                                                Tablet=310,
                                                                Desktop=350,
@@ -3147,7 +3147,7 @@
                                 <DataTemplate
                                     x:DataType="models:NewsArticle">
 
-                                    <Border
+                                    <Border MinimumHeightRequest="48"
                                         Padding="8"
                                         Style="{StaticResource DiamondCardStyle}">
 
