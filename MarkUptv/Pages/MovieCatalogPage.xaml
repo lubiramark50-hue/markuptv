@@ -51,8 +51,8 @@
               ColumnSpacing="10">
 
             <Border Grid.Column="0"
-                    WidthRequest="42" HeightRequest="42"
-                    StrokeShape="RoundRectangle 21"
+                    WidthRequest="48" HeightRequest="48"
+                    StrokeShape="RoundRectangle 24"
                     Stroke="#1E1E38"
                     BackgroundColor="#0D0D22">
                 <Border.Behaviors>
@@ -74,8 +74,8 @@
             </VerticalStackLayout>
 
             <Border Grid.Column="2"
-                    WidthRequest="42" HeightRequest="42"
-                    StrokeShape="RoundRectangle 21"
+                    WidthRequest="48" HeightRequest="48"
+                    StrokeShape="RoundRectangle 24"
                     Stroke="#FF006E"
                     BackgroundColor="#1AFF4D8D">
                 <Border.Behaviors>
@@ -90,8 +90,8 @@
             </Border>
 
             <Border Grid.Column="3"
-                    WidthRequest="42" HeightRequest="42"
-                    StrokeShape="RoundRectangle 21"
+                    WidthRequest="48" HeightRequest="48"
+                    StrokeShape="RoundRectangle 24"
                     Stroke="#1E1E38"
                     BackgroundColor="#0D0D22">
                 <Border.Behaviors>
