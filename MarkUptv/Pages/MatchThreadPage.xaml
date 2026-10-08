@@ -16,8 +16,8 @@
                     Clicked="OnBackClicked"
                     FontSize="26"
                     Padding="0"
-                    WidthRequest="44"
-                    HeightRequest="44"
+                    WidthRequest="48"
+                    HeightRequest="48"
                     CornerRadius="22"
                     BackgroundColor="{StaticResource NightPanel}"
                     BorderColor="{StaticResource GlassStroke}"
@@ -49,7 +49,7 @@
                     FontAttributes="Bold"
                     CornerRadius="21"
                     Padding="16,0"
-                    HeightRequest="42"
+                    HeightRequest="48"
                     VerticalOptions="Center" />
         </Grid>
 
@@ -73,7 +73,7 @@
                         BackgroundColor="Transparent"
                         TextColor="{StaticResource TextMuted}"
                         FontSize="11.5"
-                        HeightRequest="36" />
+                        HeightRequest="48" />
             </Grid>
         </Border>
 
@@ -150,7 +150,7 @@
                                             Padding="14,0"
                                             TextColor="{StaticResource Primary}"
                                             FontSize="12"
-                                            HeightRequest="34" />
+                                            HeightRequest="48" />
                                     <Button Text="{Binding CommentLabel}"
                                             Clicked="OnReplyClicked"
                                             BackgroundColor="Transparent"
@@ -160,14 +160,14 @@
                                             Padding="14,0"
                                             TextColor="{StaticResource TextMuted}"
                                             FontSize="12"
-                                            HeightRequest="34" />
+                                            HeightRequest="48" />
                                     <Button Text="Report"
                                             Clicked="OnReportClicked"
                                             BackgroundColor="Transparent"
                                             Padding="10,0"
                                             TextColor="{StaticResource TextMuted}"
                                             FontSize="11.5"
-                                            HeightRequest="34" />
+                                            HeightRequest="48" />
                                 </HorizontalStackLayout>
                                 <VerticalStackLayout Spacing="4"
                                                      Margin="8,2,0,0"
