@@ -169,7 +169,7 @@
                 <HorizontalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Shelves}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="models:ShelfOption">
-                            <Border Style="{StaticResource ShelfChip}">
+                            <Border MinimumHeightRequest="48" Style="{StaticResource ShelfChip}">
                                 <Border.Triggers>
                                     <DataTrigger TargetType="Border"
                                                  Binding="{Binding IsSelected}"
@@ -203,7 +203,7 @@
                 <HorizontalStackLayout Spacing="8">
 
                     <!-- Clears the language filter; highlighted when nothing is filtered. -->
-                    <Border Style="{StaticResource LanguageChip}">
+                    <Border MinimumHeightRequest="48" Style="{StaticResource LanguageChip}">
                         <Border.Triggers>
                             <DataTrigger TargetType="Border"
                                          Binding="{Binding IsAllLanguages}"
@@ -229,7 +229,7 @@
                     <HorizontalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Languages}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="models:MovieLanguage">
-                            <Border Style="{StaticResource LanguageChip}">
+                            <Border MinimumHeightRequest="48" Style="{StaticResource LanguageChip}">
                                 <Border.Triggers>
                                     <DataTrigger TargetType="Border"
                                                  Binding="{Binding IsSelected}"
@@ -315,7 +315,7 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:MovieCatalogItem">
-                        <Border StrokeShape="RoundRectangle 16"
+                        <Border MinimumHeightRequest="48" StrokeShape="RoundRectangle 16"
                                 StrokeThickness="1"
                                 Stroke="#1A1A38"
                                 BackgroundColor="#0D0D22">
