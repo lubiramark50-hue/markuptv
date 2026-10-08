@@ -280,7 +280,7 @@
                         <Button
                             Text="Try again"
                             Clicked="OnRetryClicked"
-                            HeightRequest="43"
+                            HeightRequest="48"
                             Padding="22,0"
                             CornerRadius="14"
                             BackgroundColor="{StaticResource BrowserPurple}"
