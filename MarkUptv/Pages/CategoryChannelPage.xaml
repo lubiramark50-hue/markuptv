@@ -146,7 +146,7 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:TvChannel">
-                            <Border StrokeShape="RoundRectangle 14" BackgroundColor="#121424" Padding="8" Stroke="#1D2136">
+                            <Border MinimumHeightRequest="48" StrokeShape="RoundRectangle 14" BackgroundColor="#121424" Padding="8" Stroke="#1D2136">
                                 <Border.Behaviors>
                                     <helpers:TapScaleBehavior/>
                                 </Border.Behaviors>
