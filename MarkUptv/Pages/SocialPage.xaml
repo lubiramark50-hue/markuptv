@@ -54,7 +54,7 @@
         <ScrollView Grid.Row="1" Orientation="Horizontal"
                     HorizontalScrollBarVisibility="Never" Margin="0,0,0,8">
             <HorizontalStackLayout Spacing="10" Padding="20,0">
-                <Border StrokeShape="RoundRectangle 20" StrokeThickness="0"
+                <Border MinimumHeightRequest="48" StrokeShape="RoundRectangle 20" StrokeThickness="0"
                         BackgroundColor="#FF006E" Padding="18,9">
                     <Border.Behaviors>
                         <helpers:TapScaleBehavior/>
@@ -65,7 +65,7 @@
                     </Border.GestureRecognizers>
                     <Label Text="🌐  All" FontSize="13" FontAttributes="Bold" TextColor="White" />
                 </Border>
-                <Border StrokeShape="RoundRectangle 20" StrokeThickness="1"
+                <Border MinimumHeightRequest="48" StrokeShape="RoundRectangle 20" StrokeThickness="1"
                         Stroke="#1E1E38" BackgroundColor="#0D0D22" Padding="18,9">
                     <Border.Behaviors>
                         <helpers:TapScaleBehavior/>
@@ -76,7 +76,7 @@
                     </Border.GestureRecognizers>
                     <Label Text="🔥  Trending" FontSize="13" TextColor="#8A8A9E" />
                 </Border>
-                <Border StrokeShape="RoundRectangle 20" StrokeThickness="1"
+                <Border MinimumHeightRequest="48" StrokeShape="RoundRectangle 20" StrokeThickness="1"
                         Stroke="#1E1E38" BackgroundColor="#0D0D22" Padding="18,9">
                     <Border.Behaviors>
                         <helpers:TapScaleBehavior/>
@@ -87,7 +87,7 @@
                     </Border.GestureRecognizers>
                     <Label Text="⚽  Sports" FontSize="13" TextColor="#8A8A9E" />
                 </Border>
-                <Border StrokeShape="RoundRectangle 20" StrokeThickness="1"
+                <Border MinimumHeightRequest="48" StrokeShape="RoundRectangle 20" StrokeThickness="1"
                         Stroke="#1E1E38" BackgroundColor="#0D0D22" Padding="18,9">
                     <Border.Behaviors>
                         <helpers:TapScaleBehavior/>
@@ -98,7 +98,7 @@
                     </Border.GestureRecognizers>
                     <Label Text="📰  News" FontSize="13" TextColor="#8A8A9E" />
                 </Border>
-                <Border StrokeShape="RoundRectangle 20" StrokeThickness="1"
+                <Border MinimumHeightRequest="48" StrokeShape="RoundRectangle 20" StrokeThickness="1"
                         Stroke="#1E1E38" BackgroundColor="#0D0D22" Padding="18,9">
                     <Border.Behaviors>
                         <helpers:TapScaleBehavior/>
@@ -109,7 +109,7 @@
                     </Border.GestureRecognizers>
                     <Label Text="🎬  Movies" FontSize="13" TextColor="#8A8A9E" />
                 </Border>
-                <Border StrokeShape="RoundRectangle 20" StrokeThickness="1"
+                <Border MinimumHeightRequest="48" StrokeShape="RoundRectangle 20" StrokeThickness="1"
                         Stroke="#1E1E38" BackgroundColor="#0D0D22" Padding="18,9">
                     <Border.Behaviors>
                         <helpers:TapScaleBehavior/>
@@ -160,7 +160,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:SocialPost">
                         <VerticalStackLayout Padding="20,0">
-                            <Border Style="{StaticResource PostCard}">
+                            <Border MinimumHeightRequest="48" Style="{StaticResource PostCard}">
                                 <Border.Behaviors>
                                     <helpers:TapScaleBehavior/>
                                 </Border.Behaviors>
@@ -225,7 +225,7 @@
                                     <Grid ColumnDefinitions="*,*,*,Auto" ColumnSpacing="0">
 
                                         <!-- Like -->
-                                        <HorizontalStackLayout Grid.Column="0" Spacing="6">
+                                        <HorizontalStackLayout MinimumHeightRequest="48" Grid.Column="0" Spacing="6">
                                             <Label Text="{Binding LikeIcon}"
                                                    FontSize="16" VerticalOptions="Center" />
                                             <Label Text="{Binding LikesCount}" FontSize="13"
@@ -238,7 +238,7 @@
                                         </HorizontalStackLayout>
 
                                         <!-- Comment -->
-                                        <HorizontalStackLayout Grid.Column="1" Spacing="6">
+                                        <HorizontalStackLayout MinimumHeightRequest="48" Grid.Column="1" Spacing="6">
                                             <Label Text="💬" FontSize="16" VerticalOptions="Center" />
                                             <Label Text="{Binding CommentsCount}" FontSize="13"
                                                    TextColor="#8A8A9E" VerticalOptions="Center" />
@@ -250,7 +250,7 @@
                                         </HorizontalStackLayout>
 
                                         <!-- Share -->
-                                        <HorizontalStackLayout Grid.Column="2" Spacing="6">
+                                        <HorizontalStackLayout MinimumHeightRequest="48" Grid.Column="2" Spacing="6">
                                             <Label Text="↗️" FontSize="16" VerticalOptions="Center" />
                                             <Label Text="Share" FontSize="13"
                                                    TextColor="#8A8A9E" VerticalOptions="Center" />
