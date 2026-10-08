@@ -41,6 +41,8 @@ jobs:
           ls -l "$APK"
           rm -rf MarkUptv/obj
           sudo rm -rf /usr/local/share/boost /opt/ghc /usr/share/swift || true
+          sudo rm -rf /usr/share/dotnet "$HOME/.dotnet" "$HOME/.nuget" /opt/hostedtoolcache /usr/local/.ghcup /opt/az /usr/share/miniconda /opt/microsoft /usr/local/share/powershell || true
+          df -h / | tail -1
           df -h / | tail -1
 
       - name: Enable KVM
