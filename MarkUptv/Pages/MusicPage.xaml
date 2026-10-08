@@ -752,7 +752,7 @@
                                 HorizontalTextAlignment="Center"
                                 VerticalTextAlignment="Center" />
 
-                            <Entry
+                            <Entry MinimumHeightRequest="48"
                                 Grid.Column="1"
                                 Text="{Binding SearchText}"
                                 Placeholder="Search 500+ music channels..."
