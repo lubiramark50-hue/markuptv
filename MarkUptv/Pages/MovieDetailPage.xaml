@@ -124,7 +124,7 @@
                 <Grid Margin="16,0" ColumnDefinitions="*,*" ColumnSpacing="12"
                       IsVisible="{Binding ActionsVisible}">
 
-                    <Border Grid.Column="0" Style="{StaticResource ActionButton}"
+                    <Border MinimumHeightRequest="48" Grid.Column="0" Style="{StaticResource ActionButton}"
                             BackgroundColor="#FF006E">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding PlayCommand}" />
@@ -134,7 +134,7 @@
                                HorizontalOptions="Center" />
                     </Border>
 
-                    <Border Grid.Column="1" Style="{StaticResource ActionButton}"
+                    <Border MinimumHeightRequest="48" Grid.Column="1" Style="{StaticResource ActionButton}"
                             BackgroundColor="#1A1A38">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ToggleDownloadCommand}" />
@@ -146,7 +146,7 @@
 
                 </Grid>
 
-                <Border IsVisible="{Binding IsPlayerVisible}"
+                <Border MinimumHeightRequest="48" IsVisible="{Binding IsPlayerVisible}"
                         Margin="16,0"
                         StrokeShape="RoundRectangle 12"
                         Stroke="#1E1E38" BackgroundColor="#0D0D22"
