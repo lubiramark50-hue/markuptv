@@ -123,7 +123,7 @@
                 <Button Text="📺 Load"
                         Command="{Binding LoadChannelsCommand}"
                         BackgroundColor="#FF6F00" TextColor="White"
-                        CornerRadius="15" HeightRequest="42" WidthRequest="90"
+                        CornerRadius="15" HeightRequest="48" WidthRequest="90"
                         FontSize="16" FontAttributes="Bold" />
                 <SearchBar Placeholder="Find local channels..."
                            Text="{Binding SearchText}"
