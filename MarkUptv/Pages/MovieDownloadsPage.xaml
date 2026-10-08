@@ -72,7 +72,7 @@
             <Label Grid.Column="0" Text="{Binding NowPlaying}"
                    FontSize="12" TextColor="#8A8A9E"
                    VerticalOptions="Center" LineBreakMode="TailTruncation" />
-            <Border Grid.Column="1" StrokeShape="RoundRectangle 10"
+            <Border MinimumHeightRequest="48" Grid.Column="1" StrokeShape="RoundRectangle 10"
                     StrokeThickness="0" BackgroundColor="#1A1A38" Padding="12,8">
                 <Label Text="Stop" FontSize="12" TextColor="#FF006E" FontAttributes="Bold" />
                 <Border.GestureRecognizers>
@@ -130,7 +130,7 @@
                             </VerticalStackLayout>
 
                             <VerticalStackLayout Grid.Column="2" Spacing="8" VerticalOptions="Center">
-                                <Border StrokeShape="RoundRectangle 10"
+                                <Border MinimumHeightRequest="48" StrokeShape="RoundRectangle 10"
                                         StrokeThickness="0"
                                         BackgroundColor="#FF006E" Padding="12,8">
                                     <Label Text="▶ Play" FontSize="12"
@@ -141,7 +141,7 @@
                                     </Border.GestureRecognizers>
                                 </Border>
 
-                                <Border StrokeShape="RoundRectangle 10"
+                                <Border MinimumHeightRequest="48" StrokeShape="RoundRectangle 10"
                                         StrokeThickness="1" Stroke="#3A1A2E"
                                         BackgroundColor="Transparent" Padding="12,8">
                                     <Label Text="Delete" FontSize="12" TextColor="#FF6B9D" />
