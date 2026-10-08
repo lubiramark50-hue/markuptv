@@ -669,7 +669,7 @@
                                                         Spacing="10" 
                                                         HorizontalOptions="End"
                                                         IsVisible="{Binding IsTyping, Converter={StaticResource NotBoolConverter}}">
-                                                        <Button
+                                                        <Button MinimumHeightRequest="48"
                                                             Text="📋"
                                                             FontSize="12"
                                                             HeightRequest="24"
@@ -1237,7 +1237,7 @@
 
                             </Grid>
 
-                            <Entry
+                            <Entry MinimumHeightRequest="48"
                                 Grid.Column="1"
                                 Text="{Binding SearchQueryText}"
                                 Placeholder="Search channels, news, movies and more..."
@@ -1767,7 +1767,7 @@
                                     BorderWidth="1"
                                     VerticalOptions="Start" />
 
-                                <Button
+                                <Button MinimumHeightRequest="48"
                                     Text="Assistant"
                                     Command="{Binding ToggleChatCommand}"
                                     Clicked="OnAnimatedButtonClicked"
@@ -2387,7 +2387,7 @@
 
                             </VerticalStackLayout>
 
-                            <Button
+                            <Button MinimumHeightRequest="48"
                                 Grid.Column="1"
                                 Text="View all"
                                 Command="{Binding GoToAllChannelsCommand}"
@@ -2677,7 +2677,7 @@
 
                             </VerticalStackLayout>
 
-                            <Button
+                            <Button MinimumHeightRequest="48"
                                 Grid.Column="1"
                                 Text="History"
                                 Command="{Binding GoToRecentlyWatchedCommand}"
@@ -2804,14 +2804,14 @@
 
                             </VerticalStackLayout>
 
-                            <Button
+                            <Button MinimumHeightRequest="48"
                                 Grid.Column="1"
                                 Text="New post"
                                 Command="{Binding OpenComposePostCommand}"
                                 Clicked="OnAnimatedButtonClicked"
                                 Style="{StaticResource GlassButtonStyle}" />
 
-                            <Button
+                            <Button MinimumHeightRequest="48"
                                 Grid.Column="2"
                                 Text="Open"
                                 Command="{Binding GoToSocialCommand}"
@@ -3022,7 +3022,7 @@
 
                                 </Border>
 
-                                <Button
+                                <Button MinimumHeightRequest="48"
                                     Text="Refresh"
                                     Command="{Binding RefreshNewsCommand}"
                                     Clicked="OnAnimatedButtonClicked"
@@ -3099,7 +3099,7 @@
                                     TextColor="White"
                                     HorizontalTextAlignment="Center" />
 
-                                <Button
+                                <Button MinimumHeightRequest="48"
                                     Text="Try again"
                                     Command="{Binding RefreshNewsCommand}"
                                     Clicked="OnAnimatedButtonClicked"
@@ -3414,7 +3414,7 @@
 
                         <!-- Load more -->
 
-                        <Button
+                        <Button MinimumHeightRequest="48"
                             Text="Load more stories"
                             Command="{Binding LoadMoreNewsCommand}"
                             Clicked="OnAnimatedButtonClicked"
