@@ -64,7 +64,7 @@
                 <VerticalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Threads}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="models:MatchThread">
-                            <Border Padding="14,12"
+                            <Border MinimumHeightRequest="48" Padding="14,12"
                                     BackgroundColor="{StaticResource NightPanel}"
                                     Stroke="{StaticResource GlassStroke}"
                                     StrokeThickness="1"
