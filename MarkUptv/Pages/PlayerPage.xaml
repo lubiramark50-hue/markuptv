@@ -71,7 +71,7 @@
                         BorderWidth="1"
                         TextColor="{StaticResource TextLight}"
                         FontSize="11.5"
-                        HeightRequest="36"
+                        HeightRequest="48"
                         Padding="10,0" />
 
             </VerticalStackLayout>
