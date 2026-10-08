@@ -62,7 +62,7 @@
                        Placeholder="Search country, channel, language or league"
                        PlaceholderColor="{StaticResource TextMuted}"
                        TextColor="{StaticResource TextLight}"
-                       HeightRequest="46"
+                       HeightRequest="48"
                        FontSize="13.5" />
 
             </Border>
@@ -114,7 +114,7 @@
 
                     <!-- Compact 2-up card: presenter, channel, origin, legality,
                          leagues and access all stay on the card. -->
-                    <Border Margin="0,0,0,10"
+                    <Border MinimumHeightRequest="48" Margin="0,0,0,10"
                             Padding="11,10"
                             BackgroundColor="{StaticResource NightPanel}"
                             Stroke="{StaticResource GlassStroke}"
