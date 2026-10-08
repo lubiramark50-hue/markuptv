@@ -61,6 +61,8 @@ namespace MarkUptv
 
             ApplyTelevisionSafeArea();
 
+            OnBackPressedDispatcher.AddCallback(this, new RootBackCallback(this));
+
 
             // Cold-start deep links: MAUI does not route custom-view intents for
             // us on every version, so deliver once the shell has booted.
@@ -102,6 +104,54 @@ namespace MarkUptv
             catch (System.Exception exception)
             {
                 Android.Util.Log.Warn("MarkUpTV", "TV safe area failed: " + exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Back on a root page used to finish the activity, and finishing it
+        /// crashed the process: Shell tears its fragments down after MAUI has
+        /// already disposed the service provider. At the root this now sends the
+        /// app to the background instead; any other press keeps the default
+        /// handling (close the drawer, pop a page, switch back).
+        /// </summary>
+        private sealed class RootBackCallback : AndroidX.Activity.OnBackPressedCallback
+        {
+            private readonly MainActivity _activity;
+
+            public RootBackCallback(MainActivity activity)
+                : base(true)
+            {
+                _activity = activity;
+            }
+
+            public override void HandleOnBackPressed()
+            {
+                try
+                {
+                    var shell = Microsoft.Maui.Controls.Shell.Current;
+
+                    bool atRoot =
+                        shell is not null &&
+                        !shell.FlyoutIsPresented &&
+                        shell.Navigation.NavigationStack.Count <= 1 &&
+                        shell.Navigation.ModalStack.Count == 0;
+
+                    Android.Util.Log.Info("MarkUpTV", "Back pressed, atRoot=" + atRoot);
+
+                    if (atRoot)
+                    {
+                        _activity.MoveTaskToBack(true);
+                        return;
+                    }
+                }
+                catch (System.Exception exception)
+                {
+                    Android.Util.Log.Warn("MarkUpTV", "Back handling failed: " + exception.Message);
+                }
+
+                Enabled = false;
+                _activity.OnBackPressedDispatcher.OnBackPressed();
+                Enabled = true;
             }
         }
 
