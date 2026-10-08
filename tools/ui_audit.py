@@ -47,6 +47,8 @@ for path in sorted(glob.glob(os.path.join(OUT, "ui_*.xml"))):
     for n in root.iter("node"):
         if n.get("package") != "com.markup.markuptv":
             continue
+        if "RecyclerView" in n.get("class", "") or "ScrollView" in n.get("class", ""):
+            continue
         b = box(n)
         if not b:
             continue
