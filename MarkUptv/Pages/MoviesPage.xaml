@@ -729,7 +729,7 @@
                     <Border
                         x:Name="SearchBorder"
                         Grid.Row="0"
-                        HeightRequest="47"
+                        HeightRequest="48"
                         Padding="8,0"
                         BackgroundColor="#D00A0E22"
                         Stroke="#35FFFFFF"
@@ -934,7 +934,7 @@
                                         FontAttributes="Bold"
                                         FontSize="13"
                                         CornerRadius="21"
-                                        HeightRequest="42"
+                                        HeightRequest="48"
                                         Padding="22,0"
                                         Margin="0,8,0,0"
                                         HorizontalOptions="Center" />
