@@ -1,0 +1,60 @@
+name: Android TV emulator test
+
+on:
+  push:
+    branches: ['ui/**']
+    paths:
+      - '.tv-test-trigger'
+
+concurrency:
+  group: tv-test-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  tv:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android
+
+      - name: Build debug APK (x86 for the TV emulator image)
+        run: |
+          dotnet build MarkUptv/MarkUptv.csproj -c Debug -f net10.0-android \
+            -p:RuntimeIdentifier=android-x86 \
+            -p:EmbedAssembliesIntoApk=true \
+            -p:AndroidPackageFormat=apk
+          APK=$(find MarkUptv/bin/Debug -type f -name '*Signed.apk' | head -n 1)
+          [ -n "$APK" ] || APK=$(find MarkUptv/bin/Debug -type f -name '*.apk' | head -n 1)
+          test -n "$APK"
+          echo "APK_PATH=$GITHUB_WORKSPACE/$APK" >> "$GITHUB_ENV"
+          ls -l "$APK"
+          rm -rf MarkUptv/obj
+          sudo rm -rf /usr/local/share/boost /opt/ghc /usr/share/swift || true
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run on an Android TV emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86
+          target: android-tv
+          profile: tv_1080p
+          disk-size: 3072M
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          script: bash tools/tv-test.sh
