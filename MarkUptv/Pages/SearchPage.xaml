@@ -660,7 +660,7 @@
 
                     <DataTemplate x:DataType="models:SearchResult">
 
-                        <Border
+                        <Border MinimumHeightRequest="48"
                             Style="{StaticResource SearchResultCardStyle}">
 
                             <Border.Behaviors>
