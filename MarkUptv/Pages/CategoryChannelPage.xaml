@@ -167,7 +167,7 @@
                                             <Label Text="{Binding CurrentProgrammeTitle}" FontSize="10.5" TextColor="#8B95A6" MaxLines="1" LineBreakMode="TailTruncation" IsVisible="{Binding CurrentProgrammeTitle, Converter={StaticResource IsNotNullConverter}}"/>
                                         </VerticalStackLayout>
 
-                                        <Button Grid.Column="1" Text="▶" TextColor="#0B1024" BackgroundColor="#E8B54A" HeightRequest="30" WidthRequest="30" CornerRadius="15" FontSize="11" Padding="0" VerticalOptions="Center" Clicked="OnWatchClicked" SemanticProperties.Description="Watch this channel">
+                                        <Button Grid.Column="1" Text="▶" TextColor="#0B1024" BackgroundColor="#E8B54A" HeightRequest="48" WidthRequest="48" CornerRadius="15" FontSize="11" Padding="0" VerticalOptions="Center" Clicked="OnWatchClicked" SemanticProperties.Description="Watch this channel">
                                             <Button.Triggers>
                                                 <EventTrigger Event="Clicked">
                                                     <helpers:BounceAnimation/>
