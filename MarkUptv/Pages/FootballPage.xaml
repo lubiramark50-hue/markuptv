@@ -1002,7 +1002,7 @@
                                 <Button
                                     Grid.Column="3"
                                     Text="▶ WATCH"
-                                    HeightRequest="38"
+                                    HeightRequest="48"
                                     Padding="15,0"
                                     CornerRadius="12"
                                     FontSize="10.5"
@@ -1532,7 +1532,7 @@
 
                                                                     <Button
                                                                         Text="▶ WATCH"
-                                                                        HeightRequest="34"
+                                                                        HeightRequest="48"
                                                                         Padding="14,0"
                                                                         CornerRadius="11"
                                                                         FontSize="10"
@@ -1593,7 +1593,7 @@
                     <Border
                         x:Name="SearchBorder"
                         Grid.Row="1"
-                        HeightRequest="47"
+                        HeightRequest="48"
                         Padding="8,0"
                         BackgroundColor="#D00A1420"
                         Stroke="#35FFFFFF"
@@ -1927,7 +1927,7 @@
                                             <Button
                                                 Grid.Column="2"
                                                 Text="WATCH"
-                                                HeightRequest="36"
+                                                HeightRequest="48"
                                                 Padding="14,0"
                                                 CornerRadius="12"
                                                 FontSize="10.5"
