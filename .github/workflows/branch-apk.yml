@@ -68,7 +68,7 @@ jobs:
             -p:ApplicationVersion=${{ github.run_number }} \
             -p:ApplicationDisplayVersion=1.1.${{ github.run_number }} \
             -p:AndroidPackageFormat=apk \
-            -p:AndroidSupportedAbis="armeabi-v7a%3Barm64-v8a" \
+            -p:RuntimeIdentifier=android-arm \
             -p:AndroidKeyStore=true \
             -p:AndroidSigningKeyStore="$RUNNER_TEMP/markuptv.keystore" \
             -p:AndroidSigningKeyAlias="$KS_ALIAS" \
@@ -96,13 +96,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           TAG="apk-compat-${{ github.run_number }}"
-          cp out/MarkUpTV.apk out/MarkUpTV-compat.apk
-          gh release create "$TAG" out/MarkUpTV-compat.apk \
+          cp out/MarkUpTV.apk out/MarkUpTV-arm32.apk
+          gh release create "$TAG" out/MarkUpTV-arm32.apk \
             --target "${{ github.sha }}" \
             --prerelease \
             --title "MarkUpTV test build ${{ github.run_number }}" \
             --notes "Test build from branch ${{ github.ref_name }}. Signed with: $SIGNER. Not published through OTA."
-          echo "https://github.com/${{ github.repository }}/releases/download/$TAG/MarkUpTV-compat.apk"
+          echo "https://github.com/${{ github.repository }}/releases/download/$TAG/MarkUpTV-arm32.apk"
 
       - uses: actions/upload-artifact@v4
         with:
