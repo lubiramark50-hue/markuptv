@@ -68,7 +68,7 @@ jobs:
             -p:ApplicationVersion=${{ github.run_number }} \
             -p:ApplicationDisplayVersion=1.1.${{ github.run_number }} \
             -p:AndroidPackageFormat=apk \
-            -p:RuntimeIdentifiers=android-arm%3Bandroid-arm64 \
+            -p:AndroidSupportedAbis="armeabi-v7a%3Barm64-v8a" \
             -p:AndroidKeyStore=true \
             -p:AndroidSigningKeyStore="$RUNNER_TEMP/markuptv.keystore" \
             -p:AndroidSigningKeyAlias="$KS_ALIAS" \
