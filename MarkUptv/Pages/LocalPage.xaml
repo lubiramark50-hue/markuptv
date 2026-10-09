@@ -119,9 +119,8 @@
 
         <!-- ==================== CHANNEL LIST ==================== -->
         <Grid x:Name="ChannelPanel" RowDefinitions="Auto,Auto,Auto,*" Margin="0,8,0,0">
-            <HorizontalStackLayout Grid.Row="0" Spacing="6" Margin="0,0,0,6">
-                <Button Text="📺 Load"
-                        Command="{Binding LoadChannelsCommand}"
+            <Grid Grid.Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="6" Margin="0,0,0,6">
+                <Button Text="⟳ SYNC" Command="{Binding LoadChannelsCommand}"
                         BackgroundColor="#FF6F00" TextColor="White"
                         CornerRadius="15" HeightRequest="48" WidthRequest="90"
                         FontSize="16" FontAttributes="Bold" />
@@ -129,8 +128,8 @@
                            Text="{Binding SearchText}"
                            BackgroundColor="#283593" TextColor="White"
                            PlaceholderColor="#AAA" CancelButtonColor="#FFAB00"
-                           FlexLayout.Grow="1" />
-            </HorizontalStackLayout>
+                           Grid.Column="1" HeightRequest="48" />
+            </Grid>
 
             <CollectionView Grid.Row="1" ItemsSource="{Binding Groups}"
                             SelectionMode="Single"
@@ -190,7 +189,7 @@
             </RefreshView>
 
             <Label Grid.Row="3" Text="{Binding ErrorMessage}" TextColor="White"
-                   BackgroundColor="#FF0000" Padding="6"
+                   BackgroundColor="#2A1520" Padding="12,10"
                    IsVisible="{Binding HasError}" HorizontalOptions="Center"
                    VerticalOptions="End" Margin="0,4" FontAttributes="Bold" />
         </Grid>
