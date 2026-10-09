@@ -12,7 +12,7 @@ adb shell settings put global transition_animation_scale 0 || true
 adb shell settings put global animator_duration_scale 0 || true
 adb install -r -g "$APK" || { echo "INSTALL FAILED" > "$OUT/_install_failed.txt"; exit 0; }
 
-shot() { adb exec-out screencap -p > "$OUT/$1.png"; }
+shot() { adb exec-out screencap -p > "$OUT/$1.png"; adb shell uiautomator dump /sdcard/u.xml >/dev/null 2>&1; adb pull /sdcard/u.xml "$OUT/ui_$1.xml" >/dev/null 2>&1; }
 alive() { [ -n "$(adb shell pidof $PKG | tr -d '\r')" ]; }
 
 adb logcat -c
@@ -60,4 +60,9 @@ adb shell wm density reset
 
 adb logcat -d -v time > "$OUT/_logcat_full.txt" 2>&1
 grep -E "AndroidRuntime|FATAL|ANR|MarkUpTV|mono-rt|Unhandled" "$OUT/_logcat_full.txt" | tail -300 > "$OUT/_logcat_filtered.txt"
+python3 tools/ui_audit.py "$OUT" || true
+echo "=== EVENTS"; cat "$OUT/_events.txt" 2>/dev/null
+echo "=== FIRST FATAL"; grep -n -m1 -A14 "FATAL EXCEPTION" "$OUT/_logcat_full.txt"
+echo "=== APP ERRORS"; grep -E "MarkUpTV|Unhandled|Unable to resolve|Exception" "$OUT/_logcat_filtered.txt" | head -30
+echo "=== FOREGROUND"; adb shell dumpsys activity activities | grep -E "topResumedActivity" | head -1
 echo done > "$OUT/_done.txt"

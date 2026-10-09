@@ -118,7 +118,7 @@
                 <Button Grid.Column="0" Text="Refresh" 
                         Command="{Binding RefreshStreamCommand}"
                         BackgroundColor="#E8B54A" TextColor="#0B0E1A"
-                        CornerRadius="22" HeightRequest="44" Padding="18,0"
+                        CornerRadius="22" HeightRequest="48" Padding="18,0"
                         FontSize="13" FontAttributes="Bold" CharacterSpacing="1" />
 
                 <Border Grid.Column="1" BackgroundColor="#1AFFFFFF" StrokeShape="RoundRectangle 8" Stroke="Transparent" HeightRequest="44">

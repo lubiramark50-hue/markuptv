@@ -51,8 +51,8 @@
               ColumnSpacing="10">
 
             <Border Grid.Column="0"
-                    WidthRequest="42" HeightRequest="42"
-                    StrokeShape="RoundRectangle 21"
+                    WidthRequest="48" HeightRequest="48"
+                    StrokeShape="RoundRectangle 24"
                     Stroke="#1E1E38"
                     BackgroundColor="#0D0D22">
                 <Border.Behaviors>
@@ -74,8 +74,8 @@
             </VerticalStackLayout>
 
             <Border Grid.Column="2"
-                    WidthRequest="42" HeightRequest="42"
-                    StrokeShape="RoundRectangle 21"
+                    WidthRequest="48" HeightRequest="48"
+                    StrokeShape="RoundRectangle 24"
                     Stroke="#FF006E"
                     BackgroundColor="#1AFF4D8D">
                 <Border.Behaviors>
@@ -90,8 +90,8 @@
             </Border>
 
             <Border Grid.Column="3"
-                    WidthRequest="42" HeightRequest="42"
-                    StrokeShape="RoundRectangle 21"
+                    WidthRequest="48" HeightRequest="48"
+                    StrokeShape="RoundRectangle 24"
                     Stroke="#1E1E38"
                     BackgroundColor="#0D0D22">
                 <Border.Behaviors>
@@ -121,7 +121,7 @@
                       Stroke="#FF006E"
                       WidthRequest="20" HeightRequest="20"
                       Margin="0,0,4,0" />
-                <Entry Grid.Column="1"
+                <Entry MinimumHeightRequest="48" Grid.Column="1"
                        Text="{Binding SearchText}"
                        Placeholder="Search films — title, cast, year…"
                        PlaceholderColor="#817995"
@@ -169,7 +169,7 @@
                 <HorizontalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Shelves}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="models:ShelfOption">
-                            <Border Style="{StaticResource ShelfChip}">
+                            <Border MinimumHeightRequest="48" Style="{StaticResource ShelfChip}">
                                 <Border.Triggers>
                                     <DataTrigger TargetType="Border"
                                                  Binding="{Binding IsSelected}"
@@ -203,7 +203,7 @@
                 <HorizontalStackLayout Spacing="8">
 
                     <!-- Clears the language filter; highlighted when nothing is filtered. -->
-                    <Border Style="{StaticResource LanguageChip}">
+                    <Border MinimumHeightRequest="48" Style="{StaticResource LanguageChip}">
                         <Border.Triggers>
                             <DataTrigger TargetType="Border"
                                          Binding="{Binding IsAllLanguages}"
@@ -229,7 +229,7 @@
                     <HorizontalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Languages}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="models:MovieLanguage">
-                            <Border Style="{StaticResource LanguageChip}">
+                            <Border MinimumHeightRequest="48" Style="{StaticResource LanguageChip}">
                                 <Border.Triggers>
                                     <DataTrigger TargetType="Border"
                                                  Binding="{Binding IsSelected}"
@@ -315,7 +315,7 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:MovieCatalogItem">
-                        <Border StrokeShape="RoundRectangle 16"
+                        <Border MinimumHeightRequest="48" StrokeShape="RoundRectangle 16"
                                 StrokeThickness="1"
                                 Stroke="#1A1A38"
                                 BackgroundColor="#0D0D22">

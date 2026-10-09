@@ -18,7 +18,7 @@
         <!-- Top bar -->
         <Grid Grid.Row="0" Padding="10,12" ColumnDefinitions="Auto,*,Auto"
               ColumnSpacing="10" BackgroundColor="#0D1222">
-            <Border Grid.Column="0" WidthRequest="42" HeightRequest="42"
+            <Border Grid.Column="0" WidthRequest="48" HeightRequest="48"
                     BackgroundColor="#1AFFFFFF" Stroke="#30FFFFFF" StrokeThickness="1"
                     StrokeShape="RoundRectangle 13" HorizontalOptions="Start">
                 <Border.Behaviors>
@@ -35,7 +35,7 @@
                    FontSize="15" FontAttributes="Bold" TextColor="White"
                    VerticalOptions="Center" MaxLines="1" LineBreakMode="TailTruncation" />
 
-            <Border Grid.Column="2" WidthRequest="42" HeightRequest="42"
+            <Border Grid.Column="2" WidthRequest="48" HeightRequest="48"
                     BackgroundColor="#1AFFFFFF" Stroke="#30FFFFFF" StrokeThickness="1"
                     StrokeShape="RoundRectangle 13">
                 <Border.Behaviors>

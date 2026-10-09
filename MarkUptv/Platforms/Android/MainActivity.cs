@@ -59,6 +59,10 @@ namespace MarkUptv
         {
             base.OnCreate(savedInstanceState);
 
+            ApplyTelevisionSafeArea();
+
+            OnBackPressedDispatcher.AddCallback(this, new RootBackCallback(this));
+
 
             // Cold-start deep links: MAUI does not route custom-view intents for
             // us on every version, so deliver once the shell has booted.
@@ -66,6 +70,89 @@ namespace MarkUptv
             new Handler(Looper.MainLooper!).PostDelayed(
                 () => (App.Current as App)?.HandleAndroidIntent(Intent), 6000);
 #endif
+        }
+
+        /// <summary>
+        /// Android TV guidance: some TVs crop the screen edges, so keep the UI
+        /// inside a 48dp (sides) and 27dp (top and bottom) safe margin. Phones
+        /// and tablets are not touched.
+        /// </summary>
+        private void ApplyTelevisionSafeArea()
+        {
+            try
+            {
+                if (!MarkUptv.Platforms.AndroidTv.TvFocus.IsTelevision)
+                {
+                    return;
+                }
+
+                var content = FindViewById(Android.Resource.Id.Content);
+
+                if (content is null)
+                {
+                    return;
+                }
+
+                float density = Resources?.DisplayMetrics?.Density ?? 1f;
+
+                content.SetPadding(
+                    (int)(48 * density),
+                    (int)(27 * density),
+                    (int)(48 * density),
+                    (int)(27 * density));
+            }
+            catch (System.Exception exception)
+            {
+                Android.Util.Log.Warn("MarkUpTV", "TV safe area failed: " + exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Back on a root page used to finish the activity, and finishing it
+        /// crashed the process: Shell tears its fragments down after MAUI has
+        /// already disposed the service provider. At the root this now sends the
+        /// app to the background instead; any other press keeps the default
+        /// handling (close the drawer, pop a page, switch back).
+        /// </summary>
+        private sealed class RootBackCallback : AndroidX.Activity.OnBackPressedCallback
+        {
+            private readonly MainActivity _activity;
+
+            public RootBackCallback(MainActivity activity)
+                : base(true)
+            {
+                _activity = activity;
+            }
+
+            public override void HandleOnBackPressed()
+            {
+                try
+                {
+                    var shell = Microsoft.Maui.Controls.Shell.Current;
+
+                    bool atRoot =
+                        shell is not null &&
+                        !shell.FlyoutIsPresented &&
+                        shell.Navigation.NavigationStack.Count <= 1 &&
+                        shell.Navigation.ModalStack.Count == 0;
+
+                    Android.Util.Log.Info("MarkUpTV", "Back pressed, atRoot=" + atRoot);
+
+                    if (atRoot)
+                    {
+                        _activity.MoveTaskToBack(true);
+                        return;
+                    }
+                }
+                catch (System.Exception exception)
+                {
+                    Android.Util.Log.Warn("MarkUpTV", "Back handling failed: " + exception.Message);
+                }
+
+                Enabled = false;
+                _activity.OnBackPressedDispatcher.OnBackPressed();
+                Enabled = true;
+            }
         }
 
         protected override void OnNewIntent(Intent? intent)

@@ -195,8 +195,8 @@
                 Text="←"
                 Command="{Binding GoBackCommand}"
                 Clicked="OnAnimatedButtonClicked"
-                WidthRequest="46"
-                HeightRequest="46"
+                WidthRequest="48"
+                HeightRequest="48"
                 Padding="0"
                 CornerRadius="15"
                 FontSize="22"
@@ -312,7 +312,7 @@
 
                             </Grid>
 
-                            <Entry
+                            <Entry MinimumHeightRequest="48"
                                 x:Name="SearchEntry"
                                 Grid.Column="1"
                                 Text="{Binding SearchText, Mode=TwoWay}"
@@ -336,8 +336,8 @@
                                 Text="×"
                                 Command="{Binding ClearSearchCommand}"
                                 Clicked="OnAnimatedButtonClicked"
-                                WidthRequest="40"
-                                HeightRequest="40"
+                                WidthRequest="48"
+                                HeightRequest="48"
                                 Padding="0"
                                 CornerRadius="12"
                                 FontSize="18"
@@ -444,7 +444,7 @@
 
                 <HorizontalStackLayout Spacing="7">
 
-                    <Button
+                    <Button MinimumHeightRequest="48"
                         Text="{Binding AllCount, StringFormat='All  {0}'}"
                         Style="{StaticResource SearchTabButtonStyle}"
                         Command="{Binding SelectTabCommand}"
@@ -470,7 +470,7 @@
 
                     </Button>
 
-                    <Button
+                    <Button MinimumHeightRequest="48"
                         Text="{Binding ImageCount, StringFormat='Images  {0}'}"
                         Style="{StaticResource SearchTabButtonStyle}"
                         Command="{Binding SelectTabCommand}"
@@ -496,7 +496,7 @@
 
                     </Button>
 
-                    <Button
+                    <Button MinimumHeightRequest="48"
                         Text="{Binding VideoCount, StringFormat='Videos  {0}'}"
                         Style="{StaticResource SearchTabButtonStyle}"
                         Command="{Binding SelectTabCommand}"
@@ -522,7 +522,7 @@
 
                     </Button>
 
-                    <Button
+                    <Button MinimumHeightRequest="48"
                         Text="{Binding ArticleCount, StringFormat='Articles  {0}'}"
                         Style="{StaticResource SearchTabButtonStyle}"
                         Command="{Binding SelectTabCommand}"
@@ -548,7 +548,7 @@
 
                     </Button>
 
-                    <Button
+                    <Button MinimumHeightRequest="48"
                         Text="{Binding WebCount, StringFormat='Web  {0}'}"
                         Style="{StaticResource SearchTabButtonStyle}"
                         Command="{Binding SelectTabCommand}"
@@ -660,7 +660,7 @@
 
                     <DataTemplate x:DataType="models:SearchResult">
 
-                        <Border
+                        <Border MinimumHeightRequest="48"
                             Style="{StaticResource SearchResultCardStyle}">
 
                             <Border.Behaviors>
@@ -928,7 +928,7 @@
                         Text="Clear search"
                         Command="{Binding ClearSearchCommand}"
                         Clicked="OnAnimatedButtonClicked"
-                        HeightRequest="43"
+                        HeightRequest="48"
                         Padding="20,0"
                         CornerRadius="14"
                         BackgroundColor="{StaticResource DiamondPurple}"

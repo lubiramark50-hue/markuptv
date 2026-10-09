@@ -118,7 +118,7 @@
                             Command="{Binding ClearErrorCommand}"
                             BackgroundColor="Transparent"
                             TextColor="{StaticResource TextMuted}"
-                            HeightRequest="40"
+                            HeightRequest="48"
                             FontSize="13"
                             IsVisible="{Binding HasError}" />
                 </VerticalStackLayout>

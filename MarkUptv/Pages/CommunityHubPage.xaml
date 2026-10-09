@@ -33,7 +33,7 @@
                         BorderWidth="1"
                         TextColor="{StaticResource Primary}"
                         FontSize="12.5"
-                        HeightRequest="42"
+                        HeightRequest="48"
                         VerticalOptions="Center" />
 
             </Grid>
@@ -64,7 +64,7 @@
                 <VerticalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Threads}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="models:MatchThread">
-                            <Border Padding="14,12"
+                            <Border MinimumHeightRequest="48" Padding="14,12"
                                     BackgroundColor="{StaticResource NightPanel}"
                                     Stroke="{StaticResource GlassStroke}"
                                     StrokeThickness="1"
@@ -120,8 +120,8 @@
                                             BackgroundColor="Transparent"
                                             TextColor="{StaticResource Primary}"
                                             FontSize="11"
-                                            HeightRequest="30"
-                                            WidthRequest="30"
+                                            HeightRequest="48"
+                                            WidthRequest="48"
                                             Padding="0" />
                                 </HorizontalStackLayout>
                             </Border>
@@ -179,7 +179,7 @@
                                                 BackgroundColor="{StaticResource Primary}"
                                                 TextColor="{StaticResource PrimaryDarkText}"
                                                 FontSize="12"
-                                                HeightRequest="36" />
+                                                HeightRequest="48" />
                                         <Button Text="Dismiss"
                                                 Clicked="OnDismissClicked"
                                                 BackgroundColor="Transparent"
@@ -187,7 +187,7 @@
                                                 BorderWidth="1"
                                                 TextColor="{StaticResource TextMuted}"
                                                 FontSize="12"
-                                                HeightRequest="36" />
+                                                HeightRequest="48" />
                                     </HorizontalStackLayout>
 
                                     <Label Text="{Binding Resolution}"
@@ -232,7 +232,7 @@
                                         BorderWidth="1"
                                         TextColor="{StaticResource TextMuted}"
                                         FontSize="11.5"
-                                        HeightRequest="34" />
+                                        HeightRequest="48" />
                             </Grid>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>

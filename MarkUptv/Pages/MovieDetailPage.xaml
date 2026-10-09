@@ -37,8 +37,8 @@
               ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
 
             <Border Grid.Column="0"
-                    WidthRequest="42" HeightRequest="42"
-                    StrokeShape="RoundRectangle 21"
+                    WidthRequest="48" HeightRequest="48"
+                    StrokeShape="RoundRectangle 24"
                     Stroke="#1E1E38" BackgroundColor="#0D0D22">
                 <Label Text="←" FontSize="20" TextColor="White"
                        HorizontalOptions="Center" VerticalOptions="Center" />
@@ -57,8 +57,8 @@
                    VerticalOptions="Center" />
 
             <Border Grid.Column="2"
-                    WidthRequest="42" HeightRequest="42"
-                    StrokeShape="RoundRectangle 21"
+                    WidthRequest="48" HeightRequest="48"
+                    StrokeShape="RoundRectangle 24"
                     Stroke="#FF006E" BackgroundColor="#1AFF4D8D">
                 <Label Text="⤓" FontSize="18" TextColor="#FF006E"
                        HorizontalOptions="Center" VerticalOptions="Center" />
@@ -124,7 +124,7 @@
                 <Grid Margin="16,0" ColumnDefinitions="*,*" ColumnSpacing="12"
                       IsVisible="{Binding ActionsVisible}">
 
-                    <Border Grid.Column="0" Style="{StaticResource ActionButton}"
+                    <Border MinimumHeightRequest="48" Grid.Column="0" Style="{StaticResource ActionButton}"
                             BackgroundColor="#FF006E">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding PlayCommand}" />
@@ -134,7 +134,7 @@
                                HorizontalOptions="Center" />
                     </Border>
 
-                    <Border Grid.Column="1" Style="{StaticResource ActionButton}"
+                    <Border MinimumHeightRequest="48" Grid.Column="1" Style="{StaticResource ActionButton}"
                             BackgroundColor="#1A1A38">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ToggleDownloadCommand}" />
@@ -146,7 +146,7 @@
 
                 </Grid>
 
-                <Border IsVisible="{Binding IsPlayerVisible}"
+                <Border MinimumHeightRequest="48" IsVisible="{Binding IsPlayerVisible}"
                         Margin="16,0"
                         StrokeShape="RoundRectangle 12"
                         Stroke="#1E1E38" BackgroundColor="#0D0D22"

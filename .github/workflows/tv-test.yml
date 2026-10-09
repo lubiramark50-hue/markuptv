@@ -1,21 +1,20 @@
-name: UI screenshots (emulator)
+name: Android TV emulator test
 
 on:
   push:
     branches: ['ui/**']
     paths:
-      - '.ui-shots-trigger'
-  workflow_dispatch:
+      - '.tv-test-trigger'
 
 concurrency:
-  group: ui-shots-${{ github.ref }}
+  group: tv-test-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  shots:
+  tv:
     runs-on: ubuntu-latest
     timeout-minutes: 75
     steps:
@@ -28,10 +27,10 @@ jobs:
       - name: Install MAUI Android workload
         run: dotnet workload install maui-android
 
-      - name: Build debug APK (x86_64 for the emulator)
+      - name: Build debug APK (x86 for the TV emulator image)
         run: |
           dotnet build MarkUptv/MarkUptv.csproj -c Debug -f net10.0-android \
-            -p:RuntimeIdentifier=android-x64 \
+            -p:RuntimeIdentifier=android-x86 \
             -p:EmbedAssembliesIntoApk=true \
             -p:AndroidPackageFormat=apk
           APK=$(find MarkUptv/bin/Debug -type f -name '*Signed.apk' | head -n 1)
@@ -43,7 +42,6 @@ jobs:
           sudo rm -rf /usr/local/share/boost /opt/ghc /usr/share/swift || true
           sudo rm -rf /usr/share/dotnet "$HOME/.dotnet" "$HOME/.nuget" /opt/hostedtoolcache /usr/local/.ghcup /opt/az /usr/share/miniconda /opt/microsoft /usr/local/share/powershell || true
           df -h / | tail -1
-          df -h / | tail -1
 
       - name: Enable KVM
         run: |
@@ -51,27 +49,14 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Run emulator and capture screenshots
+      - name: Run on an Android TV emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
-          arch: x86_64
-          target: default
-          profile: pixel_6
+          arch: x86
+          target: android-tv
+          profile: tv_1080p
           disk-size: 3072M
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: bash tools/ui-shots.sh shots
-
-      - name: Publish screenshots as a prerelease
-        if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          ls -l shots || true
-          TAG="ui-shots-${{ github.run_number }}"
-          FILES=$(ls shots/* 2>/dev/null | tr '\n' ' ')
-          [ -n "$FILES" ] || { echo "no files"; exit 0; }
-          gh release create "$TAG" $FILES --prerelease --target "${{ github.sha }}" \
-            --title "UI screenshots ${{ github.run_number }}" --notes "Emulator screenshots, debug build."
-          echo "TAG=$TAG"
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          script: bash tools/tv-test.sh

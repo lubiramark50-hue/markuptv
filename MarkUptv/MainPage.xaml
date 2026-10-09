@@ -371,7 +371,7 @@
             StrokeShape="RoundRectangle 0"
             ZIndex="999">
 
-            <Grid
+            <Grid MinimumHeightRequest="48"
                 RowDefinitions="*,Auto"
                 Margin="{OnIdiom Phone='0',
                                        Tablet='30,25,30,25',
@@ -387,7 +387,7 @@
 
                 <!-- Chat Card -->
 
-                <Border
+                <Border MinimumHeightRequest="48"
                     Grid.RowSpan="2"
                     Margin="0"
                     Padding="0"
@@ -524,8 +524,8 @@
                                 Grid.Column="2"
                                 Text="✕"
                                 FontSize="15"
-                                WidthRequest="42"
-                                HeightRequest="42"
+                                WidthRequest="48"
+                                HeightRequest="48"
                                 Padding="0"
                                 CornerRadius="15"
                                 BackgroundColor="#1BFFFFFF"
@@ -669,7 +669,7 @@
                                                         Spacing="10" 
                                                         HorizontalOptions="End"
                                                         IsVisible="{Binding IsTyping, Converter={StaticResource NotBoolConverter}}">
-                                                        <Button
+                                                        <Button MinimumHeightRequest="48"
                                                             Text="📋"
                                                             FontSize="12"
                                                             HeightRequest="24"
@@ -693,7 +693,7 @@
 
                                                             <DataTemplate x:DataType="models:AiRecommendedChannel">
 
-                                                                <Border
+                                                                <Border MinimumHeightRequest="48"
                                                                     Padding="10"
                                                                     BackgroundColor="#18FFFFFF"
                                                                     Stroke="#33FFFFFF"
@@ -822,7 +822,7 @@
 
                                     <DataTemplate x:DataType="x:String">
 
-                                        <Border
+                                        <Border MinimumHeightRequest="48"
                                             Padding="15,8"
                                             BackgroundColor="#22FFFFFF"
                                             Stroke="#3DFFFFFF"
@@ -884,8 +884,8 @@
                                 Grid.Column="0"
                                 Text="🗑"
                                 FontSize="18"
-                                WidthRequest="40"
-                                HeightRequest="40"
+                                WidthRequest="48"
+                                HeightRequest="48"
                                 Padding="0"
                                 CornerRadius="20"
                                 BackgroundColor="Transparent"
@@ -936,8 +936,8 @@
                                 Grid.Column="1"
                                 Text="🎙"
                                 FontSize="18"
-                                WidthRequest="40"
-                                HeightRequest="40"
+                                WidthRequest="48"
+                                HeightRequest="48"
                                 Padding="0"
                                 CornerRadius="20"
                                 BackgroundColor="#1AFFFFFF"
@@ -1237,7 +1237,7 @@
 
                             </Grid>
 
-                            <Entry
+                            <Entry MinimumHeightRequest="48"
                                 Grid.Column="1"
                                 Text="{Binding SearchQueryText}"
                                 Placeholder="Search channels, news, movies and more..."
@@ -1255,8 +1255,8 @@
                                 Text="→"
                                 Command="{Binding SearchCommand}"
                                 Clicked="OnAnimatedButtonClicked"
-                                WidthRequest="43"
-                                HeightRequest="43"
+                                WidthRequest="48"
+                                HeightRequest="48"
                                 Padding="0"
                                 CornerRadius="14"
                                 FontSize="17"
@@ -1297,8 +1297,8 @@
                                      Android's gesture navigation swallows as "back". -->
                                 <Border
                                     x:Name="MenuEntryButton"
-                                    WidthRequest="44"
-                                    HeightRequest="44"
+                                    WidthRequest="48"
+                                    HeightRequest="48"
                                     BackgroundColor="#1FFFFFFF"
                                     Stroke="#45FFFFFF"
                                     StrokeThickness="1"
@@ -1335,12 +1335,12 @@
 
                                 <Border
                                     x:Name="AiEntryButton"
-                                    WidthRequest="44"
-                                    HeightRequest="44"
+                                    WidthRequest="48"
+                                    HeightRequest="48"
                                     Background="{StaticResource DiamondBrandBrush}"
                                     Stroke="#A0FFFFFF"
                                     StrokeThickness="1.5"
-                                    StrokeShape="RoundRectangle 22"
+                                    StrokeShape="RoundRectangle 24"
                                     SemanticProperties.Description="Open the MarkUp AI assistant">
 
                                     <Border.Behaviors>
@@ -1397,7 +1397,7 @@
                             <DataTemplate
                                 x:DataType="models:DashboardFeature">
 
-                                <Border
+                                <Border MinimumHeightRequest="48"
                                     FlexLayout.Basis="48%"
                                     HeightRequest="{OnIdiom Phone=122,
                                                             Tablet=127,
@@ -1531,7 +1531,7 @@
 
                     <!-- Featured hero -->
 
-                    <Border
+                    <Border MinimumHeightRequest="48"
                         x:Name="HeroPanel"
                         IsVisible="{Binding HasFeaturedContent}"
                         HeightRequest="{OnIdiom Phone=280,
@@ -1757,8 +1757,8 @@
                                     FontSize="17"
                                     Command="{Binding RefreshAiRecommendationCommand}"
                                     Clicked="OnAnimatedButtonClicked"
-                                    WidthRequest="40"
-                                    HeightRequest="40"
+                                    WidthRequest="48"
+                                    HeightRequest="48"
                                     Padding="0"
                                     CornerRadius="13"
                                     BackgroundColor="#1AFFFFFF"
@@ -1767,7 +1767,7 @@
                                     BorderWidth="1"
                                     VerticalOptions="Start" />
 
-                                <Button
+                                <Button MinimumHeightRequest="48"
                                     Text="Assistant"
                                     Command="{Binding ToggleChatCommand}"
                                     Clicked="OnAnimatedButtonClicked"
@@ -1791,7 +1791,7 @@
 
                             <!-- Zone 1: AI Recommendation -->
 
-                            <Border
+                            <Border MinimumHeightRequest="48"
                                 x:Name="AiRecommendationZone"
                                 Grid.Column="0"
                                 Grid.Row="0"
@@ -1995,7 +1995,7 @@
 
                             <!-- Zone 2: Ask AI -->
 
-                            <Border
+                            <Border MinimumHeightRequest="48"
                                 x:Name="AiChatZone"
                                 Grid.Column="{OnIdiom Phone=0, Tablet=1, Desktop=1, TV=1}"
                                 Grid.Row="{OnIdiom Phone=1, Tablet=0, Desktop=0, TV=0}"
@@ -2145,7 +2145,7 @@
 
                                             <DataTemplate x:DataType="models:AiHighlightItem">
 
-                                                <Border
+                                                <Border MinimumHeightRequest="48"
                                                     Padding="10,7"
                                                     BackgroundColor="#10FFFFFF"
                                                     Stroke="Transparent"
@@ -2387,7 +2387,7 @@
 
                             </VerticalStackLayout>
 
-                            <Button
+                            <Button MinimumHeightRequest="48"
                                 Grid.Column="1"
                                 Text="View all"
                                 Command="{Binding GoToAllChannelsCommand}"
@@ -2415,7 +2415,7 @@
                                 <DataTemplate
                                     x:DataType="models:TvChannel">
 
-                                    <Border
+                                    <Border MinimumHeightRequest="48"
                                         WidthRequest="{OnIdiom Phone=166,
                                                                Tablet=181,
                                                                Desktop=193,
@@ -2559,7 +2559,7 @@
                                 <DataTemplate
                                     x:DataType="models:DashboardFeature">
 
-                                    <Border
+                                    <Border MinimumHeightRequest="48"
                                         WidthRequest="{OnIdiom Phone=158,
                                                                Tablet=176,
                                                                Desktop=194,
@@ -2677,7 +2677,7 @@
 
                             </VerticalStackLayout>
 
-                            <Button
+                            <Button MinimumHeightRequest="48"
                                 Grid.Column="1"
                                 Text="History"
                                 Command="{Binding GoToRecentlyWatchedCommand}"
@@ -2705,7 +2705,7 @@
                                 <DataTemplate
                                     x:DataType="models:TvChannel">
 
-                                    <Border
+                                    <Border MinimumHeightRequest="48"
                                         WidthRequest="185"
                                         Style="{StaticResource DiamondCardStyle}">
 
@@ -2804,14 +2804,14 @@
 
                             </VerticalStackLayout>
 
-                            <Button
+                            <Button MinimumHeightRequest="48"
                                 Grid.Column="1"
                                 Text="New post"
                                 Command="{Binding OpenComposePostCommand}"
                                 Clicked="OnAnimatedButtonClicked"
                                 Style="{StaticResource GlassButtonStyle}" />
 
-                            <Button
+                            <Button MinimumHeightRequest="48"
                                 Grid.Column="2"
                                 Text="Open"
                                 Command="{Binding GoToSocialCommand}"
@@ -2842,7 +2842,7 @@
                                 <DataTemplate
                                     x:DataType="models:SocialPost">
 
-                                    <Border
+                                    <Border MinimumHeightRequest="48"
                                         WidthRequest="{OnIdiom Phone=275,
                                                                Tablet=310,
                                                                Desktop=350,
@@ -3022,7 +3022,7 @@
 
                                 </Border>
 
-                                <Button
+                                <Button MinimumHeightRequest="48"
                                     Text="Refresh"
                                     Command="{Binding RefreshNewsCommand}"
                                     Clicked="OnAnimatedButtonClicked"
@@ -3099,7 +3099,7 @@
                                     TextColor="White"
                                     HorizontalTextAlignment="Center" />
 
-                                <Button
+                                <Button MinimumHeightRequest="48"
                                     Text="Try again"
                                     Command="{Binding RefreshNewsCommand}"
                                     Clicked="OnAnimatedButtonClicked"
@@ -3147,7 +3147,7 @@
                                 <DataTemplate
                                     x:DataType="models:NewsArticle">
 
-                                    <Border
+                                    <Border MinimumHeightRequest="48"
                                         Padding="8"
                                         Style="{StaticResource DiamondCardStyle}">
 
@@ -3414,7 +3414,7 @@
 
                         <!-- Load more -->
 
-                        <Button
+                        <Button MinimumHeightRequest="48"
                             Text="Load more stories"
                             Command="{Binding LoadMoreNewsCommand}"
                             Clicked="OnAnimatedButtonClicked"

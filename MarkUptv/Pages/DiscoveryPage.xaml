@@ -118,7 +118,7 @@
                 <Button Grid.Column="0" Text="⟳ SYNC" 
                         Command="{Binding LoadChannelsCommand}"
                         BackgroundColor="#E8B54A" TextColor="#0A0F1A"
-                        CornerRadius="8" HeightRequest="44" WidthRequest="90"
+                        CornerRadius="8" HeightRequest="48" WidthRequest="90"
                         FontSize="14" FontAttributes="Bold" CharacterSpacing="1" />
 
                 <Border Grid.Column="1" BackgroundColor="#1AFFFFFF" StrokeShape="RoundRectangle 8" Stroke="Transparent" HeightRequest="44">
