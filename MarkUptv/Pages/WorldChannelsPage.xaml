@@ -5,7 +5,7 @@
              xmlns:models="clr-namespace:MarkUptv.Models"
              x:Class="MarkUptv.Pages.WorldChannelsPage"
              x:DataType="vm:WorldChannelsViewModel"
-             Title="World Channels"
+             Title=""
              Shell.NavBarIsVisible="False"
              BackgroundColor="{StaticResource DeepVoid}">
 
