@@ -1,0 +1,26 @@
+name: Check release APK contents
+
+on:
+  push:
+    branches: ['ui/check-abi']
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inspect ota-5
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download ota-5 --repo "${{ github.repository }}" --pattern 'MarkUptv.apk' --dir .
+          ls -l MarkUptv.apk
+          sha256sum MarkUptv.apk
+          unzip -tq MarkUptv.apk | tail -1
+          unzip -l MarkUptv.apk | grep -oE "lib/[a-z0-9_-]+/" | sort | uniq -c
+          AAPT=$(find "$ANDROID_HOME/build-tools" -type f -name aapt2 | sort -V | tail -n 1)
+          "$AAPT" dump badging MarkUptv.apk | grep -E "^package|sdkVersion|native-code|leanback" || true
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)
+          "$APKSIGNER" verify --verbose MarkUptv.apk | head -4
