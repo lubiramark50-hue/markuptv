@@ -86,6 +86,7 @@ public partial class AppShell : Shell
             nameof(MarkUptv.Pages.MusicPage),
             nameof(MarkUptv.Pages.FootballPage),
             nameof(MarkUptv.Pages.ConnectionRequiredPage),
+            nameof(MarkUptv.Pages.MatchThreadPage),
         };
 
     /// <summary>
