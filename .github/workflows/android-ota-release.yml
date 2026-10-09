@@ -33,9 +33,15 @@ jobs:
       - name: Locate APK and hash
         id: apk
         run: |
-          APK=$(find MarkUptv/bin/Release/net10.0-android -type f -name '*.apk' | head -n 1)
+          # Use the signed APK. The first .apk found is the unsigned intermediate
+          # file, which Android refuses to install ("invalid package").
+          APK=$(find MarkUptv/bin/Release/net10.0-android -type f -name '*Signed.apk' | head -n 1)
+          [ -n "$APK" ] || APK=$(find MarkUptv/bin/Release/net10.0-android -type f -name '*.apk' | head -n 1)
           test -n "$APK"
+          echo "Using $APK"
           cp "$APK" "$RUNNER_TEMP/MarkUptv.apk"
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)
+          "$APKSIGNER" verify --verbose --min-sdk-version 26 "$RUNNER_TEMP/MarkUptv.apk"
           echo "sha256=$(sha256sum "$RUNNER_TEMP/MarkUptv.apk" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
       - name: Create GitHub release
         env:
