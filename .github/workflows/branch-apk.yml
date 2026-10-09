@@ -68,7 +68,7 @@ jobs:
             -p:ApplicationVersion=${{ github.run_number }} \
             -p:ApplicationDisplayVersion=1.1.${{ github.run_number }} \
             -p:AndroidPackageFormat=apk \
-            -p:RuntimeIdentifier=android-arm64 \
+            -p:RuntimeIdentifiers="android-arm;android-arm64" \
             -p:AndroidKeyStore=true \
             -p:AndroidSigningKeyStore="$RUNNER_TEMP/markuptv.keystore" \
             -p:AndroidSigningKeyAlias="$KS_ALIAS" \
@@ -84,6 +84,8 @@ jobs:
           AAPT=$(find "$ANDROID_HOME/build-tools" -type f -name aapt2 | sort -V | tail -n 1)
           "$AAPT" dump badging out/MarkUpTV.apk | grep -E "^package|sdkVersion|leanback|banner|launchable|touchscreen|native-code" || true
           "$AAPT" dump badging out/MarkUpTV.apk | grep -q "android.intent.category.LEANBACK_LAUNCHER" && echo "LEANBACK_LAUNCHER present" || echo "WARNING: no leanback launcher"
+          "$AAPT" dump badging out/MarkUpTV.apk | grep -E "native-code|sdkVersion|minSdk" || true
+          unzip -l out/MarkUpTV.apk | grep -oE "lib/[a-z0-9_-]+/" | sort | uniq -c
           APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)
           "$APKSIGNER" verify --print-certs out/MarkUpTV.apk | head -5
           sha256sum out/MarkUpTV.apk
@@ -93,14 +95,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          TAG="apk-test-${{ github.run_number }}"
-          cp out/MarkUpTV.apk out/MarkUpTV-arm64.apk
-          gh release create "$TAG" out/MarkUpTV-arm64.apk \
+          TAG="apk-compat-${{ github.run_number }}"
+          cp out/MarkUpTV.apk out/MarkUpTV-compat.apk
+          gh release create "$TAG" out/MarkUpTV-compat.apk \
             --target "${{ github.sha }}" \
             --prerelease \
             --title "MarkUpTV test build ${{ github.run_number }}" \
             --notes "Test build from branch ${{ github.ref_name }}. Signed with: $SIGNER. Not published through OTA."
-          echo "https://github.com/${{ github.repository }}/releases/download/$TAG/MarkUpTV-arm64.apk"
+          echo "https://github.com/${{ github.repository }}/releases/download/$TAG/MarkUpTV-compat.apk"
 
       - uses: actions/upload-artifact@v4
         with:
