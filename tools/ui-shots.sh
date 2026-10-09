@@ -19,6 +19,7 @@ adb logcat -c
 adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1
 sleep 20; shot 00_launch_20s
 sleep 40; shot 01_launch_60s
+grep -oE 'text="[^"]+"' "$OUT/ui_01_launch_60s.xml" | head -12 | sed 's/^/LAUNCH_TEXT: /'
 
 ROUTES="MainPage SportsPage NewsPage MoviesPage MusicPage FootballPage WorldChannelsPage CommunityHubPage SocialPage RecentlyWatchedPage DonationPage CartoonPage DiscoveryPage FashionPage GospelPage Lifestyle ReligiousTvPage LocalPage EuropeanSportsPage WildlifePage AdultsPage MovieCatalogPage SearchPage MatchThreadPage"
 i=2
@@ -46,6 +47,16 @@ adb shell input keyevent 4
 sleep 4
 shot "after_back_at_root"
 if alive; then echo "BACK_AT_ROOT: process survived" >> "$OUT/_events.txt"; else echo "BACK_AT_ROOT: process died" >> "$OUT/_events.txt"; fi
+
+# Random-input stress test (stops at the first crash)
+adb shell am start -a android.intent.action.VIEW -d "markuptv://goto/MainPage" "$PKG" >/dev/null 2>&1
+sleep 8
+adb logcat -c
+adb shell monkey -p "$PKG" --pct-syskeys 0 --pct-appswitch 0 --throttle 120 -s 4242 -v 1500 > "$OUT/_monkey.txt" 2>&1
+echo "MONKEY: $(grep -E 'Events injected|Monkey finished' "$OUT/_monkey.txt" | tr '\n' ' ')"
+grep -E "CRASH|ANR|Exception|// Long Msg|// Short Msg" "$OUT/_monkey.txt" | head -12 | sed 's/^/MONKEY: /'
+echo "MONKEY: FATAL lines in logcat: $(adb logcat -d -v time | grep -c 'FATAL EXCEPTION')"
+alive || echo "MONKEY: process not running at the end"
 
 # Television-sized viewport pass (landscape 1080p)
 adb shell wm size 1920x1080
