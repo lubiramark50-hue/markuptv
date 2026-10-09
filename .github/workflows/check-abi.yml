@@ -23,4 +23,14 @@ jobs:
           AAPT=$(find "$ANDROID_HOME/build-tools" -type f -name aapt2 | sort -V | tail -n 1)
           "$AAPT" dump badging MarkUptv.apk | grep -E "^package|sdkVersion|native-code|leanback" || true
           APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)
-          "$APKSIGNER" verify --verbose MarkUptv.apk | head -4
+          echo "--- apksigner (min sdk 26)"
+          "$APKSIGNER" verify --verbose --print-certs --min-sdk-version 26 MarkUptv.apk 2>&1 | head -12
+          echo "--- apksigner (default)"
+          "$APKSIGNER" verify --verbose MarkUptv.apk 2>&1 | head -6
+          echo "--- also check the arm32 test build and the universal test build"
+          for T in apk-compat-148:MarkUpTV-arm32.apk apk-universal-156:MarkUpTV-universal.apk; do
+            TAG=${T%%:*}; F=${T##*:}
+            gh release download "$TAG" --repo "${{ github.repository }}" --pattern "$F" --dir . || continue
+            echo "== $F"; ls -l "$F"
+            "$APKSIGNER" verify --verbose --min-sdk-version 26 "$F" 2>&1 | head -6
+          done
