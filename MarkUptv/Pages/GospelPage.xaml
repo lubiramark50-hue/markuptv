@@ -171,7 +171,6 @@
 
                     <CollectionView.EmptyView>
                         <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="0,40">
-                            <Label Text="🙏" FontSize="48" HorizontalOptions="Center" Margin="0,0,0,12" Opacity="0.5" />
                             <Label Text="NO GOSPEL CHANNELS FOUND" 
                                    TextColor="#A0A0B0" FontSize="18" FontAttributes="Bold" CharacterSpacing="1"
                                    HorizontalOptions="Center" />
@@ -183,7 +182,7 @@
                 </CollectionView>
             </RefreshView>
 
-            <Border Grid.Row="3" BackgroundColor="#E63946" StrokeShape="RoundRectangle 8"
+            <Border Grid.Row="3" BackgroundColor="#2A1520" Stroke="#8A3446" StrokeThickness="1" StrokeShape="RoundRectangle 12"
                     Padding="12,8" Margin="0,0,0,16" VerticalOptions="End" HorizontalOptions="Center"
                     IsVisible="{Binding HasError}">
                 <Label Text="{Binding ErrorMessage}" TextColor="White" 
