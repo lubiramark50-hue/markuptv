@@ -1,7 +1,7 @@
 {
-  "versionCode": 0,
-  "versionName": "0.0.0",
-  "apkUrl": "",
-  "sha256": "",
+  "versionCode": 4,
+  "versionName": "1.1.4",
+  "apkUrl": "https://github.com/lubiramark50-hue/markuptv/releases/download/ota-4/MarkUptv.apk",
+  "sha256": "f1f900ee2d1c5f568579ee6df8455c957bfd8d211001d23366ad16f1ed8fd40f",
   "mandatory": false
 }
