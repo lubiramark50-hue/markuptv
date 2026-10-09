@@ -10,7 +10,7 @@
              x:DataType="vm:SocialViewModel"
              Shell.NavBarIsVisible="False"
              BackgroundColor="#070712"
-             Title="Community">
+             Title="">
 
     <ContentPage.Resources>
         <Style TargetType="Border" x:Key="PostCard">
