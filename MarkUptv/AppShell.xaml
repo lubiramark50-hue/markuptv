@@ -345,7 +345,7 @@
                 <Path
                     x:Name="DiamondOne"
                     Grid.RowSpan="3"
-                    Data="M12 1 L14.4 9.6 L23 12 L14.4 14.4 L12 23 L9.6 14.4 L1 12 L9.6 9.6 Z"
+                    Data="M12 1 L23 12 L12 23 L1 12 Z"
                     Aspect="Uniform"
                     WidthRequest="26"
                     HeightRequest="26"
@@ -359,7 +359,7 @@
                 <Path
                     x:Name="DiamondTwo"
                     Grid.RowSpan="3"
-                    Data="M12 1 L14.4 9.6 L23 12 L14.4 14.4 L12 23 L9.6 14.4 L1 12 L9.6 9.6 Z"
+                    Data="M12 1 L23 12 L12 23 L1 12 Z"
                     Aspect="Uniform"
                     WidthRequest="19"
                     HeightRequest="19"
@@ -373,7 +373,7 @@
                 <Path
                     x:Name="DiamondThree"
                     Grid.RowSpan="3"
-                    Data="M12 1 L14.4 9.6 L23 12 L14.4 14.4 L12 23 L9.6 14.4 L1 12 L9.6 9.6 Z"
+                    Data="M12 1 L23 12 L12 23 L1 12 Z"
                     Aspect="Uniform"
                     WidthRequest="16"
                     HeightRequest="16"
@@ -622,7 +622,7 @@
 
                 <Path
                     Grid.Column="0"
-                    Data="M12 1 L14.4 9.6 L23 12 L14.4 14.4 L12 23 L9.6 14.4 L1 12 L9.6 9.6 Z"
+                    Data="M12 1 L23 12 L12 23 L1 12 Z"
                     Aspect="Uniform"
                     WidthRequest="17"
                     HeightRequest="17"
