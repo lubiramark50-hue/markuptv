@@ -15,7 +15,9 @@ adb install -r -g "$APK" || { echo "TV: INSTALL FAILED"; exit 0; }
 adb logcat -c
 echo "TV: leanback launch result: $(adb shell monkey -p $PKG -c android.intent.category.LEANBACK_LAUNCHER 1 2>&1 | tr -d '\r' | tail -2 | tr '\n' ' ')"
 sleep 50
-fdump() { adb shell uiautomator dump /sdcard/f.xml >/dev/null 2>&1; adb shell cat /sdcard/f.xml | python3 tools/tv_focus.py "$DP" "$1"; }
+mkdir -p tvshots
+shot() { adb exec-out screencap -p > "tvshots/$1.png"; }
+fdump() { shot "$1"; adb shell uiautomator dump /sdcard/f.xml >/dev/null 2>&1; adb shell cat /sdcard/f.xml | python3 tools/tv_focus.py "$DP" "$1"; }
 fdump launch
 adb shell am start -a android.intent.action.VIEW -d "markuptv://goto/MainPage" $PKG >/dev/null 2>&1
 sleep 12
@@ -33,6 +35,13 @@ adb shell uiautomator dump /sdcard/f.xml >/dev/null 2>&1
 adb shell cat /sdcard/f.xml | grep -oE 'text="[^"]+"' | head -12
 echo "TV: error and warning lines:"
 adb logcat -d -v time | grep -E "FATAL EXCEPTION|TV select failed|Unhandled|MarkUpTV.*(W|E)/" | head -12
+for r in SportsPage NewsPage MoviesPage CommunityHubPage SocialPage FootballPage WorldChannelsPage DonationPage SearchPage MatchThreadPage; do
+  adb shell am start -a android.intent.action.VIEW -d "markuptv://goto/$r" $PKG >/dev/null 2>&1
+  sleep 8
+  shot "page_$r"
+  adb shell input keyevent KEYCODE_DPAD_DOWN; sleep 2
+  shot "page_${r}_focus"
+done
 echo "TV: BACK test at root"
 adb shell am start -a android.intent.action.VIEW -d "markuptv://goto/MainPage" $PKG >/dev/null 2>&1
 sleep 8
