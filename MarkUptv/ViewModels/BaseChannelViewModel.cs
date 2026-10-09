@@ -37,6 +37,16 @@ public abstract partial class BaseChannelViewModel :
 
     protected abstract string Category { get; }
 
+    private static string FriendlyCategoryName(string category) =>
+        category.Trim().ToLowerInvariant() switch
+        {
+            "documentary" => "discovery",
+            "general" => "local TV",
+            "europeanfootball" => "European football",
+            "religious" => "religious TV",
+            _ => category
+        };
+
     public abstract string NowPlayingText { get; }
 
     [ObservableProperty]
@@ -204,7 +214,7 @@ public abstract partial class BaseChannelViewModel :
             if (response?.Channels is null)
             {
                 await SetErrorAsync(
-                    $"Could not load {Category} channels. " +
+                    $"Could not load {FriendlyCategoryName(Category)} channels. " +
                     "Please check your connection.");
 
                 return;
