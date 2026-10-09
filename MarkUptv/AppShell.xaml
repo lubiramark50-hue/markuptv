@@ -706,6 +706,11 @@
         FlyoutItemIsVisible="False" />
 
     <ShellContent
+        Route="ConnectionRequiredPage"
+        ContentTemplate="{DataTemplate pages:ConnectionRequiredPage}"
+        FlyoutItemIsVisible="False" />
+
+    <ShellContent
         Route="SearchPage"
         ContentTemplate="{DataTemplate pages:SearchPage}"
         FlyoutItemIsVisible="False" />
