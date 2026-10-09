@@ -262,14 +262,47 @@ public partial class App : Application
         Task.Run(async () => await RunAppInitializationLifecycleAsync());
     }
 
-    private async Task RunAppInitializationLifecycleAsync()
+    private static bool IsOnGatePage()
+    {
+        try
+        {
+            string location =
+                Shell.Current?.CurrentState?.Location?.OriginalString ?? string.Empty;
+
+            return location.Contains("LoadingPage", StringComparison.OrdinalIgnoreCase)
+                || location.Contains("PaymentRequiredPage", StringComparison.OrdinalIgnoreCase)
+                || location.Contains("ConnectionRequiredPage", StringComparison.OrdinalIgnoreCase);
+        }
+        catch
+        {
+            return true;
+        }
+    }
+
+    /// <summary>
+    /// Re-runs the access check. Returns true when the server answered (the user
+    /// was sent to Home or to the payment screen) and false when it could not be
+    /// reached.
+    /// </summary>
+    public Task<bool> RetryAccessCheckAsync()
+    {
+        return RunAppInitializationLifecycleAsync();
+    }
+
+    private async Task<bool> RunAppInitializationLifecycleAsync()
     {
         try
         {
             if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
             {
                 WriteLog("No internet connection detected.");
-                return;
+
+                if (IsOnGatePage())
+                {
+                    await NavigateSafelyAsync("///ConnectionRequiredPage");
+                }
+
+                return false;
             }
 
             bool isRegistered = false;
@@ -283,24 +316,59 @@ public partial class App : Application
 
             if (!isRegistered)
             {
-                await NavigateSafelyAsync("///PaymentRequiredPage");
-                return;
+                // The server could not be reached. That is a connection problem,
+                // not a payment problem, so do not show the payment screen.
+                WriteLog("Server unreachable: device registration failed.");
+
+                if (IsOnGatePage())
+                {
+                    await NavigateSafelyAsync("///ConnectionRequiredPage");
+                }
+
+                return false;
             }
 
             var status = await _paymentService.GetStatusAsync();
-            if (status == null || !status.CanWatch)
+
+            if (status == null)
+            {
+                WriteLog("Server unreachable: no account status returned.");
+
+                if (IsOnGatePage())
+                {
+                    await NavigateSafelyAsync("///ConnectionRequiredPage");
+                }
+
+                return false;
+            }
+
+            if (!status.CanWatch)
             {
                 await NavigateSafelyAsync("///PaymentRequiredPage");
-                return;
+                return true;
             }
 
             WriteLog("User status valid. Access granted.");
-            await NavigateSafelyAsync("///MainPage");
+
+            // Only leave a gate screen. Returning to the app from the background
+            // must not throw the user back to Home from wherever they were.
+            if (IsOnGatePage())
+            {
+                await NavigateSafelyAsync("///MainPage");
+            }
+
+            return true;
         }
         catch (Exception ex)
         {
             WriteLog($"Lifecycle error: {ex.Message}");
-            await NavigateSafelyAsync("///PaymentRequiredPage");
+
+            if (IsOnGatePage())
+            {
+                await NavigateSafelyAsync("///ConnectionRequiredPage");
+            }
+
+            return false;
         }
     }
 

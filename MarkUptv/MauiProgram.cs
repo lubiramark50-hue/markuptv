@@ -544,6 +544,7 @@ public static class MauiProgram
         services.AddTransient<WebViewPage>();
         services.AddTransient<RecentlyWatchedPage>();
         services.AddTransient<PaymentRequiredPage>();
+        services.AddTransient<ConnectionRequiredPage>();
         services.AddTransient<PaymentWebViewPage>();
         services.AddTransient<SocialPage>();
         services.AddTransient<News>();
