@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   tv:
@@ -60,3 +60,15 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: bash tools/tv-test.sh
+
+      - name: Publish TV screenshots as a prerelease
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ls tvshots 2>/dev/null | head -50 || true
+          FILES=$(ls tvshots/* 2>/dev/null | tr '\n' ' ')
+          [ -n "$FILES" ] || { echo "no TV screenshots"; exit 0; }
+          TAG="tv-shots-${{ github.run_number }}"
+          gh release create "$TAG" $FILES --prerelease --target "${{ github.sha }}" --title "TV screenshots ${{ github.run_number }}" --notes "Android TV emulator screenshots."
+          echo "TAG=$TAG"
