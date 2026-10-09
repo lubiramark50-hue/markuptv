@@ -113,7 +113,7 @@
 
         <!-- ==================== CHANNEL LIST ==================== -->
         <Grid x:Name="ChannelPanel" RowDefinitions="Auto,Auto,Auto,*" Margin="0,8,0,0">
-            <HorizontalStackLayout Grid.Row="0" Spacing="6" Margin="0,0,0,6">
+            <Grid Grid.Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="6" Margin="0,0,0,6">
                 <!-- Matches the ⟳ SYNC button every other channel page uses;
                      the previous emoji-only label rendered as a bare "Load". -->
                 <Button Text="⟳ SYNC"
@@ -125,8 +125,8 @@
                            Text="{Binding SearchText}"
                            BackgroundColor="#2C4A30" TextColor="White"
                            PlaceholderColor="#AAA" CancelButtonColor="#FFD700"
-                           FlexLayout.Grow="1" />
-            </HorizontalStackLayout>
+                           Grid.Column="1" HeightRequest="48" />
+            </Grid>
 
             <CollectionView Grid.Row="1" ItemsSource="{Binding Groups}"
                             SelectionMode="Single"
@@ -175,7 +175,7 @@
             </RefreshView>
 
             <Label Grid.Row="3" Text="{Binding ErrorMessage}" TextColor="White"
-                   BackgroundColor="#FF0000" Padding="6"
+                   BackgroundColor="#2A1520" Padding="12,10"
                    IsVisible="{Binding HasError}" HorizontalOptions="Center"
                    VerticalOptions="End" Margin="0,4" FontAttributes="Bold" />
         </Grid>
