@@ -806,7 +806,9 @@
 
                                 <Label
                                     Grid.Column="1"
-                                    Text="Auto-updates every 60 seconds"
+                                    Text="Updates every 60s"
+                                    MaxLines="1"
+                                    LineBreakMode="TailTruncation"
                                     FontSize="9.5"
                                     TextColor="{StaticResource FootballMuted}"
                                     HorizontalOptions="End"
