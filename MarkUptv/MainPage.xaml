@@ -21,13 +21,13 @@
         <Color x:Key="MidnightPanel">#121728</Color>
         <Color x:Key="RaisedPanel">#1A2138</Color>
         <Color x:Key="DiamondWhite">#EEF3FB</Color>
-        <Color x:Key="DiamondGold">#E8B54A</Color>
-        <!-- The accent pair used to be cyan (#E8B54A twice). Cyan
+        <Color x:Key="DiamondGold">#F0143D</Color>
+        <!-- The accent pair used to be cyan (#F0143D twice). Cyan
              against the navy surfaces read as an unrelated stock
              "tech blue"; both are the brand gold now. -->
 
-        <Color x:Key="DiamondBlue">#E8B54A</Color>
-        <Color x:Key="DiamondPurple">#F2C879</Color>
+        <Color x:Key="DiamondBlue">#F0143D</Color>
+        <Color x:Key="DiamondPurple">#178BFF</Color>
         <Color x:Key="DiamondPink">#FF4D8D</Color>
         <Color x:Key="MutedText">#93A0BF</Color>
         <Color x:Key="GlassBorder">#30FFFFFF</Color>
@@ -57,15 +57,15 @@
             EndPoint="1,1">
 
             <GradientStop
-                Color="#F7D98A"
+                Color="#FF4966"
                 Offset="0" />
 
             <GradientStop
-                Color="#E8B54A"
+                Color="#F0143D"
                 Offset="0.50" />
 
             <GradientStop
-                Color="#B8862B"
+                Color="#B80D2E"
                 Offset="1" />
 
         </LinearGradientBrush>
@@ -451,7 +451,7 @@
                                 <Grid InputTransparent="True">
 
                                     <Path
-                                        Data="M12 1 L14.4 9.6 L23 12 L14.4 14.4 L12 23 L9.6 14.4 L1 12 L9.6 9.6 Z"
+                                        Data="M7 3 L21 12 L7 21 Z"
                                         Aspect="Uniform"
                                         WidthRequest="22"
                                         HeightRequest="22"
@@ -574,7 +574,7 @@
                                                 VerticalOptions="Start">
 
                                                 <Path
-                                                    Data="M12 1 L14.4 9.6 L23 12 L14.4 14.4 L12 23 L9.6 14.4 L1 12 L9.6 9.6 Z"
+                                                    Data="M7 3 L21 12 L7 21 Z"
                                                     Aspect="Uniform"
                                                     WidthRequest="16"
                                                     HeightRequest="16"
@@ -728,7 +728,7 @@
                                                                             <Grid>
 
                                                                                 <Label
-                                                                                    Text="◆"
+                                                                                    Text=""
                                                                                     FontSize="24"
                                                                                     TextColor="#25FFFFFF"
                                                                                     HorizontalOptions="Center"
@@ -1001,7 +1001,7 @@
                     MaximumWidthRequest="1550"
                     HorizontalOptions="Center">
 
-                    <!-- Background sky diamonds -->
+                    <!-- Clean cinematic background accents -->
 
                     <Grid
                         HeightRequest="1"
@@ -1009,7 +1009,7 @@
 
                         <Label
                             x:Name="FloatingDiamondOne"
-                            Text="◆"
+                            Text=""
                             FontSize="86"
                             TextColor="#12E8B54A"
                             Margin="-35,-45,0,0"
@@ -1018,7 +1018,7 @@
 
                         <Label
                             x:Name="FloatingDiamondTwo"
-                            Text="◇"
+                            Text=""
                             FontSize="72"
                             TextColor="#12FF4D8D"
                             Margin="0,-30,-22,0"
@@ -1056,7 +1056,7 @@
                             <Grid InputTransparent="True">
 
                                 <Path
-                                    Data="M12,1.6 L22.4,12 L12,22.4 L1.6,12 Z"
+                                    Data="M8,3 L22,12 L8,21 Z"
                                     Aspect="Uniform"
                                     WidthRequest="30"
                                     HeightRequest="30"
@@ -1109,7 +1109,7 @@
                             <HorizontalStackLayout Spacing="6">
 
                                 <Path
-                                    Data="M12,1.6 L22.4,12 L12,22.4 L1.6,12 Z"
+                                    Data="M8,3 L22,12 L8,21 Z"
                                     Aspect="Uniform"
                                     WidthRequest="7"
                                     HeightRequest="7"
@@ -1577,7 +1577,7 @@
                                 InputTransparent="True" />
 
                             <Label
-                                Text="◆"
+                                Text=""
                                 FontSize="110"
                                 TextColor="#18FFFFFF"
                                 Margin="0,-20,-20,0"
@@ -1605,7 +1605,7 @@
                                     <HorizontalStackLayout Spacing="6">
 
                                         <Path
-                                            Data="M12,1.6 L22.4,12 L12,22.4 L1.6,12 Z"
+                                            Data="M8,3 L22,12 L8,21 Z"
                                             Aspect="Uniform"
                                             WidthRequest="8"
                                             HeightRequest="8"
@@ -1720,7 +1720,7 @@
                                         <Grid InputTransparent="True">
 
                                             <Path
-                                                Data="M12 1 L14.4 9.6 L23 12 L14.4 14.4 L12 23 L9.6 14.4 L1 12 L9.6 9.6 Z"
+                                                Data="M7 3 L21 12 L7 21 Z"
                                                 Aspect="Uniform"
                                                 WidthRequest="19"
                                                 HeightRequest="19"
@@ -1840,7 +1840,7 @@
                                         </Grid.Background>
 
                                         <Label
-                                            Text="◆"
+                                            Text=""
                                             FontSize="120"
                                             TextColor="#18FFFFFF"
                                             Margin="0,-30,-18,0"
@@ -1953,7 +1953,7 @@
                                             <Grid>
 
                                                 <Label
-                                                    Text="◆"
+                                                    Text=""
                                                     FontSize="36"
                                                     TextColor="#30FFFFFF"
                                                     HorizontalOptions="Center"
@@ -2118,7 +2118,7 @@
 
                                             <Path
                                                 Grid.Column="0"
-                                                Data="M12 1 L14.4 9.6 L23 12 L14.4 14.4 L12 23 L9.6 14.4 L1 12 L9.6 9.6 Z"
+                                                Data="M7 3 L21 12 L7 21 Z"
                                                 Aspect="Uniform"
                                                 WidthRequest="16"
                                                 HeightRequest="16"
@@ -2448,7 +2448,7 @@
                                                 <Grid>
 
                                                     <Label
-                                                        Text="◆"
+                                                        Text=""
                                                         FontSize="39"
                                                         TextColor="#40FFFFFF"
                                                         HorizontalOptions="Center"
@@ -2998,7 +2998,7 @@
                                         VerticalOptions="Center">
 
                                         <Path
-                                            Data="M12,1.6 L22.4,12 L12,22.4 L1.6,12 Z"
+                                            Data="M8,3 L22,12 L8,21 Z"
                                             Aspect="Uniform"
                                             WidthRequest="8"
                                             HeightRequest="8"
@@ -3088,7 +3088,7 @@
                                 HorizontalOptions="Center">
 
                                 <Label
-                                    Text="◇"
+                                    Text=""
                                     FontSize="45"
                                     TextColor="White"
                                     HorizontalOptions="Center" />
@@ -3122,7 +3122,7 @@
                             <VerticalStackLayout Spacing="7">
 
                                 <Label
-                                    Text="◇"
+                                    Text=""
                                     FontSize="48"
                                     TextColor="{StaticResource DiamondPurple}"
                                     HorizontalOptions="Center" />
@@ -3183,7 +3183,7 @@
                                                 <Grid>
 
                                                     <Label
-                                                        Text="◆"
+                                                        Text=""
                                                         FontSize="48"
                                                         TextColor="#2AFFFFFF"
                                                         HorizontalOptions="Center"
@@ -3279,7 +3279,7 @@
                                                         LineBreakMode="TailTruncation" />
 
                                                     <Path
-                                                        Data="M12,1.6 L22.4,12 L12,22.4 L1.6,12 Z"
+                                                        Data="M8,3 L22,12 L8,21 Z"
                                                         Aspect="Uniform"
                                                         WidthRequest="6"
                                                         HeightRequest="6"

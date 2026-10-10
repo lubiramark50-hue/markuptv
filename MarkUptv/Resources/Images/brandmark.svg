@@ -1,37 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <!--
-      MarkUpTV brand mark — "broadcast ring + play".
-
-      A gold gradient ring broken at the upper right by a solid live dot (the
-      channel that is on air), with a rounded play triangle in the middle.
-      Drawn with plain paths/circles only, so MAUI's resizetizer can rasterise
-      it for every platform. Transparent background: it sits on the app navy.
-  -->
-  <defs>
-    <linearGradient id="markGold" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0"    stop-color="#FFE3A8"/>
-      <stop offset="0.45" stop-color="#E8B54A"/>
-      <stop offset="1"    stop-color="#C0882A"/>
-    </linearGradient>
-
-    <radialGradient id="markGlow" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0"   stop-color="#E8B54A" stop-opacity="0.20"/>
-      <stop offset="1"   stop-color="#E8B54A" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-
-  <!-- soft halo behind the mark -->
-  <circle cx="256" cy="256" r="250" fill="url(#markGlow)"/>
-
-  <!-- ring, open at the upper right where the live dot sits -->
-  <path d="M425.4,241.2 A170,170 0 1 1 353.5,116.7"
-        fill="none" stroke="url(#markGold)" stroke-width="40" stroke-linecap="round"/>
-
-  <!-- on-air dot in the ring's opening -->
-  <circle cx="403.2" cy="171" r="27" fill="url(#markGold)"/>
-
-  <!-- play triangle -->
-  <path d="M206 168 L350 256 L206 344 Z"
-        fill="url(#markGold)" stroke="url(#markGold)"
-        stroke-width="34" stroke-linejoin="round"/>
+  <defs><linearGradient id="markRed" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF526E"/><stop offset="1" stop-color="#D9002B"/></linearGradient></defs>
+  <path d="M112 56 Q112 35 132 47 L422 218 Q455 238 422 258 L132 429 Q112 441 112 420 Z" fill="url(#markRed)"/>
+  <path d="M173 151 L339 248 L173 345 Z" fill="#071426" opacity="0.22"/>
 </svg>
