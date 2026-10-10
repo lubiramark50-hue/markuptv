@@ -1398,7 +1398,7 @@
                                 x:DataType="models:DashboardFeature">
 
                                 <Border MinimumHeightRequest="48"
-                                    FlexLayout.Basis="48%"
+                                    FlexLayout.Basis="{OnIdiom Phone=48%, Tablet=31%, Desktop=23%, TV=23%}"
                                     HeightRequest="{OnIdiom Phone=122,
                                                             Tablet=127,
                                                             Desktop=132,
