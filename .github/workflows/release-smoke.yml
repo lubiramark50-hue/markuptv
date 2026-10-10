@@ -34,6 +34,7 @@ jobs:
             -storepass smoke-pass -keypass smoke-pass -dname "CN=smoke"
           dotnet publish MarkUptv/MarkUptv.csproj -c Release -f net10.0-android \
             -p:RuntimeIdentifier=android-x64 \
+            -p:RuntimeIdentifiers=android-x64 \
             -p:AndroidPackageFormat=apk \
             -p:AndroidKeyStore=true \
             -p:AndroidSigningKeyStore="$RUNNER_TEMP/smoke.keystore" \
