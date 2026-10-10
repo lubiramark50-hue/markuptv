@@ -53,7 +53,12 @@ public partial class SearchPage :
 
             if (!SearchEntry.IsFocused)
             {
-                SearchEntry.Focus();
+                if (DeviceInfo.Idiom != DeviceIdiom.TV)
+                {
+                    // On a TV the on-screen keyboard should open only when the
+                    // user presses OK on the field, not as soon as the page opens.
+                    SearchEntry.Focus();
+                }
             }
         }
         catch (Exception exception)
