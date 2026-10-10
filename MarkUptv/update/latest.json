@@ -1,7 +1,7 @@
 {
-  "versionCode": 6,
-  "versionName": "1.1.6",
-  "apkUrl": "https://github.com/lubiramark50-hue/markuptv/releases/download/ota-6/MarkUptv.apk",
-  "sha256": "e8da9ffa33391affba6c376a76570d30f528962c70225c46861cfb0c4fba46e6",
+  "versionCode": 7,
+  "versionName": "1.1.7",
+  "apkUrl": "https://github.com/lubiramark50-hue/markuptv/releases/download/ota-7/MarkUptv.apk",
+  "sha256": "a55d792b7d7ae66021c1d6ca83aa6743dc27a18f7b7a0a1d63628d4fd438be0a",
   "mandatory": false
 }
