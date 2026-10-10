@@ -32,6 +32,7 @@ jobs:
         run: |
           dotnet build MarkUptv/MarkUptv.csproj -c Debug -f net10.0-android \
             -p:RuntimeIdentifier=android-x64 \
+            -p:RuntimeIdentifiers=android-x64 \
             -p:EmbedAssembliesIntoApk=true \
             -p:AndroidPackageFormat=apk
           APK=$(find MarkUptv/bin/Debug -type f -name '*Signed.apk' | head -n 1)
