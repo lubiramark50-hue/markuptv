@@ -43,5 +43,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Probe public API contracts without submitting mutations
         env:
-          API_BASE_URL: \${{ inputs.base_url }}
+          API_BASE_URL: ${{ inputs.base_url }}
         run: python3 tools/backend_contract_smoke.py --base-url "$API_BASE_URL" --timeout 12
