@@ -1,0 +1,47 @@
+name: MarkUpTV backend integration checks
+
+on:
+  pull_request:
+    paths:
+      - 'MarkUptv/MauiProgram.cs'
+      - 'MarkUptv/Services/**'
+      - 'MarkUptv/Handlers/**'
+      - 'tools/backend_contract_smoke.py'
+      - '.github/workflows/backend-integration-ci.yml'
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Verified deployed HTTPS API origin (include trailing slash)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  android-release-compile:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android
+      - name: Compile Release Android client (no upload or OTA)
+        run: dotnet build MarkUptv/MarkUptv.csproj -f net10.0-android -c Release -p:AndroidKeyStore=false
+      - name: Check smoke tester Python syntax
+        run: python3 -m py_compile tools/backend_contract_smoke.py
+
+  read-only-backend-smoke:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe public API contracts without submitting mutations
+        env:
+          API_BASE_URL: \${{ inputs.base_url }}
+        run: python3 tools/backend_contract_smoke.py --base-url "$API_BASE_URL" --timeout 12
