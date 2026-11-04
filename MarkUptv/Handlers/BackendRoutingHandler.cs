@@ -28,7 +28,13 @@ public sealed class BackendRoutingHandler(
     {
         try
         {
-            if (request.RequestUri is { IsAbsoluteUri: true } requestUri)
+            // Route only calls addressed to our configured API. A third-party
+            // URL must never be silently redirected to our backend.
+            if (request.RequestUri is { IsAbsoluteUri: true } requestUri &&
+                string.Equals(requestUri.Scheme, endpoints.DefaultEndpoint.Scheme,
+                    StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(requestUri.Authority, endpoints.DefaultEndpoint.Authority,
+                    StringComparison.OrdinalIgnoreCase))
             {
                 Uri endpoint = await endpoints
                     .GetEndpointAsync(cancellationToken)

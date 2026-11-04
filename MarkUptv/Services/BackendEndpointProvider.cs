@@ -40,6 +40,7 @@ public sealed class BackendEndpointProvider
     private readonly ILogger<BackendEndpointProvider> _logger;
     private readonly Uri _defaultEndpoint;
     private readonly string _hostName;
+    private readonly bool _enableDiscovery;
     private readonly SemaphoreSlim _gate = new(1, 1);
 
     private Uri? _resolved;
@@ -47,7 +48,8 @@ public sealed class BackendEndpointProvider
     public BackendEndpointProvider(
         Uri defaultEndpoint,
         string hostName,
-        ILogger<BackendEndpointProvider> logger)
+        ILogger<BackendEndpointProvider> logger,
+        bool enableDiscovery = true)
     {
         _defaultEndpoint = defaultEndpoint
             ?? throw new ArgumentNullException(nameof(defaultEndpoint));
@@ -58,6 +60,8 @@ public sealed class BackendEndpointProvider
 
         _logger = logger
             ?? throw new ArgumentNullException(nameof(logger));
+
+        _enableDiscovery = enableDiscovery;
     }
 
     /// <summary>The address the app would use with no probing at all.</summary>
@@ -69,6 +73,13 @@ public sealed class BackendEndpointProvider
     /// </summary>
     public async Task<Uri> GetEndpointAsync(CancellationToken cancellationToken = default)
     {
+        // Public builds must never reuse a cached developer LAN address or
+        // accept an untrusted endpoint preference from another installation.
+        if (!_enableDiscovery)
+        {
+            return _defaultEndpoint;
+        }
+
         if (_resolved is not null)
         {
             return _resolved;
