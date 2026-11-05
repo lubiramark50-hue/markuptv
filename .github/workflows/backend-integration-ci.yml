@@ -14,6 +14,8 @@ on:
       - 'MarkUptv/App.xaml.cs'
       - 'MarkUptv/MarkUptv.csproj'
       - 'MarkUptv/ViewModels/PaymentRequiredViewModel.cs'
+      - 'MarkUptv/Pages/ConnectionRequiredPage.xaml'
+      - 'MarkUptv/Pages/ConnectionRequiredPage.xaml.cs'
       - '.github/workflows/android-ota-release.yml'
       - '.github/workflows/markup-tv-signed-release.yml'
       - '.github/workflows/automatic-version.yml'
