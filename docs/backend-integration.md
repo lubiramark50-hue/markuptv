@@ -59,3 +59,7 @@ The backend integration PR compiles the Android Release client, runs payment-cal
 ## Signed/OTA release preflight
 
 Every release path (automatic OTA, manually signed APK, and automatic version stamping) now checks the public production API before publishing. As of 2026-11-05 the server returns HTTP 403 and these workflows will correctly stop before publishing. When the real API endpoint changes, update `ProductionApiUrl` in `MarkUptv/MauiProgram.cs` and the matching preflight origins in these three workflows together. Backend health alone is not full certification: confirm database, authentication, checkout and webhook operation in a sandbox before merging.
+
+## Production backend check in pull requests
+
+The integration PR now includes a **required live readiness job** which requests the production HTTPS API and fails if it returns HTTP 403 or invalid responses. On manual workflow dispatch, the caller may supply a separate verified API origin for diagnostics. Do not mark the project release-ready when this job is red. The app currently points to an unavailable Azure App Service; the backend project or Azure admin access is still needed to restore it.

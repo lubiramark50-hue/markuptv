@@ -55,14 +55,14 @@ jobs:
         run: python3 -m py_compile tools/backend_contract_smoke.py
 
   read-only-backend-smoke:
-    if: github.event_name == 'workflow_dispatch'
+    # Required production readiness check: fail the PR if Azure is unavailable.
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - name: Probe public API contracts without submitting mutations
         env:
-          API_BASE_URL: ${{ inputs.base_url }}
+          API_BASE_URL: ${{ inputs.base_url || 'https://markuptvnew-fjhjd6bkb6bahqeh.southafricanorth-01.azurewebsites.net/' }}
         run: python3 tools/backend_contract_smoke.py --base-url "$API_BASE_URL" --timeout 12
 
   live-pipeline:
