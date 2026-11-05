@@ -200,7 +200,7 @@ public partial class PaymentService
             if (string.IsNullOrWhiteSpace(deviceId))
             {
                 _logger.LogWarning("GetStatusAsync Aborted: Physical device tracking signature is empty.");
-                return await LoadOfflineCacheFallbackAsync();
+                return useCache ? await LoadOfflineCacheFallbackAsync() : null;
             }
 
             string targetUrl = CleanseUrl($"api/device/status?deviceId={Uri.EscapeDataString(deviceId)}");
@@ -242,7 +242,7 @@ public partial class PaymentService
             _statusSemaphore.Release();
         }
 
-        return await LoadOfflineCacheFallbackAsync();
+        return useCache ? await LoadOfflineCacheFallbackAsync() : null;
     }
 
     private async Task<HttpResponseMessage?> FetchStatusWithRetryAsync(string url, CancellationToken ct)

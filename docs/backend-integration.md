@@ -49,3 +49,9 @@ The checker exits nonzero if required public GET endpoints return errors, non-JS
 ## Automated PR checks
 
 The backend integration PR compiles the Android Release client, runs payment-callback origin regression tests and exercises the production live-stream catalogue/resolver harness. The latter uses public internet sample streams and can fail independently if a third-party sample stream is down or unavailable to the runner. Treat that as a playback availability finding; check the logged source before changing application code.
+
+## Additional checkout safeguards (2026-11-05)
+
+- Payment is disabled until fresh backend status returns an explicit positive unlock price and three-letter currency, with a second live check before checkout creation.
+- Payment completion checks use the live backend rather than a cached offline lease. A payment-success deep link alone is not proof of payment.
+- Release signing credentials are not stored in the project; protected GitHub Actions secrets are required to sign a distribution APK.

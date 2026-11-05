@@ -379,7 +379,9 @@ public partial class App : Application
             base.OnAppLinkRequestReceived(uri);
             if (uri.Scheme == "markuptv" && uri.Host == "payment-success")
             {
-                var status = await _paymentService.GetStatusAsync();
+                // A payment-success deep link must be verified live, not via
+                // the encrypted offline lease.
+                var status = await _paymentService.GetFreshStatusAsync();
                 if (status?.CanWatch == true)
                     await NavigateSafelyAsync("///MainPage");
                 else

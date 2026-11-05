@@ -8,6 +8,12 @@ on:
       - 'MarkUptv/Handlers/**'
       - 'MarkUptv/ViewModels/PaymentWebViewViewModel.cs'
       - 'tools/PaymentNavigationGuardHarness/**'
+      - 'tools/CheckoutQuotePolicyHarness/**'
+      - 'MarkUptv/Services/CheckoutQuotePolicy.cs'
+      - 'MarkUptv/Models/DeviceStatusResponse.cs'
+      - 'MarkUptv/App.xaml.cs'
+      - 'MarkUptv/MarkUptv.csproj'
+      - 'MarkUptv/ViewModels/PaymentRequiredViewModel.cs'
       - 'tools/LivePipelineHarness/**'
       - 'tools/release-smoke.sh'
       - 'tools/backend_contract_smoke.py'
@@ -38,6 +44,8 @@ jobs:
         run: dotnet build MarkUptv/MarkUptv.csproj -f net10.0-android -c Release -p:AndroidKeyStore=false
       - name: Verify payment callback origin and URL validation
         run: dotnet run --project tools/PaymentNavigationGuardHarness/PaymentNavigationGuardHarness.csproj -c Release
+      - name: Verify payment quote gate
+        run: dotnet run --project tools/CheckoutQuotePolicyHarness/CheckoutQuotePolicyHarness.csproj -c Release
       - name: Check smoke tester Python syntax
         run: python3 -m py_compile tools/backend_contract_smoke.py
 
