@@ -36,7 +36,9 @@ Console.WriteLine($"catalogue:    {catalogDir}\\live-sources.json");
 var provider = new RepositoryCatalogProvider { CatalogDirectory = catalogDir };
 var catalog = new LiveCatalogService(new ConsoleLogger<LiveCatalogService>(), provider);
 var probe = new StreamProbeService(new ConsoleLogger<StreamProbeService>());
-var resolver = new LiveResolutionService(catalog, probe, new ConsoleLogger<LiveResolutionService>());
+using var youtubeClient = new HttpClient { Timeout = TimeSpan.FromSeconds(12) };
+var youtube = new YouTubeLiveResolver(youtubeClient, new ConsoleLogger<YouTubeLiveResolver>());
+var resolver = new LiveResolutionService(catalog, probe, youtube, new ConsoleLogger<LiveResolutionService>());
 
 // ---------------------------------------------------------------------------
 Console.WriteLine();
