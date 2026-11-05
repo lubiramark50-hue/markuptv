@@ -81,12 +81,18 @@ jobs:
             -alias smoke -keyalg RSA -keysize 2048 -validity 10000 \
             -storepass smoke-pass -keypass smoke-pass -dname "CN=smoke"
           dotnet publish MarkUptv/MarkUptv.csproj -c Release -f net10.0-android \
-            -p:RuntimeIdentifier=android-x64 -p:AndroidPackageFormat=apk \
+            -p:RuntimeIdentifier=android-x64 -p:RuntimeIdentifiers=android-x64 -p:AndroidPackageFormat=apk \
             -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="$RUNNER_TEMP/smoke.keystore" \
             -p:AndroidSigningKeyAlias=smoke -p:AndroidSigningStorePass=smoke-pass \
             -p:AndroidSigningKeyPass=smoke-pass
           APK=$(find MarkUptv/bin/Release -type f -name '*Signed.apk' | head -n 1)
           test -n "$APK"
+          echo "Packaged native architectures:"
+          unzip -Z1 "$APK" | grep '^lib/' | cut -d/ -f2 | sort -u
+          unzip -Z1 "$APK" | grep -q '^lib/x86_64/' || {
+            echo "Emulator test APK has no x86_64 native libraries" >&2
+            exit 1
+          }
           echo "APK_PATH=$GITHUB_WORKSPACE/$APK" >> "$GITHUB_ENV"
       - name: Enable KVM
         run: |
