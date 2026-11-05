@@ -29,7 +29,7 @@ void Check(string name, bool condition, string detail)
 }
 
 string repoRoot = FindRepoRoot();
-string catalogDir = Path.Combine(repoRoot, "MarkUptv", "MarkUptv", "Resources", "Raw");
+string catalogDir = Path.Combine(repoRoot, "MarkUptv", "Resources", "Raw");
 Console.WriteLine($"repository:   {repoRoot}");
 Console.WriteLine($"catalogue:    {catalogDir}\\live-sources.json");
 
@@ -241,7 +241,7 @@ static string FindRepoRoot()
 
     while (dir is not null)
     {
-        if (Directory.Exists(Path.Combine(dir.FullName, "MarkUptv", "MarkUptv")))
+        if (File.Exists(Path.Combine(dir.FullName, "MarkUptv", "Resources", "Raw", "live-sources.json")))
         {
             return dir.FullName;
         }

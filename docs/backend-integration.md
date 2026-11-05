@@ -45,3 +45,7 @@ The checker exits nonzero if required public GET endpoints return errors, non-JS
 6. Only exact backend-origin payment callback paths or the app's own custom callback scheme may signal checkout completion. The app must verify entitlement with the server before granting access; callback URLs and virtual-device flags are not proof of payment.
 7. Exercise social post/comment/like/chat calls with separate identities; verify authorization and per-user data isolation.
 7. Deploy only after backend and client checks pass. Merging into `main` triggers Android OTA release in the existing GitHub workflow, so do not merge a failing integration branch.
+
+## Automated PR checks
+
+The backend integration PR compiles the Android Release client, runs payment-callback origin regression tests and exercises the production live-stream catalogue/resolver harness. The latter uses public internet sample streams and can fail independently if a third-party sample stream is down or unavailable to the runner. Treat that as a playback availability finding; check the logged source before changing application code.

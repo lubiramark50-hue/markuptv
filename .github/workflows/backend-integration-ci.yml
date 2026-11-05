@@ -8,6 +8,7 @@ on:
       - 'MarkUptv/Handlers/**'
       - 'MarkUptv/ViewModels/PaymentWebViewViewModel.cs'
       - 'tools/PaymentNavigationGuardHarness/**'
+      - 'tools/LivePipelineHarness/**'
       - 'tools/backend_contract_smoke.py'
       - '.github/workflows/backend-integration-ci.yml'
   workflow_dispatch:
@@ -49,3 +50,15 @@ jobs:
         env:
           API_BASE_URL: ${{ inputs.base_url }}
         run: python3 tools/backend_contract_smoke.py --base-url "$API_BASE_URL" --timeout 12
+
+  live-pipeline:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Test real catalogue and playback failover
+        run: dotnet run --project tools/LivePipelineHarness/markuptv.livepipelineharness.csproj -c Release
