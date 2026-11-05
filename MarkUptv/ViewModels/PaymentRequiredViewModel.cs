@@ -60,6 +60,7 @@ public partial class PaymentRequiredViewModel : ObservableObject
     /// is never blank, and is replaced by whatever the backend reports.
     /// </summary>
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(PayButtonText))]
     private string _priceText = "Checking current price…";
 
     /// <summary>Label for the pay button, kept in sync with <see cref="PriceText"/>.</summary>
@@ -209,6 +210,8 @@ public partial class PaymentRequiredViewModel : ObservableObject
         }
         catch (Exception ex)
         {
+            CheckoutAvailable = false;
+            PriceText = "Price unavailable";
             // LOG THE FULL STACK TRACE
             ErrorMessage = $"Unexpected error: {ex.Message}";
             System.Diagnostics.Debug.WriteLine($"[PAYMENT CRITICAL FAILURE]: {ex}");
