@@ -374,11 +374,18 @@ public partial class PaymentService
                 if (jsonDoc.RootElement.TryGetProperty("redirectUrl", out var urlElement))
                 {
                     string? targetRedirectUrl = urlElement.GetString();
-                    if (!string.IsNullOrWhiteSpace(targetRedirectUrl))
+                    // Never open HTTP, file:, javascript:, or other untrusted
+                    // checkout schemes in the embedded payment webview.
+                    if (Uri.TryCreate(targetRedirectUrl, UriKind.Absolute, out Uri? checkoutUri) &&
+                        checkoutUri.Scheme == Uri.UriSchemeHttps &&
+                        string.IsNullOrEmpty(checkoutUri.UserInfo))
                     {
                         _logger.LogInformation("Payment Initialization Complete.");
-                        return PaymentInitiationResult.Ok(targetRedirectUrl);
+                        return PaymentInitiationResult.Ok(targetRedirectUrl!);
                     }
+
+                    _logger.LogWarning("Payment service returned an invalid or insecure checkout URL.");
+                    return PaymentInitiationResult.Fail("Payment gateway returned an invalid checkout link.");
                 }
 
                 _logger.LogError("Payment Initialization Failed: 'redirectUrl' missing in server JSON.");

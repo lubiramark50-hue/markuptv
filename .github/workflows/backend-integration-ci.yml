@@ -6,6 +6,8 @@ on:
       - 'MarkUptv/MauiProgram.cs'
       - 'MarkUptv/Services/**'
       - 'MarkUptv/Handlers/**'
+      - 'MarkUptv/ViewModels/PaymentWebViewViewModel.cs'
+      - 'tools/PaymentNavigationGuardHarness/**'
       - 'tools/backend_contract_smoke.py'
       - '.github/workflows/backend-integration-ci.yml'
   workflow_dispatch:
@@ -32,6 +34,8 @@ jobs:
         run: dotnet workload install maui-android
       - name: Compile Release Android client (no upload or OTA)
         run: dotnet build MarkUptv/MarkUptv.csproj -f net10.0-android -c Release -p:AndroidKeyStore=false
+      - name: Verify payment callback origin and URL validation
+        run: dotnet run --project tools/PaymentNavigationGuardHarness/PaymentNavigationGuardHarness.csproj -c Release
       - name: Check smoke tester Python syntax
         run: python3 -m py_compile tools/backend_contract_smoke.py
 

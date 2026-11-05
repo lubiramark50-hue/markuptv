@@ -42,5 +42,6 @@ The checker exits nonzero if required public GET endpoints return errors, non-JS
 3. Run the read-only smoke checker, then build an Android **Release** APK and test on a real Android phone using mobile data, not the developer's Wi-Fi.
 4. Test TV/EPG/search/news/movies and distinguish a truly empty result from 403/5xx or network failures.
 5. In a sandbox payment environment, verify checkout initiation, signed webhook validation, device entitlement updates, expiry, cancellations, and retries. Never trust client-reported `isEmulator`, device IDs, prices, or permissions without server verification.
-6. Exercise social post/comment/like/chat calls with separate identities; verify authorization and per-user data isolation.
+6. Only exact backend-origin payment callback paths or the app's own custom callback scheme may signal checkout completion. The app must verify entitlement with the server before granting access; callback URLs and virtual-device flags are not proof of payment.
+7. Exercise social post/comment/like/chat calls with separate identities; verify authorization and per-user data isolation.
 7. Deploy only after backend and client checks pass. Merging into `main` triggers Android OTA release in the existing GitHub workflow, so do not merge a failing integration branch.
