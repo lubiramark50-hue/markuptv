@@ -55,3 +55,7 @@ The backend integration PR compiles the Android Release client, runs payment-cal
 - Payment is disabled until fresh backend status returns an explicit positive unlock price and three-letter currency, with a second live check before checkout creation.
 - Payment completion checks use the live backend rather than a cached offline lease. A payment-success deep link alone is not proof of payment.
 - Release signing credentials are not stored in the project; protected GitHub Actions secrets are required to sign a distribution APK.
+
+## Signed/OTA release preflight
+
+Every release path (automatic OTA, manually signed APK, and automatic version stamping) now checks the public production API before publishing. As of 2026-11-05 the server returns HTTP 403 and these workflows will correctly stop before publishing. When the real API endpoint changes, update `ProductionApiUrl` in `MarkUptv/MauiProgram.cs` and the matching preflight origins in these three workflows together. Backend health alone is not full certification: confirm database, authentication, checkout and webhook operation in a sandbox before merging.
