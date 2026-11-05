@@ -9,6 +9,7 @@ on:
       - 'MarkUptv/ViewModels/PaymentWebViewViewModel.cs'
       - 'tools/PaymentNavigationGuardHarness/**'
       - 'tools/LivePipelineHarness/**'
+      - 'tools/release-smoke.sh'
       - 'tools/backend_contract_smoke.py'
       - '.github/workflows/backend-integration-ci.yml'
   workflow_dispatch:
@@ -62,3 +63,44 @@ jobs:
           dotnet-version: '10.0.x'
       - name: Test real catalogue and playback failover
         run: dotnet run --project tools/LivePipelineHarness/markuptv.livepipelineharness.csproj -c Release
+
+  android-emulator-smoke:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android
+      - name: Build smoke APK with a disposable signing key
+        run: |
+          keytool -genkeypair -keystore "$RUNNER_TEMP/smoke.keystore" -storetype PKCS12 \
+            -alias smoke -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass smoke-pass -keypass smoke-pass -dname "CN=smoke"
+          dotnet publish MarkUptv/MarkUptv.csproj -c Release -f net10.0-android \
+            -p:RuntimeIdentifier=android-x64 -p:AndroidPackageFormat=apk \
+            -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="$RUNNER_TEMP/smoke.keystore" \
+            -p:AndroidSigningKeyAlias=smoke -p:AndroidSigningStorePass=smoke-pass \
+            -p:AndroidSigningKeyPass=smoke-pass
+          APK=$(find MarkUptv/bin/Release -type f -name '*Signed.apk' | head -n 1)
+          test -n "$APK"
+          echo "APK_PATH=$GITHUB_WORKSPACE/$APK" >> "$GITHUB_ENV"
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Launch signed Release app on Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: default
+          profile: pixel_6
+          disk-size: 3072M
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: bash tools/release-smoke.sh

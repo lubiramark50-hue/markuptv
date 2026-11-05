@@ -10,7 +10,7 @@ adb wait-for-device
 adb shell settings put global window_animation_scale 0 || true
 adb shell settings put global transition_animation_scale 0 || true
 adb shell settings put global animator_duration_scale 0 || true
-adb install -r -g "$APK" || { echo "INSTALL FAILED" > "$OUT/_install_failed.txt"; exit 0; }
+adb install -r -g "$APK" || { echo "INSTALL FAILED" > "$OUT/_install_failed.txt"; exit 1; }
 
 shot() { adb exec-out screencap -p > "$OUT/$1.png"; adb shell uiautomator dump /sdcard/u.xml >/dev/null 2>&1; adb pull /sdcard/u.xml "$OUT/ui_$1.xml" >/dev/null 2>&1; }
 alive() { [ -n "$(adb shell pidof $PKG | tr -d '\r')" ]; }

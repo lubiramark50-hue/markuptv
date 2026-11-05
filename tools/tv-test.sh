@@ -11,7 +11,7 @@ echo "TV: characteristics=$(adb shell getprop ro.build.characteristics | tr -d '
 DENS=$(adb shell wm density | grep -oE '[0-9]+' | tail -1)
 DP=$(python3 -c "print($DENS/160)")
 echo "TV: density=$DENS size=$(adb shell wm size | tr -d '\r' | tr '\n' ' ')"
-adb install -r -g "$APK" || { echo "TV: INSTALL FAILED"; exit 0; }
+adb install -r -g "$APK" || { echo "TV: INSTALL FAILED" >&2; exit 1; }
 adb logcat -c
 echo "TV: leanback launch result: $(adb shell monkey -p $PKG -c android.intent.category.LEANBACK_LAUNCHER 1 2>&1 | tr -d '\r' | tail -2 | tr '\n' ' ')"
 sleep 50
