@@ -67,6 +67,12 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: bash tools/ui-shots.sh shots
 
+      - name: Create phone and TV page contact sheets
+        if: always()
+        run: |
+          python3 -m pip install -q Pillow
+          python3 tools/ui_contact_sheet.py shots
+
       - name: Upload UI screenshot audit and logs
         if: always()
         uses: actions/upload-artifact@v4
