@@ -5,6 +5,7 @@ on:
     branches: ['ui/**']
     paths:
       - '.tv-test-trigger'
+  workflow_dispatch:
 
 concurrency:
   group: tv-test-${{ github.ref }}
@@ -30,12 +31,16 @@ jobs:
       - name: Build debug APK (x86 for the TV emulator image)
         run: |
           dotnet build MarkUptv/MarkUptv.csproj -c Debug -f net10.0-android \
-            -p:RuntimeIdentifier=android-x86 \
+            -p:RuntimeIdentifier=android-x86 -p:RuntimeIdentifiers=android-x86 \
             -p:EmbedAssembliesIntoApk=true \
             -p:AndroidPackageFormat=apk
           APK=$(find MarkUptv/bin/Debug -type f -name '*Signed.apk' | head -n 1)
           [ -n "$APK" ] || APK=$(find MarkUptv/bin/Debug -type f -name '*.apk' | head -n 1)
           test -n "$APK"
+          unzip -Z1 "$APK" | grep -q '^lib/x86/' || {
+            echo "Android TV emulator APK missing x86 native libraries" >&2
+            exit 1
+          }
           echo "APK_PATH=$GITHUB_WORKSPACE/$APK" >> "$GITHUB_ENV"
           ls -l "$APK"
           rm -rf MarkUptv/obj
@@ -59,4 +64,19 @@ jobs:
           disk-size: 3072M
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
-          script: bash tools/tv-test.sh
+          script: bash tools/tv-capture.sh shots
+
+      - name: Generate genuine TV screenshots contact sheet
+        if: always()
+        run: |
+          python3 -m pip install -q Pillow
+          python3 tools/ui_contact_sheet.py shots
+
+      - name: Upload Android TV screenshot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: markuptv-real-android-tv-${{ github.run_number }}
+          path: shots/
+          retention-days: 14
+          if-no-files-found: warn
