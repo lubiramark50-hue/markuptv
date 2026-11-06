@@ -28,6 +28,13 @@ for r in $ROUTES; do
   adb shell am start -a android.intent.action.VIEW -d "markuptv://goto/$r" "$PKG" >/dev/null 2>&1
   sleep 9
   n=$(printf "%02d" $i); shot "${n}_$r"; i=$((i+1))
+  if [ "$r" = "SearchPage" ]; then
+    # The search screen correctly opens the keyboard for typing. Capture
+    # a second view with the keyboard dismissed to audit the whole layout.
+    adb shell input keyevent KEYCODE_BACK
+    sleep 2
+    shot "${n}_SearchPage_keyboard_hidden"
+  fi
   alive || echo "CRASHED on $r" >> "$OUT/_events.txt"
   case "$r" in
     MainPage|SportsPage|NewsPage|MoviesPage|MusicPage|FootballPage|WorldChannelsPage|CommunityHubPage|SocialPage|SearchPage)

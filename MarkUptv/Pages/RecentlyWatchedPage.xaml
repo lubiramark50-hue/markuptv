@@ -121,8 +121,8 @@
                         CornerRadius="22" HeightRequest="48" Padding="18,0"
                         FontSize="13" FontAttributes="Bold" CharacterSpacing="1" />
 
-                <Border Grid.Column="1" BackgroundColor="#1AFFFFFF" StrokeShape="RoundRectangle 8" Stroke="Transparent" HeightRequest="44">
-                    <SearchBar Placeholder="Search history..." 
+                <Border Grid.Column="1" BackgroundColor="#1AFFFFFF" StrokeShape="RoundRectangle 8" Stroke="Transparent" HeightRequest="60">
+                    <SearchBar HeightRequest="56" Placeholder="Search history..." 
                                Text="{Binding SearchText}"
                                BackgroundColor="Transparent" TextColor="White"
                                PlaceholderColor="#8B95A6" CancelButtonColor="#E8B54A"
@@ -133,7 +133,7 @@
             <CollectionView Grid.Row="1" ItemsSource="{Binding Groups}" 
                             SelectionMode="Single"
                             SelectionChanged="OnGroupSelected" 
-                            HeightRequest="40" Margin="0,0,0,12"
+                            HeightRequest="48" Margin="0,0,0,12"
                             IsVisible="False">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Horizontal" ItemSpacing="8" />

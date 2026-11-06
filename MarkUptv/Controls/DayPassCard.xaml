@@ -121,7 +121,7 @@
                         StrokeThickness="1"
                         Stroke="#2A2A4A"
                         BackgroundColor="#0E0F1E">
-                    <Entry Text="{Binding Email, Source={x:Reference Root}, Mode=TwoWay}"
+                    <Entry HeightRequest="56" Text="{Binding Email, Source={x:Reference Root}, Mode=TwoWay}"
                            Placeholder="Email for the receipt"
                            PlaceholderColor="#6E6790"
                            TextColor="White"

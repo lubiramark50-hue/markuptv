@@ -962,7 +962,7 @@
 
                         <Border
                             Grid.Row="1"
-                            HeightRequest="50"
+                            HeightRequest="60"
                             Padding="4,0"
                             BackgroundColor="#F4FFFFFF"
                             Stroke="#40FFFFFF"
@@ -973,7 +973,7 @@
                                 ColumnDefinitions="Auto,*"
                                 ColumnSpacing="1">
 
-                                <SearchBar
+                                <SearchBar HeightRequest="56"
                                     Grid.Column="0" Grid.ColumnSpan="2"
                                     Text="{Binding SearchText}"
                                     Placeholder="Search channels or programmes..."
@@ -995,7 +995,7 @@
                     <CollectionView
                         x:Name="GroupCollection"
                         Grid.Row="1"
-                        HeightRequest="47"
+                        HeightRequest="52"
                         ItemsSource="{Binding Groups}"
                         SelectedItem="{Binding SelectedGroup, Mode=TwoWay}"
                         SelectionMode="Single"
