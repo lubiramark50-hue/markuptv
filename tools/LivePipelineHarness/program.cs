@@ -29,14 +29,16 @@ void Check(string name, bool condition, string detail)
 }
 
 string repoRoot = FindRepoRoot();
-string catalogDir = Path.Combine(repoRoot, "MarkUptv", "MarkUptv", "Resources", "Raw");
+string catalogDir = Path.Combine(repoRoot, "MarkUptv", "Resources", "Raw");
 Console.WriteLine($"repository:   {repoRoot}");
 Console.WriteLine($"catalogue:    {catalogDir}\\live-sources.json");
 
 var provider = new RepositoryCatalogProvider { CatalogDirectory = catalogDir };
 var catalog = new LiveCatalogService(new ConsoleLogger<LiveCatalogService>(), provider);
 var probe = new StreamProbeService(new ConsoleLogger<StreamProbeService>());
-var resolver = new LiveResolutionService(catalog, probe, new ConsoleLogger<LiveResolutionService>());
+using var youtubeClient = new HttpClient { Timeout = TimeSpan.FromSeconds(12) };
+var youtube = new YouTubeLiveResolver(youtubeClient, new ConsoleLogger<YouTubeLiveResolver>());
+var resolver = new LiveResolutionService(catalog, probe, youtube, new ConsoleLogger<LiveResolutionService>());
 
 // ---------------------------------------------------------------------------
 Console.WriteLine();
@@ -241,7 +243,7 @@ static string FindRepoRoot()
 
     while (dir is not null)
     {
-        if (Directory.Exists(Path.Combine(dir.FullName, "MarkUptv", "MarkUptv")))
+        if (File.Exists(Path.Combine(dir.FullName, "MarkUptv", "Resources", "Raw", "live-sources.json")))
         {
             return dir.FullName;
         }

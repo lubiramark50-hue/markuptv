@@ -121,7 +121,7 @@
                         BackgroundColor="#8B5A2B" TextColor="White"
                         CornerRadius="15" HeightRequest="48" WidthRequest="90"
                         FontSize="14" FontAttributes="Bold" CharacterSpacing="1" />
-                <SearchBar Placeholder="Find wildlife..."
+                <SearchBar HeightRequest="56" Placeholder="Find wildlife..."
                            Text="{Binding SearchText}"
                            BackgroundColor="#2C4A30" TextColor="White"
                            PlaceholderColor="#AAA" CancelButtonColor="#FFD700"
@@ -131,7 +131,7 @@
             <CollectionView Grid.Row="1" ItemsSource="{Binding Groups}"
                             SelectionMode="Single"
                             SelectionChanged="OnGroupSelected"
-                            HeightRequest="40" Margin="0,0,0,4">
+                            HeightRequest="48" Margin="0,0,0,4">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Horizontal" ItemSpacing="6" />
                 </CollectionView.ItemsLayout>

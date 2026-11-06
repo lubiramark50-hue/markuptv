@@ -36,7 +36,7 @@
         <helpers:BoolToNumberConverter
             x:Key="PlayerStageHeight"
             TrueValue="232"
-            FalseValue="240" />
+            FalseValue="188" />
 
         <helpers:StringNullOrEmptyConverter
             x:Key="StringNullOrEmptyConverter" />
@@ -753,7 +753,7 @@
                                 HorizontalTextAlignment="Center"
                                 VerticalTextAlignment="Center" />
 
-                            <Entry MinimumHeightRequest="48"
+                            <Entry MinimumHeightRequest="56"
                                 Grid.Column="1"
                                 Text="{Binding SearchText}"
                                 Placeholder="Search news channels..."

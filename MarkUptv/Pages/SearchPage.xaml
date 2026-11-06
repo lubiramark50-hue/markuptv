@@ -70,7 +70,7 @@
             x:Key="SearchTabButtonStyle"
             TargetType="Button">
 
-            <Setter Property="HeightRequest" Value="42" />
+            <Setter Property="HeightRequest" Value="48" />
             <Setter Property="MinimumWidthRequest" Value="84" />
             <Setter Property="Padding" Value="15,0" />
             <Setter Property="CornerRadius" Value="15" />

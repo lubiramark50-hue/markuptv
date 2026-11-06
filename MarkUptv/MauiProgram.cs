@@ -19,13 +19,13 @@ public static class MauiProgram
     private const int DevelopmentBackendPort = 5293;
 
     /*
-     * The backend currently runs on this PC (MarkUpTvServer, port 5293).
+     * DEBUG builds use the local MarkUpTvServer on port 5293.
      * - Android devices on the same Wi-Fi reach it through the PC's LAN IP.
      * - The Android emulator reaches the host loopback through 10.0.2.2.
      * - The Windows build runs on the same machine as the server, so it
      *   uses localhost.
-     * When the backend is hosted publicly, replace these with the real
-     * domain (https://…).
+     * Release builds use ProductionApiUrl over HTTPS; never ship a LAN
+     * address to public devices.
      *
      * The LAN address below changes whenever the router hands out a new
      * DHCP lease, so it is only the *starting* candidate: at startup the app
@@ -45,7 +45,7 @@ public static class MauiProgram
         "mrmark";
 
     private const string ProductionApiUrl =
-        "https://api.markuptv.example/";
+        "https://markuptvnew-fjhjd6bkb6bahqeh.southafricanorth-01.azurewebsites.net/";
 
     public static MauiApp CreateMauiApp()
     {
@@ -134,6 +134,7 @@ public static class MauiProgram
 
     private static Uri ResolveBackendUri()
     {
+#if DEBUG
 #if ANDROID
         string address =
             DeviceInfo.DeviceType == DeviceType.Virtual
@@ -142,6 +143,9 @@ public static class MauiProgram
 #else
         string address =
             $"http://localhost:{DevelopmentBackendPort}/";
+#endif
+#else
+        string address = ProductionApiUrl;
 #endif
 
         if (!address.EndsWith(
@@ -288,15 +292,19 @@ public static class MauiProgram
         IServiceCollection services,
         Uri backendUri)
     {
-        // Endpoint discovery: the app probes the compiled-in address, this
-        // machine's mDNS name and the last address that worked, then routes
-        // every backend request to whichever answered. Without this a router
-        // handing out a new DHCP lease silently broke live football, because
-        // the board is fetched from the backend and has no offline cache.
+        // Only DEBUG builds discover a local developer server. Release builds
+        // must use the configured HTTPS endpoint and must not trust old
+        // persisted LAN URLs from debug installations.
+#if DEBUG
+        const bool enableDevelopmentDiscovery = true;
+#else
+        const bool enableDevelopmentDiscovery = false;
+#endif
         services.AddSingleton(provider => new BackendEndpointProvider(
             backendUri,
-            DevelopmentHostName,
-            provider.GetRequiredService<ILogger<BackendEndpointProvider>>()));
+            enableDevelopmentDiscovery ? DevelopmentHostName : string.Empty,
+            provider.GetRequiredService<ILogger<BackendEndpointProvider>>(),
+            enableDevelopmentDiscovery));
 
         services.AddTransient<BackendRoutingHandler>();
 

@@ -35,7 +35,7 @@ public partial class ConnectionRequiredPage : ContentPage
 
             if (!reachedServer)
             {
-                StatusLabel.Text = "Still can't connect. Check your internet and try again.";
+                StatusLabel.Text = "The service is still unavailable. Please try again later.";
                 StatusLabel.IsVisible = true;
             }
         }

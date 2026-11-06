@@ -193,9 +193,9 @@
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="12" />
                                 </Border.StrokeShape>
-                                <Entry Text="{Binding Email, Mode=TwoWay}"
+                                <Entry HeightRequest="56" Text="{Binding Email, Mode=TwoWay}"
                                        Placeholder="name@example.com"
-                                       PlaceholderColor="#5E5F80"
+                                       PlaceholderColor="#B6BED5"
                                        Keyboard="Email"
                                        FontSize="14"
                                        TextColor="White"
@@ -203,7 +203,7 @@
                             </Border>
                             <Label Text="Your receipt is sent here."
                                    FontSize="10.5"
-                                   TextColor="#6E6F92"
+                                   TextColor="#B3B9D1"
                                    Margin="6,0,0,0" />
                         </VerticalStackLayout>
 
@@ -221,9 +221,9 @@
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="12" />
                                 </Border.StrokeShape>
-                                <Entry Text="{Binding PhoneNumber, Mode=TwoWay}"
+                                <Entry HeightRequest="56" Text="{Binding PhoneNumber, Mode=TwoWay}"
                                        Placeholder="e.g. 0700000000"
-                                       PlaceholderColor="#5E5F80"
+                                       PlaceholderColor="#B6BED5"
                                        Keyboard="Telephone"
                                        FontSize="14"
                                        TextColor="White"

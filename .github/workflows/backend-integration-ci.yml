@@ -1,0 +1,125 @@
+name: MarkUpTV backend integration checks
+
+on:
+  pull_request:
+    paths:
+      - 'MarkUptv/MauiProgram.cs'
+      - 'MarkUptv/Services/**'
+      - 'MarkUptv/Handlers/**'
+      - 'MarkUptv/ViewModels/PaymentWebViewViewModel.cs'
+      - 'tools/PaymentNavigationGuardHarness/**'
+      - 'tools/CheckoutQuotePolicyHarness/**'
+      - 'MarkUptv/Services/CheckoutQuotePolicy.cs'
+      - 'MarkUptv/Models/DeviceStatusResponse.cs'
+      - 'MarkUptv/App.xaml.cs'
+      - 'MarkUptv/MarkUptv.csproj'
+      - 'MarkUptv/ViewModels/PaymentRequiredViewModel.cs'
+      - 'MarkUptv/Pages/ConnectionRequiredPage.xaml'
+      - 'MarkUptv/Pages/ConnectionRequiredPage.xaml.cs'
+      - '.github/workflows/android-ota-release.yml'
+      - '.github/workflows/markup-tv-signed-release.yml'
+      - '.github/workflows/automatic-version.yml'
+      - 'tools/LivePipelineHarness/**'
+      - 'tools/release-smoke.sh'
+      - 'tools/backend_contract_smoke.py'
+      - '.github/workflows/backend-integration-ci.yml'
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Verified deployed HTTPS API origin (include trailing slash)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  android-release-compile:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android
+      - name: Compile Release Android client (no upload or OTA)
+        run: dotnet build MarkUptv/MarkUptv.csproj -f net10.0-android -c Release -p:AndroidKeyStore=false
+      - name: Verify payment callback origin and URL validation
+        run: dotnet run --project tools/PaymentNavigationGuardHarness/PaymentNavigationGuardHarness.csproj -c Release
+      - name: Verify payment quote gate
+        run: dotnet run --project tools/CheckoutQuotePolicyHarness/CheckoutQuotePolicyHarness.csproj -c Release
+      - name: Check smoke tester Python syntax
+        run: python3 -m py_compile tools/backend_contract_smoke.py
+
+  read-only-backend-smoke:
+    # Required production readiness check: fail the PR if Azure is unavailable.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe public API contracts without submitting mutations
+        env:
+          API_BASE_URL: ${{ inputs.base_url || 'https://markuptvnew-fjhjd6bkb6bahqeh.southafricanorth-01.azurewebsites.net/' }}
+        run: python3 tools/backend_contract_smoke.py --base-url "$API_BASE_URL" --timeout 12
+
+  live-pipeline:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Test real catalogue and playback failover
+        run: dotnet run --project tools/LivePipelineHarness/markuptv.livepipelineharness.csproj -c Release
+
+  android-emulator-smoke:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android
+      - name: Build smoke APK with a disposable signing key
+        run: |
+          keytool -genkeypair -keystore "$RUNNER_TEMP/smoke.keystore" -storetype PKCS12 \
+            -alias smoke -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass smoke-pass -keypass smoke-pass -dname "CN=smoke"
+          dotnet publish MarkUptv/MarkUptv.csproj -c Release -f net10.0-android \
+            -p:RuntimeIdentifier=android-x64 -p:RuntimeIdentifiers=android-x64 -p:AndroidPackageFormat=apk \
+            -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="$RUNNER_TEMP/smoke.keystore" \
+            -p:AndroidSigningKeyAlias=smoke -p:AndroidSigningStorePass=smoke-pass \
+            -p:AndroidSigningKeyPass=smoke-pass
+          APK=$(find MarkUptv/bin/Release -type f -name '*Signed.apk' | head -n 1)
+          test -n "$APK"
+          echo "Packaged native architectures:"
+          unzip -Z1 "$APK" | grep '^lib/' | cut -d/ -f2 | sort -u
+          unzip -Z1 "$APK" | grep -q '^lib/x86_64/' || {
+            echo "Emulator test APK has no x86_64 native libraries" >&2
+            exit 1
+          }
+          echo "APK_PATH=$GITHUB_WORKSPACE/$APK" >> "$GITHUB_ENV"
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Launch signed Release app on Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: default
+          profile: pixel_6
+          disk-size: 3072M
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: bash tools/release-smoke.sh

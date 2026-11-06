@@ -31,8 +31,13 @@ public partial class PaymentRequiredViewModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(PayButtonText))]
     private bool _isLoading;
 
-    /// <summary>True while the checkout is being created - used to disable the CTA.</summary>
-    public bool IsNotLoading => !IsLoading;
+    /// <summary>Checkout requires a fresh, server-provided positive price.</summary>
+    public bool IsNotLoading => !IsLoading && CheckoutAvailable;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsNotLoading))]
+    [NotifyPropertyChangedFor(nameof(PayButtonText))]
+    private bool _checkoutAvailable;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasError))]
@@ -55,10 +60,11 @@ public partial class PaymentRequiredViewModel : ObservableObject
     /// is never blank, and is replaced by whatever the backend reports.
     /// </summary>
     [ObservableProperty]
-    private string _priceText = "5,000 UGX";
+    [NotifyPropertyChangedFor(nameof(PayButtonText))]
+    private string _priceText = "Checking current price…";
 
     /// <summary>Label for the pay button, kept in sync with <see cref="PriceText"/>.</summary>
-    public string PayButtonText => IsLoading ? "CONNECTING TO GATEWAY…" : $"PAY {PriceText} · UNLOCK TV";
+    public string PayButtonText => IsLoading ? "CONNECTING TO GATEWAY…" : CheckoutAvailable ? $"PAY {PriceText} · UNLOCK TV" : "PAYMENT UNAVAILABLE";
 
     public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 
@@ -77,11 +83,19 @@ public partial class PaymentRequiredViewModel : ObservableObject
     [RelayCommand(AllowConcurrentExecutions = false)]
     private async Task LoadStatusAsync()
     {
+        // Never show a stored price or permit checkout when the backend is offline.
+        CheckoutAvailable = false;
+        PriceText = "Price unavailable";
+        HasDaysLeftText = false;
         ErrorMessage = string.Empty;
         try
         {
-            var status = await _paymentService.GetStatusAsync(useCache: true);
-            if (status == null) return;
+            var status = await _paymentService.GetFreshStatusAsync();
+            if (status == null)
+            {
+                ErrorMessage = "Cannot reach the payment server to confirm your price. Please try again later.";
+                return;
+            }
 
             if (status.CanWatch)
             {
@@ -92,10 +106,14 @@ public partial class PaymentRequiredViewModel : ObservableObject
                 return;
             }
 
-            // Price comes from the same response as the entitlement, so the
-            // headline and the button can never advertise different amounts.
+            // A missing/invalid server price must not silently become a guessed amount.
+            if (!CheckoutQuotePolicy.IsReady(status))
+            {
+                ErrorMessage = "The payment server has not provided a current price.";
+                return;
+            }
             PriceText = status.PriceText;
-            OnPropertyChanged(nameof(PayButtonText));
+            CheckoutAvailable = true;
 
             if (status.IsTrial && status.DaysRemaining > 0)
             {
@@ -122,6 +140,11 @@ public partial class PaymentRequiredViewModel : ObservableObject
     [RelayCommand(AllowConcurrentExecutions = false)]
     public async Task PaymentAsync()
     {
+        if (!CheckoutAvailable)
+        {
+            ErrorMessage = "Payment is unavailable until the server confirms the price.";
+            return;
+        }
         var sanitizedEmail = Email?.Trim();
         if (string.IsNullOrWhiteSpace(sanitizedEmail) || !EmailValidator.IsMatch(sanitizedEmail))
         {
@@ -134,6 +157,17 @@ public partial class PaymentRequiredViewModel : ObservableObject
 
         try
         {
+            // Recheck the live quote before initiating a payment.
+            var verified = await _paymentService.GetFreshStatusAsync();
+            if (!CheckoutQuotePolicy.IsReady(verified))
+            {
+                CheckoutAvailable = false;
+                PriceText = "Price unavailable";
+                ErrorMessage = "The payment server is unavailable. No charge has been started.";
+                return;
+            }
+            PriceText = verified!.PriceText;
+
             var paymentDetails = new PaymentDetails
             {
                 Email = sanitizedEmail,
@@ -176,6 +210,8 @@ public partial class PaymentRequiredViewModel : ObservableObject
         }
         catch (Exception ex)
         {
+            CheckoutAvailable = false;
+            PriceText = "Price unavailable";
             // LOG THE FULL STACK TRACE
             ErrorMessage = $"Unexpected error: {ex.Message}";
             System.Diagnostics.Debug.WriteLine($"[PAYMENT CRITICAL FAILURE]: {ex}");

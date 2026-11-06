@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
+using Microsoft.Extensions.Options;
 
 namespace MarkUptv.ViewModels;
 
 public partial class PaymentWebViewViewModel : ObservableObject, IQueryAttributable
 {
     private readonly PaymentService _paymentService;
+    private readonly Uri _backendUri;
     private Func<Task>? _onSuccess;
     private Func<Task>? _onFailure;
 
@@ -21,9 +23,11 @@ public partial class PaymentWebViewViewModel : ObservableObject, IQueryAttributa
     [ObservableProperty]
     private bool _isLoading = true;
 
-    public PaymentWebViewViewModel(PaymentService paymentService)
+    public PaymentWebViewViewModel(PaymentService paymentService, IOptions<PaymentSettings> settings)
     {
-        _paymentService = paymentService;
+        _paymentService = paymentService ?? throw new ArgumentNullException(nameof(paymentService));
+        ArgumentNullException.ThrowIfNull(settings);
+        _backendUri = new Uri(settings.Value.BaseUrl, UriKind.Absolute);
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -50,21 +54,15 @@ public partial class PaymentWebViewViewModel : ObservableObject, IQueryAttributa
     {
         if (string.IsNullOrWhiteSpace(url)) return;
 
-        // Support both direct custom app schemas and live server API webhooks.
-        // The TV unlock checkout lands on api/device/payment-callback, while
-        // donations land on api/donation/callback — both are gateway callbacks
-        // that complete the transaction on the server side.
-        if (url.StartsWith("markuptv://payment-success", StringComparison.OrdinalIgnoreCase) ||
-            url.Contains("/payment-success") ||
-            url.Contains("api/device/payment-callback") ||
-            url.Contains("api/donation/callback"))
+        // Never interpret a URL from an unrelated payment page as confirmation.
+        // Entitlements are still verified server-side by PaymentRequiredViewModel.
+        PaymentNavigationOutcome outcome = PaymentNavigationGuard.Classify(url, _backendUri);
+        if (outcome == PaymentNavigationOutcome.Success)
         {
-            // Give server architecture a tiny window to complete distributed transactional logging
             await Task.Delay(1500);
             await HandleSuccess();
         }
-        else if (url.StartsWith("markuptv://payment-failed", StringComparison.OrdinalIgnoreCase) ||
-                 url.Contains("/payment-failed"))
+        else if (outcome == PaymentNavigationOutcome.Failure)
         {
             await HandleFailure();
         }

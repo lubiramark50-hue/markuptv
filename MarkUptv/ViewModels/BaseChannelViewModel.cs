@@ -204,8 +204,8 @@ public abstract partial class BaseChannelViewModel :
             if (response?.Channels is null)
             {
                 await SetErrorAsync(
-                    $"Could not load {Category} channels. " +
-                    "Please check your connection.");
+                    $"Could not load {Category} channels right now. " +
+                    "Please try again shortly.");
 
                 return;
             }
@@ -257,8 +257,8 @@ public abstract partial class BaseChannelViewModel :
                 $"{exception}");
 
             await SetErrorAsync(
-                "Channel synchronization failed. " +
-                "Please check the backend and network connection.");
+                "The channel service is temporarily unavailable. " +
+                "Please try again shortly.");
         }
         finally
         {

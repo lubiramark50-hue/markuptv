@@ -125,7 +125,7 @@
                         BackgroundColor="#FF6F00" TextColor="White"
                         CornerRadius="15" HeightRequest="48" WidthRequest="90"
                         FontSize="16" FontAttributes="Bold" />
-                <SearchBar Placeholder="Find local channels..."
+                <SearchBar HeightRequest="56" Placeholder="Find local channels..."
                            Text="{Binding SearchText}"
                            BackgroundColor="#283593" TextColor="White"
                            PlaceholderColor="#AAA" CancelButtonColor="#FFAB00"
@@ -135,7 +135,7 @@
             <CollectionView Grid.Row="1" ItemsSource="{Binding Groups}"
                             SelectionMode="Single"
                             SelectionChanged="OnGroupSelected"
-                            HeightRequest="40" Margin="0,0,0,4">
+                            HeightRequest="48" Margin="0,0,0,4">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Horizontal" ItemSpacing="6" />
                 </CollectionView.ItemsLayout>

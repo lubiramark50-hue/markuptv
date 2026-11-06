@@ -42,7 +42,7 @@
     <OnIdiom x:Key="PillRadius" x:TypeArguments="x:Double" Phone="12" Tablet="14" Desktop="14" TV="16" />
 
     <!-- Minimum touch/DPAD target -->
-    <OnIdiom x:Key="TouchTarget" x:TypeArguments="x:Double" Phone="44" Tablet="46" Desktop="44" TV="52" />
+    <OnIdiom x:Key="TouchTarget" x:TypeArguments="x:Double" Phone="48" Tablet="48" Desktop="48" TV="56" />
 
     <!-- ─── Type ramp (modern, fluid) ──────────────────────────────────── -->
     <OnIdiom x:Key="FontCaption" x:TypeArguments="x:Double" Phone="11" Tablet="12" Desktop="12" TV="14" />

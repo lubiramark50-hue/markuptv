@@ -10,7 +10,7 @@ adb wait-for-device
 adb shell settings put global window_animation_scale 0 || true
 adb shell settings put global transition_animation_scale 0 || true
 adb shell settings put global animator_duration_scale 0 || true
-adb install -r -g "$APK" || { echo "INSTALL FAILED" > "$OUT/_install_failed.txt"; exit 0; }
+adb install -r -g "$APK" || { echo "INSTALL FAILED" > "$OUT/_install_failed.txt"; exit 1; }
 
 shot() { adb exec-out screencap -p > "$OUT/$1.png"; adb shell uiautomator dump /sdcard/u.xml >/dev/null 2>&1; adb pull /sdcard/u.xml "$OUT/ui_$1.xml" >/dev/null 2>&1; }
 alive() { [ -n "$(adb shell pidof $PKG | tr -d '\r')" ]; }
@@ -21,14 +21,27 @@ sleep 20; shot 00_launch_20s
 sleep 40; shot 01_launch_60s
 grep -oE 'text="[^"]+"' "$OUT/ui_01_launch_60s.xml" | head -12 | sed 's/^/LAUNCH_TEXT: /'
 
-ROUTES="MainPage SportsPage NewsPage MoviesPage MusicPage FootballPage WorldChannelsPage CommunityHubPage SocialPage RecentlyWatchedPage DonationPage CartoonPage DiscoveryPage FashionPage GospelPage Lifestyle ReligiousTvPage LocalPage EuropeanSportsPage WildlifePage AdultsPage MovieCatalogPage SearchPage MatchThreadPage"
+ROUTES="MainPage SportsPage NewsPage MoviesPage MusicPage FootballPage WorldChannelsPage CommunityHubPage SocialPage RecentlyWatchedPage DonationPage CartoonPage DiscoveryPage FashionPage GospelPage Lifestyle ReligiousTvPage LocalPage EuropeanSportsPage WildlifePage AdultsPage MovieCatalogPage SearchPage MatchThreadPage PaymentRequiredPage ConnectionRequiredPage MorePage NotificationsPage MovieDownloadsPage ComposePostPage"
 i=2
 for r in $ROUTES; do
   if ! alive; then echo "CRASHED before $r" >> "$OUT/_events.txt"; adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1; sleep 25; fi
   adb shell am start -a android.intent.action.VIEW -d "markuptv://goto/$r" "$PKG" >/dev/null 2>&1
   sleep 9
   n=$(printf "%02d" $i); shot "${n}_$r"; i=$((i+1))
+  if [ "$r" = "SearchPage" ]; then
+    # The search screen correctly opens the keyboard for typing. Capture
+    # a second view with the keyboard dismissed to audit the whole layout.
+    adb shell input keyevent KEYCODE_BACK
+    sleep 2
+    shot "${n}_SearchPage_keyboard_hidden"
+  fi
   alive || echo "CRASHED on $r" >> "$OUT/_events.txt"
+  case "$r" in
+    MainPage|SportsPage|NewsPage|MoviesPage|MusicPage|FootballPage|WorldChannelsPage|CommunityHubPage|SocialPage|SearchPage)
+      adb shell input swipe 520 1940 520 650 350
+      sleep 2; shot "${n}_${r}_scroll"
+      ;;
+  esac
 done
 
 # Real bottom-tab taps (not deep links) plus the flyout drawer
@@ -52,7 +65,7 @@ if alive; then echo "BACK_AT_ROOT: process survived" >> "$OUT/_events.txt"; else
 adb shell am start -a android.intent.action.VIEW -d "markuptv://goto/MainPage" "$PKG" >/dev/null 2>&1
 sleep 8
 adb logcat -c
-adb shell monkey -p "$PKG" --pct-syskeys 0 --pct-appswitch 0 --throttle 120 -s 4242 -v 1500 > "$OUT/_monkey.txt" 2>&1
+adb shell monkey -p "$PKG" --pct-syskeys 0 --pct-appswitch 0 --throttle 120 -s 4242 -v 350 > "$OUT/_monkey.txt" 2>&1
 echo "MONKEY: $(grep -E 'Events injected|Monkey finished' "$OUT/_monkey.txt" | tr '\n' ' ')"
 grep -E "CRASH|ANR|Exception|// Long Msg|// Short Msg" "$OUT/_monkey.txt" | head -12 | sed 's/^/MONKEY: /'
 echo "MONKEY: FATAL lines in logcat: $(adb logcat -d -v time | grep -c 'FATAL EXCEPTION')"
@@ -71,7 +84,8 @@ adb shell wm density reset
 
 adb logcat -d -v time > "$OUT/_logcat_full.txt" 2>&1
 grep -E "AndroidRuntime|FATAL|ANR|MarkUpTV|mono-rt|Unhandled" "$OUT/_logcat_full.txt" | tail -300 > "$OUT/_logcat_filtered.txt"
-python3 tools/ui_audit.py "$OUT" || true
+python3 tools/ui_audit.py "$OUT" > "$OUT/_audit_report.txt" 2>&1 || true
+cat "$OUT/_audit_report.txt" | tail -60
 echo "=== EVENTS"; cat "$OUT/_events.txt" 2>/dev/null
 echo "=== FIRST FATAL"; grep -n -m1 -A14 "FATAL EXCEPTION" "$OUT/_logcat_full.txt"
 echo "=== APP ERRORS"; grep -E "MarkUpTV|Unhandled|Unable to resolve|Exception" "$OUT/_logcat_filtered.txt" | head -30

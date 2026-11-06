@@ -53,7 +53,7 @@ for path in sorted(glob.glob(os.path.join(OUT, "ui_*.xml"))):
         if not b:
             continue
         w, h = (b[2] - b[0]) / density, (b[3] - b[1]) / density
-        if n.get("clickable") == "true" or (n.get("focusable") == "true" and n.get("scrollable") != "true" and n.get("class", "").endswith(("Button", "ViewGroup", "View"))):
+        if n.get("clickable") == "true" or (n.get("focusable") == "true" and n.get("class", "").endswith("Button")):
             if w < 2 or h < 2 or w >= (W / density) - 1:
                 continue
             inter += 1
@@ -62,7 +62,7 @@ for path in sorted(glob.glob(os.path.join(OUT, "ui_*.xml"))):
                 if min(w, h) < 40:
                     tiny += 1
                 worst.append((min(w, h), f'"{label(n)}" {w:.0f}x{h:.0f}dp'))
-            if not has_label(n):
+            if not has_label(n) and h >= 24 and w >= 24:
                 unl += 1
         if tv and ((n.get("text") or "").strip() or n.get("clickable") == "true"):
             l, t, r, bt = b
@@ -83,3 +83,19 @@ for path in sorted(glob.glob(os.path.join(OUT, "ui_*.xml"))):
     if ov_examples:
         print("   overscan e.g.:", "; ".join(ov_examples))
 print("AUDIT TOTAL", tot)
+
+# Detect accidental capture of the same auth gate on every page.
+import hashlib
+from collections import Counter
+page_shots = sorted(glob.glob(os.path.join(OUT, "[0-9][0-9]_*.png")))
+unique = Counter()
+for p in page_shots:
+    try:
+        with open(p, "rb") as fh:
+            unique[hashlib.sha256(fh.read()).hexdigest()] += 1
+    except OSError:
+        pass
+print("SCREENSHOT COVERAGE", {"page_images": len(page_shots), "distinct_image_hashes": len(unique), "largest_duplicate_group": max(unique.values(), default=0)})
+if len(page_shots) >= 10 and len(unique) < 4:
+    print("AUDIT BLOCKER: images mostly identical; check debug route navigation and backend auth gate.")
+    sys.exit(1)

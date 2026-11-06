@@ -16,6 +16,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Verify production backend before publishing
+        run: |
+          # Match ProductionApiUrl in MarkUptv/MauiProgram.cs.
+          python3 tools/backend_contract_smoke.py \
+            --base-url 'https://markuptvnew-fjhjd6bkb6bahqeh.southafricanorth-01.azurewebsites.net/' \
+            --timeout 10
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'

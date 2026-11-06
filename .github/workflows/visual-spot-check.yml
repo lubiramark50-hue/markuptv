@@ -1,0 +1,63 @@
+name: MarkUpTV final visual spot check
+
+on:
+  push:
+    branches: ['fix/backend-frontend-integration-20261104']
+    paths:
+      - '.github/workflows/visual-spot-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  spot-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android
+      - name: Build Debug APK for emulator
+        run: |
+          dotnet build MarkUptv/MarkUptv.csproj -c Debug -f net10.0-android \
+            -p:RuntimeIdentifier=android-x64 -p:RuntimeIdentifiers=android-x64 \
+            -p:EmbedAssembliesIntoApk=true -p:AndroidPackageFormat=apk
+          APK=$(find MarkUptv/bin/Debug -type f -name '*Signed.apk' | head -n 1)
+          test -n "$APK"
+          unzip -Z1 "$APK" | grep -q '^lib/x86_64/'
+          echo "APK_PATH=$GITHUB_WORKSPACE/$APK" >> "$GITHUB_ENV"
+          rm -rf MarkUptv/obj
+          sudo rm -rf /usr/share/dotnet "$HOME/.nuget" /opt/hostedtoolcache || true
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Capture refined UI on Android
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: default
+          profile: pixel_6
+          disk-size: 3072M
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: bash tools/ui-spot-check.sh shots
+      - name: Generate contact sheet
+        if: always()
+        run: |
+          python3 -m pip install -q Pillow
+          python3 tools/ui_contact_sheet.py shots
+      - name: Upload screenshot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: markuptv-final-visual-${{ github.run_number }}
+          path: shots/
+          retention-days: 14
+          if-no-files-found: warn

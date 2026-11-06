@@ -18,6 +18,7 @@
     <Compile Include="..\..\MarkUptv\Services\LiveCatalogService.cs" Link="Production\LiveCatalogService.cs" />
     <Compile Include="..\..\MarkUptv\Services\StreamProbeService.cs" Link="Production\StreamProbeService.cs" />
     <Compile Include="..\..\MarkUptv\Services\LiveResolutionService.cs" Link="Production\LiveResolutionService.cs" />
+    <Compile Include="..\..\MarkUptv\Services\YouTubeLiveResolver.cs" Link="Production\YouTubeLiveResolver.cs" />
   </ItemGroup>
 
   <ItemGroup>

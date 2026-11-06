@@ -31,12 +31,16 @@ jobs:
       - name: Build debug APK (x86_64 for the emulator)
         run: |
           dotnet build MarkUptv/MarkUptv.csproj -c Debug -f net10.0-android \
-            -p:RuntimeIdentifier=android-x64 \
+            -p:RuntimeIdentifier=android-x64 -p:RuntimeIdentifiers=android-x64 \
             -p:EmbedAssembliesIntoApk=true \
             -p:AndroidPackageFormat=apk
           APK=$(find MarkUptv/bin/Debug -type f -name '*Signed.apk' | head -n 1)
           [ -n "$APK" ] || APK=$(find MarkUptv/bin/Debug -type f -name '*.apk' | head -n 1)
           test -n "$APK"
+          unzip -Z1 "$APK" | grep -q '^lib/x86_64/' || {
+            echo "Debug screenshot APK missing x86_64 native libraries" >&2
+            exit 1
+          }
           echo "APK_PATH=$GITHUB_WORKSPACE/$APK" >> "$GITHUB_ENV"
           ls -l "$APK"
           rm -rf MarkUptv/obj
@@ -63,15 +67,17 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: bash tools/ui-shots.sh shots
 
-      - name: Publish screenshots as a prerelease
+      - name: Create phone and TV page contact sheets
         if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
-          ls -l shots || true
-          TAG="ui-shots-${{ github.run_number }}"
-          FILES=$(ls shots/* 2>/dev/null | tr '\n' ' ')
-          [ -n "$FILES" ] || { echo "no files"; exit 0; }
-          gh release create "$TAG" $FILES --prerelease --target "${{ github.sha }}" \
-            --title "UI screenshots ${{ github.run_number }}" --notes "Emulator screenshots, debug build."
-          echo "TAG=$TAG"
+          python3 -m pip install -q Pillow
+          python3 tools/ui_contact_sheet.py shots
+
+      - name: Upload UI screenshot audit and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: markuptv-ui-pages-${{ github.run_number }}
+          path: shots/
+          if-no-files-found: warn
+          retention-days: 14
