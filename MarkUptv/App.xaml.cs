@@ -24,6 +24,12 @@ public partial class App : Application
     private readonly IServiceProvider _services;
     private readonly OtaUpdateService _ota;
 
+#if DEBUG
+    // Visual QA only: allow deterministic navigation through the signed-out UI.
+    // This field and its behavior are compiled out of Release builds.
+    private volatile bool _isUiAuditMode;
+#endif
+
     /// <summary>
     /// Completed once the Shell has been attached to the window. Startup boots
     /// with the lightweight LoadingPage and inflates the Shell afterwards; every
@@ -291,6 +297,14 @@ public partial class App : Application
 
     private async Task<bool> RunAppInitializationLifecycleAsync()
     {
+#if DEBUG
+        if (_isUiAuditMode)
+        {
+            // Screenshot audits do not claim a backend entitlement or create
+            // payments. Only the page layout is previewed.
+            return true;
+        }
+#endif
         try
         {
             if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
@@ -415,6 +429,7 @@ public partial class App : Application
             if (string.IsNullOrWhiteSpace(route))
                 return;
 
+            _isUiAuditMode = true;
             MainThread.BeginInvokeOnMainThread(async () =>
                 await NavigateSafelyAsync($"///{route}"));
         }
