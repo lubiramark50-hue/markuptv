@@ -431,7 +431,22 @@ public partial class App : Application
 
             _isUiAuditMode = true;
             MainThread.BeginInvokeOnMainThread(async () =>
-                await NavigateSafelyAsync($"///{route}"));
+            {
+                // Globally registered pushed routes cannot be navigated to
+                // as ///absolute ShellContent routes. Reset to a real page,
+                // then push them normally during Debug-only visual inspection.
+                bool isPushedPage = route is "MorePage" or "NotificationsPage"
+                    or "MovieDownloadsPage" or "ComposePostPage";
+                if (isPushedPage)
+                {
+                    await NavigateSafelyAsync("///MainPage");
+                    await NavigateSafelyAsync(route);
+                }
+                else
+                {
+                    await NavigateSafelyAsync($"///{route}");
+                }
+            });
         }
         catch (Exception ex)
         {

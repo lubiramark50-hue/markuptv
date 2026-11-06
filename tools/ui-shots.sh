@@ -21,7 +21,7 @@ sleep 20; shot 00_launch_20s
 sleep 40; shot 01_launch_60s
 grep -oE 'text="[^"]+"' "$OUT/ui_01_launch_60s.xml" | head -12 | sed 's/^/LAUNCH_TEXT: /'
 
-ROUTES="MainPage SportsPage NewsPage MoviesPage MusicPage FootballPage WorldChannelsPage CommunityHubPage SocialPage RecentlyWatchedPage DonationPage CartoonPage DiscoveryPage FashionPage GospelPage Lifestyle ReligiousTvPage LocalPage EuropeanSportsPage WildlifePage AdultsPage MovieCatalogPage SearchPage MatchThreadPage PaymentRequiredPage ConnectionRequiredPage"
+ROUTES="MainPage SportsPage NewsPage MoviesPage MusicPage FootballPage WorldChannelsPage CommunityHubPage SocialPage RecentlyWatchedPage DonationPage CartoonPage DiscoveryPage FashionPage GospelPage Lifestyle ReligiousTvPage LocalPage EuropeanSportsPage WildlifePage AdultsPage MovieCatalogPage SearchPage MatchThreadPage PaymentRequiredPage ConnectionRequiredPage MorePage NotificationsPage MovieDownloadsPage ComposePostPage"
 i=2
 for r in $ROUTES; do
   if ! alive; then echo "CRASHED before $r" >> "$OUT/_events.txt"; adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1; sleep 25; fi
