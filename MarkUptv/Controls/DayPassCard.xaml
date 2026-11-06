@@ -123,7 +123,7 @@
                         BackgroundColor="#0E0F1E">
                     <Entry HeightRequest="56" Text="{Binding Email, Source={x:Reference Root}, Mode=TwoWay}"
                            Placeholder="Email for the receipt"
-                           PlaceholderColor="#6E6790"
+                           PlaceholderColor="#B1B5D2"
                            TextColor="White"
                            Keyboard="Email"
                            FontSize="13"
