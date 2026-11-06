@@ -65,7 +65,7 @@
 
             <!-- ═══ Logo canvas + inline play chip ═══ -->
             <Border Grid.Row="0"
-                    HeightRequest="56"
+                    HeightRequest="64"
                     BackgroundColor="{StaticResource TileLogoCanvas}"
                     Stroke="#1B2438"
                     StrokeThickness="1"
@@ -108,11 +108,12 @@
                     <!-- Play chip: the page's existing tune-in behaviour. -->
                     <Border HorizontalOptions="End" VerticalOptions="End"
                             Margin="0,0,4,4"
-                            WidthRequest="28" HeightRequest="28"
+                            WidthRequest="48" HeightRequest="48"
                             Padding="0"
                             BackgroundColor="{StaticResource TileGold}"
                             StrokeThickness="0"
-                            StrokeShape="RoundRectangle 14">
+                            StrokeShape="RoundRectangle 24"
+                            SemanticProperties.Description="{Binding Name, StringFormat='Play {0}'}">
                         <Border.Behaviors>
                             <helpers:TapScaleBehavior />
                         </Border.Behaviors>
